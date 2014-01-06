@@ -49,7 +49,7 @@ public class TimeDsl {
 
 		protected boolean equals(Date other, boolean ignoreMs) {
 			boolean result = false;
-			if (ref != null && ref != null) { // TODO Repeated conditional test in TimeDsl$TimeBuilder.equals(Date, boolean)
+			if (ref != null) {
 				if (ignoreMs) {
 					result = truncate(ref) == truncate(other);
 				}
