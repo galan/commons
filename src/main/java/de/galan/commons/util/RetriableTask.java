@@ -35,6 +35,11 @@ public class RetriableTask<T> implements Callable<T> {
 	}
 
 
+	public RetriableTask(long numberOfRetries, Callable<T> task) {
+		this(numberOfRetries, DEFAULT_WAIT_TIME, task);
+	}
+
+
 	public RetriableTask(long numberOfRetries, String timeToWait, Callable<T> task) {
 		this.numberOfRetries = numberOfRetries;
 		numberOfTriesLeft = numberOfRetries + 1;
