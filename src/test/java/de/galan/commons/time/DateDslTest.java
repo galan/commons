@@ -1,6 +1,6 @@
 package de.galan.commons.time;
 
-import static de.galan.commons.test.TestHelper.*;
+import static de.galan.commons.test.Tests.*;
 import static de.galan.commons.time.DateDsl.*;
 import static org.junit.Assert.*;
 

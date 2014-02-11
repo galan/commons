@@ -26,7 +26,7 @@ import de.galan.commons.time.HumanTime;
  * 
  * @author daniel
  */
-public class TestHelper {
+public class Tests {
 
 	public static byte[] readFileBinary(Class<?> clazz, String filename) throws IOException {
 		return Resources.toByteArray(Resources.getResource(clazz, filename));
