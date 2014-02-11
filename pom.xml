@@ -3,7 +3,7 @@
 
 	<groupId>de.galan</groupId>
 	<artifactId>commons</artifactId>
-	<version>0.1</version>
+	<version>0.2-SNAPSHOT</version>
 	<name>Commons</name>
 	<description>Generic functionality</description>
 
