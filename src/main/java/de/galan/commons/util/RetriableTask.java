@@ -3,6 +3,7 @@ package de.galan.commons.util;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 
 import de.galan.commons.logging.Logr;
@@ -31,19 +32,19 @@ public class RetriableTask<T> implements Callable<T> {
 
 
 	public RetriableTask(Callable<T> task) {
-		this(DEFAULT_NUMBER_OF_RETRIES, DEFAULT_WAIT_TIME, task);
+		this(DEFAULT_NUMBER_OF_RETRIES, null, task);
 	}
 
 
 	public RetriableTask(long numberOfRetries, Callable<T> task) {
-		this(numberOfRetries, DEFAULT_WAIT_TIME, task);
+		this(numberOfRetries, null, task);
 	}
 
 
 	public RetriableTask(long numberOfRetries, String timeToWait, Callable<T> task) {
 		this.numberOfRetries = numberOfRetries;
 		numberOfTriesLeft = numberOfRetries + 1;
-		this.timeToWait = timeToWait;
+		this.timeToWait = ObjectUtils.defaultIfNull(timeToWait, DEFAULT_WAIT_TIME);
 		this.task = task;
 	}
 
