@@ -52,6 +52,23 @@
 			<version>5.1.6</version>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- Required for test classes - de.galan.commons.test.* -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 </project>
