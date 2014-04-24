@@ -14,8 +14,8 @@
 	</parent>
 
 	<scm>
-		<developerConnection>scm:git:ssh://git@github.com/d8bitr/commons.git</developerConnection>
-		<url>https://github.com/d8bitr/commons</url>
+		<developerConnection>scm:git:ssh://git@github.com/galan/commons.git</developerConnection>
+		<url>https://github.com/galan/commons</url>
 	</scm>
 
 	<dependencies>

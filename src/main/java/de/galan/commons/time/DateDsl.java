@@ -16,7 +16,7 @@ import de.galan.commons.logging.Logr;
 
 /**
  * Construction of Date-objects with a fluent interface.<br/>
- * See also https://github.com/d8bitr/commons/wiki/DateDsl
+ * See also https://github.com/galan/commons/wiki/DateDsl
  * 
  * @author daniel
  */
