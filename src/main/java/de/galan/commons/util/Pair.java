@@ -1,11 +1,11 @@
 package de.galan.commons.util;
 
 /**
- * daniel should have written a comment here.
- * 
+ * Simple key/value pair
+ *
  * @author daniel
- * @param <K> ..
- * @param <V> ..
+ * @param <K> Type of key
+ * @param <V> Type of value
  */
 public class Pair<K, V> {
 
