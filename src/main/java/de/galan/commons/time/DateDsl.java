@@ -17,7 +17,7 @@ import de.galan.commons.logging.Logr;
 /**
  * Construction of Date-objects with a fluent interface.<br/>
  * See also https://github.com/galan/commons/wiki/DateDsl
- * 
+ *
  * @author daniel
  */
 public class DateDsl {
@@ -218,7 +218,7 @@ public class DateDsl {
 			cal = new GregorianCalendar(Locale.GERMAN);
 			cal.setTime(date);
 			cal.setLenient(true);
-			cal.set(Calendar.MILLISECOND, 0);
+			//cal.set(Calendar.MILLISECOND, 0);
 		}
 
 
@@ -260,19 +260,7 @@ public class DateDsl {
 
 
 		protected DateBuilder move(DatetimeUnit unit, int amount) {
-			switch (unit) {
-				case year:
-					cal.set(Calendar.MONTH, 0);
-				case month:
-					cal.set(Calendar.DAY_OF_MONTH, 1);
-				case day:
-					cal.set(Calendar.HOUR_OF_DAY, 0);
-				case hours:
-					cal.set(Calendar.MINUTE, 0);
-				case minutes:
-					cal.set(Calendar.SECOND, 0);
-			}
-			return in(amount, unit);
+			return truncate(unit).in(amount, unit);
 		}
 
 
@@ -313,6 +301,25 @@ public class DateDsl {
 		}
 
 
+		public DateBuilder truncate(DatetimeUnit unit) {
+			switch (unit) {
+				case year:
+					cal.set(Calendar.MONTH, 0);
+				case month:
+					cal.set(Calendar.DAY_OF_MONTH, 1);
+				case day:
+					cal.set(Calendar.HOUR_OF_DAY, 0);
+				case hours:
+					cal.set(Calendar.MINUTE, 0);
+				case minutes:
+					cal.set(Calendar.SECOND, 0);
+				case millis:
+					cal.set(Calendar.MILLISECOND, 0);
+			}
+			return this;
+		}
+
+
 		public long till(Date date) {
 			return date.getTime() - cal.getTimeInMillis();
 		}
@@ -339,6 +346,11 @@ public class DateDsl {
 			SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_ISO);
 			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 			return sdf.format(cal.getTime());
+		}
+
+
+		public long toLong() {
+			return cal.getTimeInMillis();
 		}
 
 	}

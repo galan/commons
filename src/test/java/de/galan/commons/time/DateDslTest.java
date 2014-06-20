@@ -2,6 +2,7 @@ package de.galan.commons.time;
 
 import static de.galan.commons.test.Tests.*;
 import static de.galan.commons.time.DateDsl.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
@@ -16,7 +17,7 @@ import de.galan.commons.test.AbstractTestParent;
 
 /**
  * CUT DateDsl
- * 
+ *
  * @author daniel
  */
 public class DateDslTest extends AbstractTestParent {
@@ -186,6 +187,28 @@ public class DateDslTest extends AbstractTestParent {
 	public void dateLong() throws Exception {
 		assertEquals(date(0L), dateIso("1970-01-01T00:00:00Z"));
 		assertEquals(date(1372930571000L), dateIso("2013-07-04T09:36:11Z"));
+	}
+
+
+	@Test
+	public void truncate() throws Exception {
+		long timeWithoutMillis = 1372930571000L;
+		Date dateWithMillis = date(timeWithoutMillis + 123L);
+		assertThat(dateWithMillis).isEqualToIgnoringMillis(dateIso("2013-07-04T09:36:11Z"));
+		assertThat(dateWithMillis).isNotEqualTo(dateIso("2013-07-04T09:36:11Z"));
+		Date dateWithoutMillis = from(dateWithMillis).truncate(millis()).toDate();
+		long longWithoutMillis = from(dateWithMillis).truncate(millis()).toLong();
+		assertThat(dateWithoutMillis).isEqualTo(dateIso("2013-07-04T09:36:11Z"));
+		assertThat(longWithoutMillis).isEqualTo(timeWithoutMillis);
+	}
+
+
+	@Test
+	public void toLong() throws Exception {
+		long timeWithoutMillis = 1372930571000L;
+		assertThat(from(date(timeWithoutMillis)).toLong()).isEqualTo(timeWithoutMillis);
+		long timeWithMillis = 1372930571123L;
+		assertThat(from(date(timeWithMillis)).toLong()).isEqualTo(timeWithMillis);
 	}
 
 }
