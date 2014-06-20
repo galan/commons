@@ -1,7 +1,5 @@
 package de.galan.commons.util;
 
-import java.lang.reflect.Array;
-import java.util.List;
 
 
 /**
@@ -33,23 +31,6 @@ public class GenericUtil {
 		@SuppressWarnings("unchecked")
 		Class<T> clazz = (Class<T>)t.getClass();
 		return clazz;
-	}
-
-
-	/**
-	 * Converts the given <code>List&lt;T&gt;</code> to a an array of <code>T[]</code>.
-	 *
-	 * @param clz the Class object of the items in the list
-	 * @param list the list to convert
-	 */
-	public static <T> T[] toArray(Class<T> clz, List<T> list) {
-		@SuppressWarnings("unchecked")
-		T[] result = (T[])Array.newInstance(clz, list.size());
-
-		for (int i = 0; i < list.size(); i++) {
-			result[i] = list.get(i);
-		}
-		return result;
 	}
 
 }
