@@ -3,14 +3,14 @@
 
 	<groupId>de.galan</groupId>
 	<artifactId>commons</artifactId>
-	<version>0.5-SNAPSHOT</version>
+	<version>0.5</version>
 	<name>Commons</name>
 	<description>Generic functionality</description>
 
 	<parent>
 		<groupId>de.galan</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.4-SNAPSHOT</version>
+		<version>0.4</version>
 	</parent>
 
 	<scm>
