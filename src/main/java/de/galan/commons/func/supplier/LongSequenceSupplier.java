@@ -1,8 +1,7 @@
 package de.galan.commons.func.supplier;
 
 import java.util.concurrent.atomic.AtomicLong;
-
-import com.google.common.base.Supplier;
+import java.util.function.Supplier;
 
 
 /**

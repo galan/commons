@@ -1,8 +1,7 @@
 package de.galan.commons.func.supplier;
 
 import java.math.BigDecimal;
-
-import com.google.common.base.Supplier;
+import java.util.function.Supplier;
 
 
 /**
