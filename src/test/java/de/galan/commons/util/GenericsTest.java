@@ -15,12 +15,12 @@ import de.galan.commons.test.AbstractTestParent;
  *
  * @author daniel
  */
-public class GenericUtilTest extends AbstractTestParent {
+public class GenericsTest extends AbstractTestParent {
 
 	@Test
 	public void cast() throws Exception {
 		Object x = new ArrayList<String>();
-		List<String> y = GenericUtil.cast(x);
+		List<String> y = Generics.cast(x);
 		assertThat(y).isNotNull();
 		assertThat(y).isEmpty();
 	}
@@ -29,7 +29,7 @@ public class GenericUtilTest extends AbstractTestParent {
 	@Test
 	public void testGetClass() throws Exception {
 		List<String> list = new ArrayList<>();
-		Class<List<String>> clz = GenericUtil.getClass(list);
+		Class<List<String>> clz = Generics.getClass(list);
 		assertThat(clz).isEqualTo(ArrayList.class);
 	}
 

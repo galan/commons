@@ -7,7 +7,7 @@ package de.galan.commons.util;
  *
  * @author daniel
  */
-public class GenericUtil {
+public class Generics {
 
 	/**
 	 * Casts an object by type inference. see also
