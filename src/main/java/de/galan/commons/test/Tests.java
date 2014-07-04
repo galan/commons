@@ -1,8 +1,7 @@
 package de.galan.commons.test;
 
 import static de.galan.commons.time.DateDsl.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,9 +12,9 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
 import de.galan.commons.time.HumanTime;
@@ -23,7 +22,7 @@ import de.galan.commons.time.HumanTime;
 
 /**
  * Common helper methods that are helpful for the AbstractTestParent and Test-Classes via static imports.
- * 
+ *
  * @author daniel
  */
 public class Tests {
@@ -45,27 +44,22 @@ public class Tests {
 
 
 	public static String readFile(InputStream is) throws IOException {
-		return IOUtils.toString(is, Charsets.UTF_8);
+		return IOUtils.toString(is);
 	}
 
 
 	public static void assertFileEqualsToString(String filename, Class<?> clz, String actual) throws IOException {
-		assertEquals(readFile(clz, filename), actual);
+		assertThat(actual).isEqualTo(readFile(clz, filename));
 	}
 
 
 	public static void assertBetween(Long expectedLow, Long expectedHigh, Long actual) {
-		if (actual < expectedLow || actual > expectedHigh) {
-			fail("expected between:<" + expectedLow + "> and <" + expectedHigh + "> but was:<" + actual + ">");
-		}
+		assertThat(actual).isBetween(expectedLow, expectedHigh);
 	}
 
 
 	public static void assertListEquals(List<?> expected, List<?> actual) {
-		assertEquals(expected.size(), expected.size());
-		for (int i = 0; i < actual.size(); i++) {
-			assertEquals(expected.get(i), actual.get(i));
-		}
+		assertThat(actual).isEqualTo(expected);
 	}
 
 
@@ -74,15 +68,18 @@ public class Tests {
 	}
 
 
-	public static void assertBetween(Date expectedFrom, Date expectedTo, Date actual, boolean ignoreFragments) {
-		int factor = (ignoreFragments) ? 1000 : 1;
-		assertBetween(expectedFrom.getTime() / factor, expectedTo.getTime() / factor, actual.getTime() / factor);
+	public static void assertBetween(Date expectedFrom, Date expectedTo, Date actual, boolean truncateMillis) {
+		assertThat(truncate(actual, truncateMillis)).isBetween(truncate(expectedFrom, truncateMillis), truncate(expectedTo, truncateMillis), true, true);
+	}
+
+
+	private static Date truncate(Date actual, boolean truncateMillis) {
+		return truncateMillis ? from(actual).truncate(millis()).toDate() : actual;
 	}
 
 
 	public static void assertBetween(Double expectedLower, Double expectedUpper, Double actual) {
-		assertTrue("Value smaller then expected", actual >= expectedLower);
-		assertTrue("Value larger then expected", actual <= expectedUpper);
+		assertThat(actual).isBetween(expectedLower, expectedUpper);
 	}
 
 
@@ -91,8 +88,8 @@ public class Tests {
 	}
 
 
-	public static void assertDateNear(long msThreshold, Date actual, boolean ignore) {
-		assertBetween(date(now().getTime() - msThreshold), date(now().getTime() + msThreshold), actual, ignore);
+	public static void assertDateNear(long msThreshold, Date actual, boolean truncateMillis) {
+		assertThat(truncate(actual, truncateMillis)).isCloseTo(truncate(now(), truncateMillis), msThreshold);
 	}
 
 
@@ -101,14 +98,14 @@ public class Tests {
 	}
 
 
-	public static void assertDateNear(String timeThreshold, Date actual, boolean ignore) {
-		assertDateNear(HumanTime.dehumanizeTime(timeThreshold), actual, ignore);
+	public static void assertDateNear(String timeThreshold, Date actual, boolean truncateMillis) {
+		assertDateNear(HumanTime.dehumanizeTime(timeThreshold), actual, truncateMillis);
 	}
 
 
 	// helper for hamcrest
 	public static <T extends Comparable<T>> Matcher<T> between(T lower, T upper) {
-		return allOf(greaterThanOrEqualTo(lower), lessThanOrEqualTo(upper));
+		return Matchers.allOf(Matchers.greaterThanOrEqualTo(lower), Matchers.lessThanOrEqualTo(upper));
 	}
 
 
