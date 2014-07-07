@@ -5,12 +5,16 @@ import static java.nio.file.StandardWatchEventKinds.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -174,10 +178,68 @@ public class FilesystemObserver {
 		Preconditions.checkNotNull(directoryListener, "DirectoryListener null");
 		Preconditions.checkNotNull(directoryListener.getDirectory(), "DirectoryListener is missing directory");
 		Preconditions.checkArgument(directoryListener.getDirectory().isDirectory(), "Directory in DirectoryListener is assumed to be a directory, not a file");
+		if (directoryListener.isListeningRecursive()) {
+			File directory = directoryListener.getDirectory();
+			Path path = Paths.get(directory.toURI());
+			registerDirectoryListener(directoryListener, path);
+		}
+		else {
+			registerDirectoryListenerInternal(directoryListener);
+		}
+	}
+
+
+	private void registerDirectoryListenerInternal(DirectoryListener directoryListener) throws IOException {
 		File directory = directoryListener.getDirectory();
 		Path path = Paths.get(directory.toURI());
 		WatchKey key = path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
 		keysDirectoryListener.put(key, directoryListener);
+	}
+
+
+	protected void registerDirectoryListener(DirectoryListener directoryListener, Path start) throws IOException {
+		Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+
+			@Override
+			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+				RecursiveDirectoryListener listener = new RecursiveDirectoryListener(directoryListener, dir.toFile());
+				registerDirectoryListenerInternal(listener);
+				return FileVisitResult.CONTINUE;
+			}
+		});
+	}
+
+}
+
+
+/** Encapsulates the parent DirectoryListener in order to pass correct File references to it. */
+class RecursiveDirectoryListener extends AbstractDirectoryListener {
+
+	private DirectoryListener parent;
+
+
+	public RecursiveDirectoryListener(DirectoryListener parent, File directory) {
+		super(directory);
+		this.parent = parent;
+		setListeningRecursive(parent.isListeningRecursive());
+	}
+
+
+	@Override
+	public void notifyFileChanged(File file) {
+		parent.notifyFileChanged(file);
+	}
+
+
+	@Override
+	public void notifyFileDeleted(File file) {
+		parent.notifyFileDeleted(file);
+	}
+
+
+	@Override
+	public void notifyFileCreated(File file) {
+		parent.notifyFileCreated(file);
 	}
 
 }

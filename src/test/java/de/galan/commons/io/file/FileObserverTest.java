@@ -15,11 +15,17 @@ import de.galan.commons.test.AbstractTestParent;
 public class FileObserverTest extends AbstractTestParent {
 
 	@Test
-	public void testName() throws Exception {
+	public void stop() throws Exception {
 		FilesystemObserver fo = new FilesystemObserver();
 		assertThat(fo.watcherThread.isAlive()).isTrue();
 		fo.stop();
 		assertThat(fo.watcherThread.isAlive()).isFalse();
+	}
+
+
+	@Test
+	public void testName() throws Exception {
+		//TODO
 	}
 
 }

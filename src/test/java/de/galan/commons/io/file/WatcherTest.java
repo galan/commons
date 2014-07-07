@@ -7,7 +7,7 @@ import de.galan.commons.time.Sleeper;
 
 
 /**
- * daniel should have written a comment here.
+ * manuel test, TODO delete me later
  *
  * @author daniel
  */
@@ -20,13 +20,20 @@ public class WatcherTest extends AbstractTestParent {
 		FileListener file1 = new AbstractFileListener("/home/daniel/temp/dummy.txt") {};
 		ob1.registerFileListener(file1);
 
-		DirectoryListener dir1 = new AbstractDirectoryListener("/home/daniel/temp/") {};
+		DirectoryListener dir1 = new AbstractDirectoryListener("/home/daniel/temp/") {
+
+			@Override
+			public Boolean isListeningRecursive() {
+				return true;
+			}
+
+		};
 		ob1.registerDirectoryListener(dir1);
 
-		FilesystemObserver ob2 = new FilesystemObserver();
+		//FilesystemObserver ob2 = new FilesystemObserver();
 
-		DirectoryListener dir2 = new AbstractDirectoryListener("/home/daniel/temp/subdir") {};
-		ob2.registerDirectoryListener(dir2);
+		//DirectoryListener dir2 = new AbstractDirectoryListener("/home/daniel/temp/subdir") {};
+		//ob2.registerDirectoryListener(dir2);
 
 		Sleeper.sleep("2d");
 	}
