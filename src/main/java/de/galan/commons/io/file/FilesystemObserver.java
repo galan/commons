@@ -97,11 +97,10 @@ public class FilesystemObserver {
 
 					// Context for directory entry event is the file name of entry
 					WatchEvent<Path> ev = Generics.cast(event);
-					Path name = ev.context();
-
+					Path path = ev.context();
 					//Path child = path.resolve(name);
 
-					if (fileListener != null && StringUtils.equals(name.getFileName().toString(), fileListener.getFile().getName())) {
+					if (fileListener != null && StringUtils.equals(path.getFileName().toString(), fileListener.getFile().getName())) {
 						LOG.info("file: " + fileListener.getFile().getAbsolutePath());
 						if (kind == ENTRY_CREATE) {
 							fileListener.notifyFileCreated();
@@ -114,10 +113,19 @@ public class FilesystemObserver {
 						}
 					}
 					if (directoryListener != null) {
-						File file = new File(directoryListener.getDirectory(), name.getFileName().toString());
+						File file = new File(directoryListener.getDirectory(), path.getFileName().toString());
 						LOG.info("dir: " + directoryListener.getDirectory().getAbsolutePath() + ", file:" + file.getName());
 						if (kind == ENTRY_CREATE) {
 							directoryListener.notifyFileCreated(file);
+							if (directoryListener.isListeningRecursive() && file.isDirectory()) {
+								try {
+									registerDirectoryListener(directoryListener, Paths.get(file.toURI()));
+								}
+								catch (IOException ex) {
+									LOG.info("Unable to register new subdirectory '" + directoryListener.getDirectory().getAbsolutePath() + "/"
+											+ file.getName() + "'");
+								}
+							}
 						}
 						else if (kind == ENTRY_MODIFY) {
 							directoryListener.notifyFileChanged(file);
@@ -125,20 +133,6 @@ public class FilesystemObserver {
 						else if (kind == ENTRY_DELETE) {
 							directoryListener.notifyFileDeleted(file);
 						}
-						// if directory is created, and watching recursively, then
-						// register it and its sub-directories
-						/*
-						if (recursive && (kind == ENTRY_CREATE)) {
-							try {
-								if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
-									registerAll(child);
-								}
-							}
-							catch (IOException x) {
-								// ignore to keep sample readbale
-							}
-						}
-						 */
 					}
 				}
 			}
@@ -178,14 +172,9 @@ public class FilesystemObserver {
 		Preconditions.checkNotNull(directoryListener, "DirectoryListener null");
 		Preconditions.checkNotNull(directoryListener.getDirectory(), "DirectoryListener is missing directory");
 		Preconditions.checkArgument(directoryListener.getDirectory().isDirectory(), "Directory in DirectoryListener is assumed to be a directory, not a file");
-		if (directoryListener.isListeningRecursive()) {
-			File directory = directoryListener.getDirectory();
-			Path path = Paths.get(directory.toURI());
-			registerDirectoryListener(directoryListener, path);
-		}
-		else {
-			registerDirectoryListenerInternal(directoryListener);
-		}
+		File directory = directoryListener.getDirectory();
+		Path path = Paths.get(directory.toURI());
+		registerDirectoryListener(directoryListener, path);
 	}
 
 
@@ -204,7 +193,7 @@ public class FilesystemObserver {
 			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 				RecursiveDirectoryListener listener = new RecursiveDirectoryListener(directoryListener, dir.toFile());
 				registerDirectoryListenerInternal(listener);
-				return FileVisitResult.CONTINUE;
+				return listener.isListeningRecursive() ? FileVisitResult.CONTINUE : FileVisitResult.TERMINATE;
 			}
 		});
 	}
