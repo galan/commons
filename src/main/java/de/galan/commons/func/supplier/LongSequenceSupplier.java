@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 
 /**
- * Creates sequences of long values, starting with startValue or zero.
+ * Provides sequences of long values, starting with startValue or zero.
  *
  * @author daniel
  */
