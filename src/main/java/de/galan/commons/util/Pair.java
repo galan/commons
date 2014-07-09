@@ -35,6 +35,12 @@ public class Pair<K, V> {
 	}
 
 
+	public Pair<K, V> k(K k) {
+		setKey(k);
+		return this;
+	}
+
+
 	public V getValue() {
 		return value;
 	}
@@ -42,6 +48,12 @@ public class Pair<K, V> {
 
 	public void setValue(V value) {
 		this.value = value;
+	}
+
+
+	public Pair<K, V> v(V v) {
+		setValue(v);
+		return this;
 	}
 
 
