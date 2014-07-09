@@ -51,7 +51,7 @@ public class FilesystemObserver {
 			watcher = FileSystems.getDefault().newWatchService();
 			keysFileListener = new HashMap<>();
 			keysDirectoryListener = new HashMap<>();
-			watcherThread = new Thread(() -> startThread(), "FilesystemObserver-" + THREAD_COUNTER.getAndIncrement());
+			watcherThread = createWatcherThread();
 			start();
 		}
 		catch (IOException ex) {
@@ -60,20 +60,30 @@ public class FilesystemObserver {
 	}
 
 
-	public void start() {
-		watcherThread.start();
+	protected Thread createWatcherThread() {
+		return new Thread(() -> processEvents(), "FilesystemObserver-" + THREAD_COUNTER.getAndIncrement());
 	}
 
 
-	public void stop() {
-		watcherThread.interrupt();
-		while(watcherThread.isAlive()) {
-			Sleeper.sleep(5L);
+	public void start() {
+		if (!watcherThread.isAlive()) {
+			watcherThread = createWatcherThread();
+			watcherThread.start();
 		}
 	}
 
 
-	protected void startThread() {
+	public void stop() {
+		if (watcherThread.isAlive()) {
+			watcherThread.interrupt();
+			while(watcherThread.isAlive()) {
+				Sleeper.sleep(5L);
+			}
+		}
+	}
+
+
+	protected void processEvents() {
 		while(true) {
 			WatchKey key = null;
 			try {
@@ -89,8 +99,6 @@ public class FilesystemObserver {
 			if (fileListener != null || directoryListener != null) {
 				for (WatchEvent<?> event: key.pollEvents()) {
 					Kind<?> kind = event.kind();
-
-					// TODO - what is OVERFLOW/how to handle best?
 					if (kind == OVERFLOW) {
 						continue;
 					}
@@ -100,40 +108,8 @@ public class FilesystemObserver {
 					Path path = ev.context();
 					//Path child = path.resolve(name);
 
-					if (fileListener != null && StringUtils.equals(path.getFileName().toString(), fileListener.getFile().getName())) {
-						LOG.info("file: " + fileListener.getFile().getAbsolutePath());
-						if (kind == ENTRY_CREATE) {
-							fileListener.notifyFileCreated();
-						}
-						else if (kind == ENTRY_MODIFY) {
-							fileListener.notifyFileChanged();
-						}
-						else if (kind == ENTRY_DELETE) {
-							fileListener.notifyFileDeleted();
-						}
-					}
-					if (directoryListener != null) {
-						File file = new File(directoryListener.getDirectory(), path.getFileName().toString());
-						LOG.info("dir: " + directoryListener.getDirectory().getAbsolutePath() + ", file:" + file.getName());
-						if (kind == ENTRY_CREATE) {
-							directoryListener.notifyFileCreated(file);
-							if (directoryListener.isListeningRecursive() && file.isDirectory()) {
-								try {
-									registerDirectoryListener(directoryListener, Paths.get(file.toURI()));
-								}
-								catch (IOException ex) {
-									LOG.info("Unable to register new subdirectory '" + directoryListener.getDirectory().getAbsolutePath() + "/"
-											+ file.getName() + "'");
-								}
-							}
-						}
-						else if (kind == ENTRY_MODIFY) {
-							directoryListener.notifyFileChanged(file);
-						}
-						else if (kind == ENTRY_DELETE) {
-							directoryListener.notifyFileDeleted(file);
-						}
-					}
+					notifyFileListener(fileListener, kind, path);
+					notifyDirectoryListener(directoryListener, kind, path);
 				}
 			}
 			else {
@@ -152,7 +128,48 @@ public class FilesystemObserver {
 				}
 			}
 		}
+	}
 
+
+	protected void notifyDirectoryListener(DirectoryListener directoryListener, Kind<?> kind, Path path) {
+		if (directoryListener != null) {
+			File file = new File(directoryListener.getDirectory(), path.getFileName().toString());
+			LOG.info("dir: " + directoryListener.getDirectory().getAbsolutePath() + ", file:" + file.getName());
+			if (kind == ENTRY_CREATE) {
+				directoryListener.notifyFileCreated(file);
+				if (directoryListener.isListeningRecursive() && file.isDirectory()) {
+					try {
+						registerDirectoryListener(directoryListener, Paths.get(file.toURI()));
+					}
+					catch (IOException ex) {
+						LOG.info("Unable to register new subdirectory '" + directoryListener.getDirectory().getAbsolutePath() + "/"
+								+ file.getName() + "'");
+					}
+				}
+			}
+			else if (kind == ENTRY_MODIFY) {
+				directoryListener.notifyFileChanged(file);
+			}
+			else if (kind == ENTRY_DELETE) {
+				directoryListener.notifyFileDeleted(file);
+			}
+		}
+	}
+
+
+	protected void notifyFileListener(FileListener fileListener, Kind<?> kind, Path path) {
+		if (fileListener != null && StringUtils.equals(path.getFileName().toString(), fileListener.getFile().getName())) {
+			LOG.info("file: " + fileListener.getFile().getAbsolutePath());
+			if (kind == ENTRY_CREATE) {
+				fileListener.notifyFileCreated();
+			}
+			else if (kind == ENTRY_MODIFY) {
+				fileListener.notifyFileChanged();
+			}
+			else if (kind == ENTRY_DELETE) {
+				fileListener.notifyFileDeleted();
+			}
+		}
 	}
 
 
@@ -178,14 +195,6 @@ public class FilesystemObserver {
 	}
 
 
-	private void registerDirectoryListenerInternal(DirectoryListener directoryListener) throws IOException {
-		File directory = directoryListener.getDirectory();
-		Path path = Paths.get(directory.toURI());
-		WatchKey key = path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
-		keysDirectoryListener.put(key, directoryListener);
-	}
-
-
 	protected void registerDirectoryListener(DirectoryListener directoryListener, Path start) throws IOException {
 		Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
 
@@ -196,6 +205,14 @@ public class FilesystemObserver {
 				return listener.isListeningRecursive() ? FileVisitResult.CONTINUE : FileVisitResult.TERMINATE;
 			}
 		});
+	}
+
+
+	protected void registerDirectoryListenerInternal(DirectoryListener directoryListener) throws IOException {
+		File directory = directoryListener.getDirectory();
+		Path path = Paths.get(directory.toURI());
+		WatchKey key = path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+		keysDirectoryListener.put(key, directoryListener);
 	}
 
 }
