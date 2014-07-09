@@ -1,7 +1,7 @@
 package de.galan.commons.snake;
 
 /**
- * This adapterinterface notifies about changes in the backed propertymodel
+ * This interface notifies about changes in the backed propertymodel
  *
  * @author daniel
  */
