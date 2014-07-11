@@ -40,22 +40,4 @@ public abstract class AbstractDirectoryListener implements DirectoryListener {
 		return directory;
 	}
 
-
-	@Override
-	public void notifyFileChanged(File file) {
-		// can be overriden
-	}
-
-
-	@Override
-	public void notifyFileDeleted(File file) {
-		// can be overriden
-	}
-
-
-	@Override
-	public void notifyFileCreated(File file) {
-		// can be overriden
-	}
-
 }

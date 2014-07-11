@@ -16,12 +16,18 @@ public interface DirectoryListener {
 	public Boolean isListeningRecursive();
 
 
-	public void notifyFileCreated(File file);
+	default void notifyFileCreated(File file) {
+		// can be overriden
+	}
 
 
-	public void notifyFileChanged(File file);
+	default void notifyFileChanged(File file) {
+		// can be overriden
+	}
 
 
-	public void notifyFileDeleted(File file);
+	default void notifyFileDeleted(File file) {
+		// can be overriden
+	}
 
 }

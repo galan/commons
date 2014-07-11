@@ -13,12 +13,18 @@ public interface FileListener {
 	public File getFile();
 
 
-	public void notifyFileCreated();
+	default void notifyFileCreated() {
+		// can be overriden
+	}
 
 
-	public void notifyFileChanged();
+	default void notifyFileChanged() {
+		// can be overriden
+	}
 
 
-	public void notifyFileDeleted();
+	default void notifyFileDeleted() {
+		// can be overriden
+	}
 
 }

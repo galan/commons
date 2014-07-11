@@ -28,22 +28,4 @@ public abstract class AbstractFileListener implements FileListener {
 		return file;
 	}
 
-
-	@Override
-	public void notifyFileChanged() {
-		// can be overriden
-	}
-
-
-	@Override
-	public void notifyFileDeleted() {
-		// can be overriden
-	}
-
-
-	@Override
-	public void notifyFileCreated() {
-		// can be overriden
-	}
-
 }
