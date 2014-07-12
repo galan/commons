@@ -4,7 +4,7 @@ import java.io.File;
 
 
 /**
- * Listener that notifies about changes to a single file.
+ * Listener that notifies about changes to a file or directory.
  *
  * @author daniel
  */

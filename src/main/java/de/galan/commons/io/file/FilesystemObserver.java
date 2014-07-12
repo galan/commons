@@ -183,7 +183,7 @@ public class FilesystemObserver {
 	}
 
 
-	public void registerDirectoryListener(DirectoryListener directoryListener, File directory, boolean recursive) throws IOException {
+	public void registerDirectoryListener(FileListener directoryListener, File directory, boolean recursive) throws IOException {
 		Preconditions.checkNotNull(directoryListener, "DirectoryListener is null");
 		Preconditions.checkNotNull(directory, "Directory is null");
 		Preconditions.checkArgument(directory.isDirectory(), "Directory is assumed to be a directory, not a file");
@@ -192,7 +192,7 @@ public class FilesystemObserver {
 	}
 
 
-	protected void registerDirectoryListener(DirectoryListener directoryListener, Path directory, boolean recursive) throws IOException {
+	protected void registerDirectoryListener(FileListener directoryListener, Path directory, boolean recursive) throws IOException {
 		Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
 
 			@Override
@@ -259,14 +259,14 @@ class ProxyFileListener implements FileListener {
 
 
 /** Encapsulates the parent DirectoryListener in order to pass correct File references to it. */
-class ProxyDirectoryListener implements DirectoryListener {
+class ProxyDirectoryListener implements FileListener {
 
-	private DirectoryListener listener;
+	private FileListener listener;
 	private boolean recursive;
 	private File directory;
 
 
-	public ProxyDirectoryListener(DirectoryListener listener, File directory, boolean recursive) {
+	public ProxyDirectoryListener(FileListener listener, File directory, boolean recursive) {
 		this.listener = listener;
 		this.directory = directory;
 		this.recursive = recursive;
