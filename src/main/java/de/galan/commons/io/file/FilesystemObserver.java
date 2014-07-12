@@ -41,8 +41,8 @@ public class FilesystemObserver {
 	private final static AtomicInteger THREAD_COUNTER = new AtomicInteger();
 
 	WatchService watcher;
-	Map<WatchKey, FileListener> keysFileListener;
-	Map<WatchKey, DirectoryListener> keysDirectoryListener;
+	Map<WatchKey, ProxyFileListener> keysFileListener;
+	Map<WatchKey, ProxyDirectoryListener> keysDirectoryListener;
 	Thread watcherThread;
 
 
@@ -94,8 +94,8 @@ public class FilesystemObserver {
 				return;
 			}
 
-			FileListener fileListener = keysFileListener.get(key);
-			DirectoryListener directoryListener = keysDirectoryListener.get(key);
+			ProxyFileListener fileListener = keysFileListener.get(key);
+			ProxyDirectoryListener directoryListener = keysDirectoryListener.get(key);
 			if (fileListener != null || directoryListener != null) {
 				for (WatchEvent<?> event: key.pollEvents()) {
 					Kind<?> kind = event.kind();
@@ -131,121 +131,173 @@ public class FilesystemObserver {
 	}
 
 
-	protected void notifyDirectoryListener(DirectoryListener directoryListener, Kind<?> kind, Path path) {
-		if (directoryListener != null) {
-			File file = new File(directoryListener.getDirectory(), path.getFileName().toString());
-			LOG.info("dir: " + directoryListener.getDirectory().getAbsolutePath() + ", file:" + file.getName());
+	protected void notifyDirectoryListener(ProxyDirectoryListener proxyDirectoryListener, Kind<?> kind, Path path) {
+		if (proxyDirectoryListener != null) {
+			File file = new File(proxyDirectoryListener.getDirectory(), path.getFileName().toString());
+			LOG.info("dir: " + proxyDirectoryListener.getDirectory().getAbsolutePath() + ", file:" + file.getName());
 			if (kind == ENTRY_CREATE) {
-				directoryListener.notifyFileCreated(file);
-				if (directoryListener.isListeningRecursive() && file.isDirectory()) {
+				proxyDirectoryListener.notifyFileCreated(file);
+				if (proxyDirectoryListener.isRecursive() && file.isDirectory()) {
 					try {
-						registerDirectoryListener(directoryListener, Paths.get(file.toURI()));
+						registerDirectoryListener(proxyDirectoryListener, Paths.get(file.toURI()), proxyDirectoryListener.isRecursive());
 					}
 					catch (IOException ex) {
-						LOG.info("Unable to register new subdirectory '" + directoryListener.getDirectory().getAbsolutePath() + "/"
-								+ file.getName() + "'");
+						LOG.info("Unable to register new subdirectory '" + proxyDirectoryListener.getDirectory().getAbsolutePath() + "/" + file.getName() + "'");
 					}
 				}
 			}
 			else if (kind == ENTRY_MODIFY) {
-				directoryListener.notifyFileChanged(file);
+				proxyDirectoryListener.notifyFileChanged(file);
 			}
 			else if (kind == ENTRY_DELETE) {
-				directoryListener.notifyFileDeleted(file);
+				proxyDirectoryListener.notifyFileDeleted(file);
 			}
 		}
 	}
 
 
-	protected void notifyFileListener(FileListener fileListener, Kind<?> kind, Path path) {
+	protected void notifyFileListener(ProxyFileListener fileListener, Kind<?> kind, Path path) {
 		if (fileListener != null && StringUtils.equals(path.getFileName().toString(), fileListener.getFile().getName())) {
 			LOG.info("file: " + fileListener.getFile().getAbsolutePath());
 			if (kind == ENTRY_CREATE) {
-				fileListener.notifyFileCreated();
+				fileListener.notifyFileCreated(fileListener.getFile());
 			}
 			else if (kind == ENTRY_MODIFY) {
-				fileListener.notifyFileChanged();
+				fileListener.notifyFileChanged(fileListener.getFile());
 			}
 			else if (kind == ENTRY_DELETE) {
-				fileListener.notifyFileDeleted();
+				fileListener.notifyFileDeleted(fileListener.getFile());
 			}
 		}
 	}
 
 
-	public void registerFileListener(FileListener fileListener) throws IOException {
-		Preconditions.checkNotNull(fileListener, "FileListener null");
-		Preconditions.checkNotNull(fileListener.getFile(), "FileListener is missing file");
-		Preconditions.checkArgument(!fileListener.getFile().isDirectory(), "File in FileListener is assumed to be a file, not a directory");
-		File file = fileListener.getFile();
+	public void registerFileListener(FileListener fileListener, File file) throws IOException {
+		Preconditions.checkNotNull(fileListener, "FileListener is null");
+		Preconditions.checkNotNull(file, "File is null");
+		Preconditions.checkArgument(!file.isDirectory(), "File in assumed to be a file, not a directory");
 		File directory = file.getParentFile();
 		Path path = Paths.get(directory.toURI());
 		WatchKey key = path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
-		keysFileListener.put(key, fileListener);
+		keysFileListener.put(key, new ProxyFileListener(fileListener, file));
 	}
 
 
-	public void registerDirectoryListener(DirectoryListener directoryListener) throws IOException {
-		Preconditions.checkNotNull(directoryListener, "DirectoryListener null");
-		Preconditions.checkNotNull(directoryListener.getDirectory(), "DirectoryListener is missing directory");
-		Preconditions.checkArgument(directoryListener.getDirectory().isDirectory(), "Directory in DirectoryListener is assumed to be a directory, not a file");
-		File directory = directoryListener.getDirectory();
+	public void registerDirectoryListener(DirectoryListener directoryListener, File directory, boolean recursive) throws IOException {
+		Preconditions.checkNotNull(directoryListener, "DirectoryListener is null");
+		Preconditions.checkNotNull(directory, "Directory is null");
+		Preconditions.checkArgument(directory.isDirectory(), "Directory is assumed to be a directory, not a file");
 		Path path = Paths.get(directory.toURI());
-		registerDirectoryListener(directoryListener, path);
+		registerDirectoryListener(directoryListener, path, recursive);
 	}
 
 
-	protected void registerDirectoryListener(DirectoryListener directoryListener, Path start) throws IOException {
-		Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+	protected void registerDirectoryListener(DirectoryListener directoryListener, Path directory, boolean recursive) throws IOException {
+		Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
 
 			@Override
 			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-				RecursiveDirectoryListener listener = new RecursiveDirectoryListener(directoryListener, dir.toFile());
+				ProxyDirectoryListener listener = new ProxyDirectoryListener(directoryListener, dir.toFile(), recursive);
 				registerDirectoryListenerInternal(listener);
-				return listener.isListeningRecursive() ? FileVisitResult.CONTINUE : FileVisitResult.TERMINATE;
+				return recursive ? FileVisitResult.CONTINUE : FileVisitResult.TERMINATE;
 			}
 		});
 	}
 
 
-	protected void registerDirectoryListenerInternal(DirectoryListener directoryListener) throws IOException {
-		File directory = directoryListener.getDirectory();
+	protected void registerDirectoryListenerInternal(ProxyDirectoryListener proxyDirectoryListener) throws IOException {
+		File directory = proxyDirectoryListener.getDirectory();
 		Path path = Paths.get(directory.toURI());
 		WatchKey key = path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
-		keysDirectoryListener.put(key, directoryListener);
+		keysDirectoryListener.put(key, proxyDirectoryListener);
+	}
+
+}
+
+
+/** x */
+class ProxyFileListener implements FileListener {
+
+	private FileListener listener;
+	private File watchingFile;
+
+
+	ProxyFileListener(FileListener listener, File file) {
+		this.listener = listener;
+		watchingFile = file;
+	}
+
+
+	public FileListener getListener() {
+		return listener;
+	}
+
+
+	public File getFile() {
+		return watchingFile;
+	}
+
+
+	@Override
+	public void notifyFileCreated(File file) {
+		listener.notifyFileCreated(file);
+	}
+
+
+	@Override
+	public void notifyFileChanged(File file) {
+		listener.notifyFileChanged(file);
+	}
+
+
+	@Override
+	public void notifyFileDeleted(File file) {
+		listener.notifyFileDeleted(file);
 	}
 
 }
 
 
 /** Encapsulates the parent DirectoryListener in order to pass correct File references to it. */
-class RecursiveDirectoryListener extends AbstractDirectoryListener {
+class ProxyDirectoryListener implements DirectoryListener {
 
-	private DirectoryListener parent;
+	private DirectoryListener listener;
+	private boolean recursive;
+	private File directory;
 
 
-	public RecursiveDirectoryListener(DirectoryListener parent, File directory) {
-		super(directory);
-		this.parent = parent;
-		setListeningRecursive(parent.isListeningRecursive());
+	public ProxyDirectoryListener(DirectoryListener listener, File directory, boolean recursive) {
+		this.listener = listener;
+		this.directory = directory;
+		this.recursive = recursive;
 	}
 
 
-	@Override
-	public void notifyFileChanged(File file) {
-		parent.notifyFileChanged(file);
+	public boolean isRecursive() {
+		return recursive;
 	}
 
 
-	@Override
-	public void notifyFileDeleted(File file) {
-		parent.notifyFileDeleted(file);
+	public File getDirectory() {
+		return directory;
 	}
 
 
 	@Override
 	public void notifyFileCreated(File file) {
-		parent.notifyFileCreated(file);
+		listener.notifyFileCreated(file);
+	}
+
+
+	@Override
+	public void notifyFileChanged(File file) {
+		listener.notifyFileChanged(file);
+	}
+
+
+	@Override
+	public void notifyFileDeleted(File file) {
+		listener.notifyFileDeleted(file);
 	}
 
 }

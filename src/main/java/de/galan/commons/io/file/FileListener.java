@@ -10,20 +10,17 @@ import java.io.File;
  */
 public interface FileListener {
 
-	public File getFile();
-
-
-	default void notifyFileCreated() {
+	default void notifyFileCreated(File file) {
 		// can be overriden
 	}
 
 
-	default void notifyFileChanged() {
+	default void notifyFileChanged(File file) {
 		// can be overriden
 	}
 
 
-	default void notifyFileDeleted() {
+	default void notifyFileDeleted(File file) {
 		// can be overriden
 	}
 

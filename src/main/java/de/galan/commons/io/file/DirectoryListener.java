@@ -10,12 +10,6 @@ import java.io.File;
  */
 public interface DirectoryListener {
 
-	public File getDirectory();
-
-
-	public Boolean isListeningRecursive();
-
-
 	default void notifyFileCreated(File file) {
 		// can be overriden
 	}

@@ -56,23 +56,23 @@ public class FileObserverTest extends AbstractTestParent {
 	public void monitorFile() throws Exception {
 		File fileMonitor = new File(dirTemp, "dummy.txt");
 		File fileOther = new File(dirTemp, "other.txt");
-		StubFileListener listener = new StubFileListener(fileMonitor);
-		observer.registerFileListener(listener);
+		StubFileListener listener = new StubFileListener();
+		observer.registerFileListener(listener, fileMonitor);
 		// create
 		touch(fileMonitor);
-		assertFileListener(listener, 1L, 1L, 0L);
+		assertFileListener(listener, fileMonitor, fileMonitor, null);
 		// modify
 		touch(fileMonitor);
-		assertFileListener(listener, 0L, 1L, 0L);
+		assertFileListener(listener, null, fileMonitor, null);
 		// other files do not trigger listener
 		touch(fileOther);
-		assertFileListener(listener, 0L, 0L, 0L);
+		assertFileListener(listener, null, null, null);
 		// delete
 		delete(fileMonitor);
-		assertFileListener(listener, 0L, 0L, 1L);
+		assertFileListener(listener, null, null, fileMonitor);
 		// recreation is catched
 		touch(fileMonitor);
-		assertFileListener(listener, 1L, 1L, 0L);
+		assertFileListener(listener, fileMonitor, fileMonitor, null);
 	}
 
 
@@ -95,8 +95,8 @@ public class FileObserverTest extends AbstractTestParent {
 		File dirSub = new File(dirMonitor, "deeper");
 		File fileSub = new File(dirSub, "deepfile.txt");
 		dirMonitor.mkdirs();
-		StubDirectoryListener listener = new StubDirectoryListener(dirMonitor, recursive);
-		observer.registerDirectoryListener(listener);
+		StubDirectoryListener listener = new StubDirectoryListener();
+		observer.registerDirectoryListener(listener, dirMonitor, recursive);
 		// create and modify files in directory
 		touch(fileFirst);
 		assertDirectoryListener(listener, fileFirst, fileFirst, null);
@@ -148,53 +148,20 @@ public class FileObserverTest extends AbstractTestParent {
 	}
 
 
-	protected void assertFileListener(StubFileListener listener, long expectedCountFileCreated, long expectedCountFileChanged, long expectedCountFileDeleted) {
-		assertThat(listener.countFileCreated).isEqualTo(expectedCountFileCreated);
-		assertThat(listener.countFileChanged).isEqualTo(expectedCountFileChanged);
-		assertThat(listener.countFileDeleted).isEqualTo(expectedCountFileDeleted);
-		listener.countFileCreated = 0L;
-		listener.countFileChanged = 0L;
-		listener.countFileDeleted = 0L;
+	protected void assertFileListener(StubFileListener listener, File expectedLastCreated, File expectedLastChanged, File expectedLastDeleted) {
+		assertThat(listener.lastCreated).isEqualTo(expectedLastCreated);
+		assertThat(listener.lastChanged).isEqualTo(expectedLastChanged);
+		assertThat(listener.lastDeleted).isEqualTo(expectedLastDeleted);
+		listener.lastCreated = null;
+		listener.lastChanged = null;
+		listener.lastDeleted = null;
 	}
 
 }
 
 
 /** Counts the notifications */
-class StubFileListener extends AbstractFileListener {
-
-	long countFileCreated = 0L;
-	long countFileChanged = 0L;
-	long countFileDeleted = 0L;
-
-
-	public StubFileListener(File file) {
-		super(file);
-	}
-
-
-	@Override
-	public void notifyFileChanged() {
-		countFileChanged++;
-	}
-
-
-	@Override
-	public void notifyFileDeleted() {
-		countFileDeleted++;
-	}
-
-
-	@Override
-	public void notifyFileCreated() {
-		countFileCreated++;
-	}
-
-}
-
-
-/** Counts the notifications */
-class StubDirectoryListener extends AbstractDirectoryListener {
+class StubFileListener implements FileListener {
 
 	long countFileCreated = 0L;
 	long countFileChanged = 0L;
@@ -204,10 +171,38 @@ class StubDirectoryListener extends AbstractDirectoryListener {
 	File lastDeleted;
 
 
-	public StubDirectoryListener(File file, boolean recursive) {
-		super(file);
-		setListeningRecursive(recursive);
+	@Override
+	public void notifyFileChanged(File file) {
+		countFileChanged++;
+		lastChanged = file;
 	}
+
+
+	@Override
+	public void notifyFileDeleted(File file) {
+		countFileDeleted++;
+		lastDeleted = file;
+	}
+
+
+	@Override
+	public void notifyFileCreated(File file) {
+		countFileCreated++;
+		lastCreated = file;
+	}
+
+}
+
+
+/** Counts the notifications */
+class StubDirectoryListener implements DirectoryListener {
+
+	long countFileCreated = 0L;
+	long countFileChanged = 0L;
+	long countFileDeleted = 0L;
+	File lastCreated;
+	File lastChanged;
+	File lastDeleted;
 
 
 	@Override
