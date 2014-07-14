@@ -8,7 +8,7 @@ package de.galan.commons.snake;
 public interface PropertyModel {
 
 	/**
-	 * Returns the property with the given name.
+	 * Returns the property for the given name.
 	 *
 	 * @param name The name of the property
 	 * @return The value of the property, null if not set
@@ -27,7 +27,7 @@ public interface PropertyModel {
 
 
 	/**
-	 * Sets the property
+	 * Sets the property. When the value is null or blank it will be removed.
 	 *
 	 * @param name Name of the property
 	 * @param value The value of the property
