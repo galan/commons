@@ -34,4 +34,7 @@ public interface PropertyModel {
 	 */
 	public void set(String name, String value);
 
+
+	public SystemModel system();
+
 }
