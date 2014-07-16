@@ -1,11 +1,14 @@
 package de.galan.commons.snake;
 
+import static org.apache.commons.lang3.StringUtils.*;
+
+
 /**
  * Methods required by the Snake
  *
  * @author daniel
  */
-public interface PropertyModel {
+public interface PropertyAccess {
 
 	/**
 	 * Returns the property for the given name.
@@ -16,14 +19,10 @@ public interface PropertyModel {
 	public String get(String name);
 
 
-	/**
-	 * Returns the property with the given name. If not existent, the fallback value will be used.
-	 *
-	 * @param name The name of the property
-	 * @param fallback An alternative value, if the property is not set
-	 * @return Value of the property or the fallback
-	 */
-	public String get(String name, String fallback);
+	default String get(String name, String fallback) {
+		String result = get(name);
+		return isNotBlank(result) ? result : fallback;
+	}
 
 
 	/**
@@ -35,6 +34,19 @@ public interface PropertyModel {
 	public void set(String name, String value);
 
 
-	public SystemModel system();
+	default void setObject(String name, Object value) {
+		set(name, value == null ? null : value.toString());
+	}
+
+
+	default void remove(String name) {
+		set(name, null);
+	}
+
+
+	public SystemModel getSystem();
+
+
+	public InstanceModel getInstance();
 
 }
