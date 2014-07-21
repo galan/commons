@@ -40,4 +40,12 @@ public interface SnakeListener {
 		// to be overriden if required
 	}
 
+
+	/**
+	 * Properties have been refreshed
+	 */
+	default public void propertiesRefreshed() {
+		// to be overriden if required
+	}
+
 }

@@ -6,5 +6,5 @@ package de.galan.commons.snake;
  * @author daniel
  */
 public class Snake {
-
+	//TODO
 }

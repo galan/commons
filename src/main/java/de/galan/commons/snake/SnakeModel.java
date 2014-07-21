@@ -2,9 +2,6 @@ package de.galan.commons.snake;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,12 +21,9 @@ public class SnakeModel {
 
 	private PropertyAccess properties;
 
-	private List<SnakeListener> listeners;
-
 
 	public SnakeModel(PropertyAccess properties) {
 		setPropertyAccess(properties);
-		listeners = new ArrayList<>();
 	}
 
 
@@ -40,11 +34,6 @@ public class SnakeModel {
 
 	protected PropertyAccess getPropertyAccess() {
 		return properties;
-	}
-
-
-	public SystemModel system() {
-		return getPropertyAccess().getSystem();
 	}
 
 
@@ -60,7 +49,7 @@ public class SnakeModel {
 	 */
 
 	public boolean isSet(String name) {
-		return isNotBlank(get(name));
+		return isNotBlank(getPropertyAccess().get(name));
 	}
 
 
@@ -217,53 +206,48 @@ public class SnakeModel {
 	}
 
 
-	public InstanceModel instance() {
+	public String getInstance() {
 		return getPropertyAccess().getInstance();
 	}
 
 
-	public String getInstance() {
-		return instance().getInstance();
-	}
-
-
 	public String getDirectoryBase() {
-		return instance().getDirectoryBase();
+		return getPropertyAccess().getDirectoryBase();
 	}
 
 
 	public String getDirectoryInstance() {
-		return instance().getDirectoryInstance();
+		return getPropertyAccess().getDirectoryInstance();
 	}
 
 
 	public String getDirectoryStorage() {
-		return instance().getDirectoryStorage();
+		return getPropertyAccess().getDirectoryStorage();
 	}
 
 
 	public String getDirectoryStorage(String subdirectory) {
-		return instance().getDirectoryStorage(subdirectory);
+		return getPropertyAccess().getDirectoryStorage() + subdirectory + getPropertyAccess().system().getFileSeparator();
 	}
 
 
 	public String getDirectoryLog() {
-		return instance().getDirectoryLog();
+		return getPropertyAccess().getDirectoryLog();
 	}
 
 
 	public String getDirectoryConfiguration() {
-		return instance().getDirectoryConfiguration();
+		return getPropertyAccess().getDirectoryConfiguration();
 	}
 
 
 	public String getDirectoryTemp() {
-		return instance().getDirectoryTemp();
+		return getPropertyAccess().getDirectoryTemp();
 	}
 
 
 	public String getDirectoryScript() {
-		return instance().getDirectoryScript();
+		return getPropertyAccess().getDirectoryScript();
 	}
 
 
@@ -272,28 +256,13 @@ public class SnakeModel {
 	}
 
 
-	protected List<SnakeListener> getListeners() {
-		return listeners;
-	}
-
-
 	public void addListener(SnakeListener listener) {
-		getListeners().add(listener);
+		getPropertyAccess().addListener(listener);
 	}
 
 
 	public void removeListener(SnakeListener listener) {
-		getListeners().remove(listener);
-	}
-
-
-	public void notifyListenerRefreshed() {
-		//getPropertyAccess().notifyListenerRefreshed();
-	}
-
-
-	protected void notifyPropertyAdded() {
-
+		getPropertyAccess().removeListener(listener);
 	}
 
 }
