@@ -8,7 +8,7 @@ package de.galan.commons.bootstrap;
 public class Launcher {
 
 	public static void main(String[] args) {
-		// TODO Snake, Guice, dirs, Application, JMX
+		// TODO Snake, Guice, dirs, Application, JMX, Logging.
 	}
 
 }
