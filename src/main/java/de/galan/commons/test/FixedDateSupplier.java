@@ -1,17 +1,17 @@
 package de.galan.commons.test;
 
 import java.util.Date;
+import java.util.function.Supplier;
 
 import de.galan.commons.time.DateDsl;
-import de.galan.commons.time.DateSupplier;
 
 
 /**
  * Provides a fixed date given by the constructor.
- * 
+ *
  * @author daniel
  */
-public class FixedDateSupplier implements DateSupplier {
+public class FixedDateSupplier implements Supplier<Date> {
 
 	private Date fixed;
 

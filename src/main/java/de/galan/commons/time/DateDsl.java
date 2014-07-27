@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class DateDsl {
 	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	public static final String DATE_FORMAT_ISO = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-	private static DateSupplier supplier = new NowDateSupplier();
+	private static Supplier<Date> supplier = new NowDateSupplier();
 
 	private static final ThreadLocal<Map<String, SimpleDateFormat>> localSdf = ThreadLocal.withInitial(HashMap::new);
 
@@ -55,7 +56,7 @@ public class DateDsl {
 	}
 
 
-	public static void setDateSupplier(DateSupplier supplier) {
+	public static void setDateSupplier(Supplier<Date> supplier) {
 		DateDsl.supplier = supplier;
 	}
 
