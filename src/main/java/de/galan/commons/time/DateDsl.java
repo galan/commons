@@ -1,11 +1,15 @@
 package de.galan.commons.time;
 
+import static org.apache.commons.lang3.StringUtils.*;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -28,6 +32,22 @@ public class DateDsl {
 	public static final String DATE_FORMAT_ISO = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 	private static DateSupplier supplier = new NowDateSupplier();
+
+	private static final ThreadLocal<Map<String, SimpleDateFormat>> localSdf = ThreadLocal.withInitial(HashMap::new);
+
+
+	private static SimpleDateFormat getDateFormater(String pattern, String timezone) {
+		String key = pattern + "//" + timezone;
+		SimpleDateFormat result = localSdf.get().get(key);
+		if (result == null) {
+			result = new SimpleDateFormat(pattern);
+			if (isNotBlank(timezone)) {
+				result.setTimeZone(TimeZone.getTimeZone(timezone));
+			}
+			localSdf.get().put(key, result);
+		}
+		return result;
+	}
 
 
 	public static Date now() {
@@ -57,10 +77,9 @@ public class DateDsl {
 
 	/** Creates a java.util.date, input format is "yyyy-MM-dd HH:mm:ss" */
 	public static Date date(String date) {
-		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		Date result = null;
 		try {
-			result = sdf.parse(date);
+			result = getDateFormater(DATE_FORMAT, null).parse(date);
 		}
 		catch (ParseException pex) {
 			LOG.warn("Date not constructable {}", pex, date);
@@ -81,11 +100,9 @@ public class DateDsl {
 
 
 	public static Date dateIso(String date) {
-		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_ISO);
 		Date result = null;
 		try {
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			result = sdf.parse(date);
+			result = getDateFormater(DATE_FORMAT_ISO, "UTC").parse(date);
 		}
 		catch (ParseException pex) {
 			LOG.warn("Date not constructable {}", pex, date);
@@ -337,15 +354,12 @@ public class DateDsl {
 
 
 		public String toString(String format) {
-			SimpleDateFormat sdf = new SimpleDateFormat(format);
-			return sdf.format(cal.getTime());
+			return getDateFormater(format, null).format(cal.getTime());
 		}
 
 
 		public String toIso8601Utc() {
-			SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_ISO);
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			return sdf.format(cal.getTime());
+			return getDateFormater(DATE_FORMAT_ISO, "UTC").format(cal.getTime());
 		}
 
 
