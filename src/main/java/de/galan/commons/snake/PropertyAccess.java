@@ -35,6 +35,9 @@ public interface PropertyAccess {
 	public void removeListener(SnakeListener listener);
 
 
+	public Map<String, String> getProperties();
+
+
 	/**
 	 * Returns the property for the given name.
 	 *
@@ -50,9 +53,6 @@ public interface PropertyAccess {
 		String result = get(name);
 		return isNotBlank(result) ? result : fallback;
 	}
-
-
-	public Map<String, String> getProperties();
 
 
 	default Set<String> getProperties(String prefix) {
