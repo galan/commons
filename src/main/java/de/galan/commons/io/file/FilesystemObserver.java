@@ -215,7 +215,7 @@ public class FilesystemObserver {
 }
 
 
-/** x */
+/** Encapsulates the parent FileListener in order to pass correct File references to it. */
 class ProxyFileListener implements FileListener {
 
 	private FileListener listener;
@@ -258,7 +258,7 @@ class ProxyFileListener implements FileListener {
 }
 
 
-/** Encapsulates the parent DirectoryListener in order to pass correct File references to it. */
+/** Encapsulates the parent FileListener in order to pass correct File references to it. */
 class ProxyDirectoryListener implements FileListener {
 
 	private FileListener listener;
