@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.galan.commons.snake.access.SystemPropertyAccess;
 import de.galan.commons.test.AbstractTestParent;
 
 

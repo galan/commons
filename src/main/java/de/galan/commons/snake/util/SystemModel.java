@@ -1,4 +1,4 @@
-package de.galan.commons.snake;
+package de.galan.commons.snake.util;
 
 import com.google.common.primitives.Ints;
 

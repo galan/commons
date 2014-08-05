@@ -1,10 +1,16 @@
-package de.galan.commons.snake;
+package de.galan.commons.snake.access;
 
+import static java.util.stream.Collectors.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+
+import de.galan.commons.logging.Logr;
+import de.galan.commons.snake.util.SnakeListener;
+import de.galan.commons.snake.util.SystemModel;
 
 
 /**
@@ -35,6 +41,9 @@ public interface PropertyAccess {
 	public void removeListener(SnakeListener listener);
 
 
+	public void notifyRefreshed();
+
+
 	public Map<String, String> getProperties();
 
 
@@ -56,7 +65,7 @@ public interface PropertyAccess {
 
 
 	default Set<String> getProperties(String prefix) {
-		return getProperties().keySet().stream().filter(key -> startsWith(key, prefix)).collect(Collectors.toSet());
+		return getProperties().keySet().stream().filter(key -> startsWith(key, prefix)).collect(toSet());
 	}
 
 
@@ -116,6 +125,27 @@ public interface PropertyAccess {
 
 	default String getDirectoryScript() {
 		return getDirectoryInstance() + "script" + system().getFileSeparator();
+	}
+
+
+	/** The overview of the properties will be logged */
+	default void printProperties() {
+		// see http://en.wikipedia.org/wiki/Box-drawing_character
+		String lf = system().getLineSeparator();
+		String indention = "\t";
+
+		StringBuilder info = new StringBuilder(lf);
+		info.append(indention + "╭" + StringUtils.repeat("─", 68) + "╮" + lf);
+		info.append(indention + "│" + StringUtils.repeat(" ", 68) + "│" + lf);
+		info.append(indention + StringUtils.rightPad("│    Snake Properties (" + system().getUserName() + ":" + getInstance() + ")", 69, " ") + "│" + lf);
+		info.append(indention + "╞════" + StringUtils.repeat("═", 60) + "════╡" + lf);
+		info.append(indention + "│" + StringUtils.repeat(" ", 68) + "┊" + lf);
+		getProperties().keySet().stream().sorted().forEachOrdered((key) -> {
+			info.append(indention + "│    " + key + " = " + get(key) + lf);
+		});
+		info.append(indention + "│" + StringUtils.repeat(" ", 68) + "┊" + lf);
+		info.append(indention + "╰" + StringUtils.repeat("─", 68) + "╯" + lf);
+		Logr.get().info(info.toString());
 	}
 
 }

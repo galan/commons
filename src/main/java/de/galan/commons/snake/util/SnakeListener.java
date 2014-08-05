@@ -1,4 +1,4 @@
-package de.galan.commons.snake;
+package de.galan.commons.snake.util;
 
 /**
  * This interface notifies about changes in the backed propertymodel

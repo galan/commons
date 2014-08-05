@@ -1,4 +1,4 @@
-package de.galan.commons.snake;
+package de.galan.commons.snake.access;
 
 import static org.apache.commons.lang3.StringUtils.*;
 

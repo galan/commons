@@ -1,13 +1,14 @@
 package de.galan.commons.bootstrap;
 
 /**
- * daniel should have written a comment here.
+ * Initializes and starts the application
  *
  * @author daniel
  */
 public class Launcher {
 
-	public static void main(String[] args) {
+	public void launch() {
+		new SnakeBootstrap().initialize();
 		// TODO Snake, Guice, dirs, Application, JMX, Logging.
 	}
 

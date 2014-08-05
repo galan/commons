@@ -2,11 +2,16 @@ package de.galan.commons.snake;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import de.galan.commons.logging.Logr;
+import de.galan.commons.snake.access.PropertyAccess;
+import de.galan.commons.snake.util.SnakeListener;
 import de.galan.commons.time.HumanTime;
 
 
@@ -37,8 +42,7 @@ public class SnakeModel {
 	}
 
 
-	/*
-	public Properties getProperties() {
+	public Map<String, String> getProperties() {
 		return getPropertyAccess().getProperties();
 	}
 
@@ -46,7 +50,7 @@ public class SnakeModel {
 	public Set<String> getProperties(String prefix) {
 		return getPropertyAccess().getProperties(prefix);
 	}
-	 */
+
 
 	public boolean isSet(String name) {
 		return isNotBlank(getPropertyAccess().get(name));
@@ -68,11 +72,6 @@ public class SnakeModel {
 	}
 
 
-	/*
-	public void setDirect(String name, String value) {
-		getPropertyAccess().setDirect(name, value);
-	}
-	 */
 	protected void setObject(String name, Object value) {
 		getPropertyAccess().setObject(name, value);
 	}
@@ -181,12 +180,12 @@ public class SnakeModel {
 	}
 
 
-	public Long getMs(String name) {
-		return getMs(name, null);
+	public Long getTime(String name) {
+		return getTime(name, null);
 	}
 
 
-	public Long getMs(String name, String fallback) {
+	public Long getTime(String name, String fallback) {
 		String value = get(name);
 		Long result = HumanTime.dehumanizeTime(value);
 		if (result == null) {
@@ -251,8 +250,9 @@ public class SnakeModel {
 	}
 
 
-	public void printProperties(boolean includeSystemProperties) {
-		//TODO getPropertyAccess().printProperties(includeSystemProperties);
+	/** Logs an overview of the properties */
+	public void printProperties() {
+		getPropertyAccess().printProperties();
 	}
 
 

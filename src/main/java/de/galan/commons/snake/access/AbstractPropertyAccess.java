@@ -1,7 +1,10 @@
-package de.galan.commons.snake;
+package de.galan.commons.snake.access;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.galan.commons.snake.util.SnakeListener;
+import de.galan.commons.snake.util.SystemModel;
 
 
 /**
@@ -38,7 +41,8 @@ public abstract class AbstractPropertyAccess implements PropertyAccess {
 	}
 
 
-	protected void notifyListenerRefreshed() {
+	@Override
+	public void notifyRefreshed() {
 		for (SnakeListener listener: getListeners()) {
 			listener.propertiesRefreshed();
 		}
