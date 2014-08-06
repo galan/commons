@@ -16,7 +16,9 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +43,7 @@ public class FilesystemObserver {
 	private final static AtomicInteger THREAD_COUNTER = new AtomicInteger();
 
 	WatchService watcher;
-	Map<WatchKey, ProxyFileListener> keysFileListener;
+	Map<WatchKey, Set<ProxyFileListener>> keysFileListener;
 	Map<WatchKey, ProxyDirectoryListener> keysDirectoryListener;
 	Thread watcherThread;
 
@@ -94,9 +96,9 @@ public class FilesystemObserver {
 				return;
 			}
 
-			ProxyFileListener fileListener = keysFileListener.get(key);
+			Set<ProxyFileListener> fileListeners = keysFileListener.get(key);
 			ProxyDirectoryListener directoryListener = keysDirectoryListener.get(key);
-			if (fileListener != null || directoryListener != null) {
+			if (directoryListener != null || (fileListeners != null && !fileListeners.isEmpty())) {
 				for (WatchEvent<?> event: key.pollEvents()) {
 					Kind<?> kind = event.kind();
 					if (kind == OVERFLOW) {
@@ -108,7 +110,9 @@ public class FilesystemObserver {
 					Path path = ev.context();
 					//Path child = path.resolve(name);
 
-					notifyFileListener(fileListener, kind, path);
+					if (fileListeners != null) {
+						fileListeners.forEach(fileListener -> notifyFileListener(fileListener, kind, path));
+					}
 					notifyDirectoryListener(directoryListener, kind, path);
 				}
 			}
@@ -179,7 +183,8 @@ public class FilesystemObserver {
 		File directory = file.getParentFile();
 		Path path = Paths.get(directory.toURI());
 		WatchKey key = path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
-		keysFileListener.put(key, new ProxyFileListener(fileListener, file));
+		keysFileListener.computeIfAbsent(key, k -> new HashSet<>()).add(new ProxyFileListener(fileListener, file));
+		//keysFileListener.put(key, new ProxyFileListener(fileListener, file));
 	}
 
 

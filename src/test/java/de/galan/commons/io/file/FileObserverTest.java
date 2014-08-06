@@ -77,6 +77,34 @@ public class FileObserverTest extends AbstractTestParent {
 
 
 	@Test
+	public void monitorMultipleFiles() throws Exception {
+		File fileFirst = new File(dirTemp, "first.txt");
+		File fileSecond = new File(dirTemp, "second.txt");
+		StubListener listener = new StubListener();
+		observer.registerFileListener(listener, fileFirst);
+		observer.registerFileListener(listener, fileSecond);
+		// create first
+		touch(fileFirst);
+		assertListener(listener, fileFirst, fileFirst, null);
+		// create second
+		touch(fileSecond);
+		assertListener(listener, fileSecond, fileSecond, null);
+		// modify first
+		touch(fileFirst);
+		assertListener(listener, null, fileFirst, null);
+		// modify second
+		touch(fileSecond);
+		assertListener(listener, null, fileSecond, null);
+		// delete first
+		delete(fileFirst);
+		assertListener(listener, null, null, fileFirst);
+		// delete second
+		delete(fileSecond);
+		assertListener(listener, null, null, fileSecond);
+	}
+
+
+	@Test
 	public void monitorDirectory() throws Exception {
 		monitorDirectory(false);
 	}
