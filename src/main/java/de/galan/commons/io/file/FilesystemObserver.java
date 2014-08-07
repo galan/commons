@@ -17,6 +17,7 @@ import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -99,7 +100,8 @@ public class FilesystemObserver {
 			Set<ProxyFileListener> fileListeners = keysFileListener.get(key);
 			ProxyDirectoryListener directoryListener = keysDirectoryListener.get(key);
 			if (directoryListener != null || (fileListeners != null && !fileListeners.isEmpty())) {
-				for (WatchEvent<?> event: key.pollEvents()) {
+				List<WatchEvent<?>> events = key.pollEvents();
+				for (WatchEvent<?> event: events) {
 					Kind<?> kind = event.kind();
 					if (kind == OVERFLOW) {
 						continue;
@@ -123,6 +125,7 @@ public class FilesystemObserver {
 
 			// reset key and remove from set if directory no longer accessible
 			boolean valid = key.reset();
+			Sleeper.sleep(100L); // avoids duplicates - http://stackoverflow.com/questions/16133590/why-does-watchservice-generate-so-many-operations
 			if (!valid) {
 				keysDirectoryListener.remove(key);
 
@@ -162,7 +165,7 @@ public class FilesystemObserver {
 
 	protected void notifyFileListener(ProxyFileListener fileListener, Kind<?> kind, Path path) {
 		if (fileListener != null && StringUtils.equals(path.getFileName().toString(), fileListener.getFile().getName())) {
-			LOG.info("file: " + fileListener.getFile().getAbsolutePath());
+			LOG.info("kind: " + kind + ", file: " + fileListener.getFile().getAbsolutePath()); // TODO change to debug later
 			if (kind == ENTRY_CREATE) {
 				fileListener.notifyFileCreated(fileListener.getFile());
 			}
