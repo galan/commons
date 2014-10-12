@@ -8,8 +8,10 @@ package de.galan.commons.bootstrap;
 public class Launcher {
 
 	public void launch() {
+		// TODO create directory
 		new SnakeBootstrap().initialize();
 		// TODO Snake, Guice, dirs, Application, JMX, Logging.
+
 	}
 
 }

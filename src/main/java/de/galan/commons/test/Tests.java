@@ -1,12 +1,13 @@
 package de.galan.commons.test;
 
-import static de.galan.commons.time.DateDsl.*;
+import static de.galan.commons.time.Instants.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +79,11 @@ public class Tests {
 	}
 
 
+	private static Date truncate(Instant actual, boolean truncateMillis) {
+		return truncateMillis ? from(actual).truncate(millis()).toDate() : from(actual).toDate();
+	}
+
+
 	public static void assertBetween(Double expectedLower, Double expectedUpper, Double actual) {
 		assertThat(actual).isBetween(expectedLower, expectedUpper);
 	}
@@ -95,6 +101,11 @@ public class Tests {
 
 	public static void assertDateNear(String timeThreshold, Date actual) {
 		assertDateNear(timeThreshold, actual, false);
+	}
+
+
+	public static void assertDateNear(String timeThreshold, Instant actual) {
+		assertDateNear(timeThreshold, new Date(actual.toEpochMilli()), false);
 	}
 
 

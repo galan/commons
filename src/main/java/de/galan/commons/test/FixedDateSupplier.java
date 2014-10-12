@@ -3,7 +3,7 @@ package de.galan.commons.test;
 import java.util.Date;
 import java.util.function.Supplier;
 
-import de.galan.commons.time.DateDsl;
+import de.galan.commons.time.Instants;
 
 
 /**
@@ -26,8 +26,8 @@ public class FixedDateSupplier implements Supplier<Date> {
 	}
 
 
-	public FixedDateSupplier(String date, boolean iso) {
-		fixed = iso ? DateDsl.dateIso(date) : DateDsl.date(date);
+	public FixedDateSupplier(String date, boolean utc) {
+		fixed = utc ? Instants.dateLocal(date) : Instants.dateUtc(date);
 	}
 
 

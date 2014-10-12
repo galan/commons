@@ -1,8 +1,9 @@
 package de.galan.commons.time;
 
-import static de.galan.commons.time.DateDsl.*;
+import static de.galan.commons.time.Instants.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,7 +15,7 @@ import de.galan.commons.collection.SoftReferenceCache;
 
 /**
  * Utility class to handle human readable time periods.
- * 
+ *
  * @author daniel
  */
 public class HumanTime {
@@ -34,20 +35,32 @@ public class HumanTime {
 
 	/** Prints how long the given date is in the future in the format Xh Xm Xs Xms */
 	public static String timeLeft(Date date) {
+		return timeLeft(date.toInstant());
+	}
+
+
+	/** Prints how long the given date is in the future in the format Xh Xm Xs Xms */
+	public static String timeLeft(Instant date) {
 		return timeAgo(now(), date);
 	}
 
 
 	/** Prints how long the given date is ago in the format Xh Xm Xs Xms */
 	public static String timeAgo(Date date) {
+		return timeAgo(date.toInstant());
+	}
+
+
+	/** Prints how long the given date is ago in the format Xh Xm Xs Xms */
+	public static String timeAgo(Instant date) {
 		return timeAgo(date, now());
 	}
 
 
-	protected static String timeAgo(Date date, Date reference) {
+	protected static String timeAgo(Instant date, Instant reference) {
 		String result = "";
 		if ((date != null) && (reference != null)) {
-			long time = reference.getTime() - date.getTime();
+			long time = reference.toEpochMilli() - date.toEpochMilli();
 			result = humanizeTime(time, " ");
 		}
 		return result;

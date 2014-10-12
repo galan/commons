@@ -1,22 +1,27 @@
 package de.galan.commons.time;
 
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 
-import de.galan.commons.time.DateDsl.WeekdayUnit;
+import de.galan.commons.time.Instants.WeekdayUnit;
 
 
 /**
  * Comparison of Dates and time with a fluent interface.<br/>
  * See also https://github.com/galan/commons/wiki/TimeDsl
- * 
+ *
  * @author daniel
  */
-public class TimeDsl {
+public class Times {
 
 	public static TimeBuilder when(Date date) {
+		return when(date.toInstant());
+	}
+
+
+	public static TimeBuilder when(Instant date) {
 		return new TimeBuilder(date);
 	}
 
@@ -24,37 +29,47 @@ public class TimeDsl {
 	public static boolean withoutMs() {
 		return true;
 	}
-	*/
+	 */
 
 	/** TimeDsl Builder */
 	public static class TimeBuilder {
 
-		private Date ref;
+		private Instant ref;
 
 
-		TimeBuilder(Date date) {
+		TimeBuilder(Instant date) {
 			ref = date;
 		}
 
 
 		public boolean equalsExactly(Date other) {
+			return equalsExactly(other.toInstant());
+		}
+
+
+		public boolean equalsExactly(Instant other) {
 			return equals(other, false);
 		}
 
 
 		public boolean equals(Date other) {
+			return equals(other.toInstant());
+		}
+
+
+		public boolean equals(Instant other) {
 			return equals(other, true);
 		}
 
 
-		protected boolean equals(Date other, boolean ignoreMs) {
+		protected boolean equals(Instant other, boolean ignoreMs) {
 			boolean result = false;
 			if (ref != null) {
 				if (ignoreMs) {
 					result = truncate(ref) == truncate(other);
 				}
 				else {
-					result = ref.getTime() == other.getTime();
+					result = ref.toEpochMilli() == other.toEpochMilli();
 				}
 			}
 			else if (ref == null && other == null) {
@@ -64,9 +79,9 @@ public class TimeDsl {
 		}
 
 
-		protected long truncate(Date date) {
+		protected long truncate(Instant date) {
 			// removes milliseconds part
-			return date.getTime() / 1000;
+			return date.toEpochMilli() / 1000;
 		}
 
 
@@ -77,16 +92,31 @@ public class TimeDsl {
 
 
 		public boolean after(Date date) {
-			return ref.getTime() >= date.getTime();
+			return after(date.toInstant());
+		}
+
+
+		public boolean after(Instant date) {
+			return ref.toEpochMilli() >= date.toEpochMilli();
 		}
 
 
 		public boolean before(Date date) {
-			return ref.getTime() <= date.getTime();
+			return before(date.toInstant());
+		}
+
+
+		public boolean before(Instant date) {
+			return ref.toEpochMilli() <= date.toEpochMilli();
 		}
 
 
 		public BetweenTimeBuilder between(Date start) {
+			return between(start.toInstant());
+		}
+
+
+		public BetweenTimeBuilder between(Instant start) {
 			return new BetweenTimeBuilder(ref, start);
 		}
 
@@ -112,9 +142,16 @@ public class TimeDsl {
 
 
 		public boolean isWeekday(WeekdayUnit weekday) {
-			Calendar cal = new GregorianCalendar(Locale.GERMAN);
-			cal.setTime(ref);
-			return cal.get(Calendar.DAY_OF_WEEK) == weekday.getField();
+			return isWeekday(weekday, ZoneId.systemDefault());
+		}
+
+
+		public boolean isWeekday(WeekdayUnit weekday, ZoneId zone) {
+			LocalDateTime ldt = LocalDateTime.ofInstant(ref, zone);
+			return ldt.getDayOfWeek().equals(weekday.getUnit());
+			//Calendar cal = new GregorianCalendar(Locale.GERMAN);
+			//cal.setTime(ref);
+			//return cal.get(Calendar.DAY_OF_WEEK) == weekday.getField();
 		}
 
 	}
@@ -122,12 +159,12 @@ public class TimeDsl {
 	/** TimeDsl Builder */
 	public static class IsTimeBuilder {
 
-		private Date ref;
+		private Instant ref;
 		private long ms;
 		private boolean atLeast;
 
 
-		IsTimeBuilder(Date ref, long ms, boolean atLeast) {
+		IsTimeBuilder(Instant ref, long ms, boolean atLeast) {
 			this.ref = ref;
 			this.ms = ms;
 			this.atLeast = atLeast;
@@ -135,8 +172,13 @@ public class TimeDsl {
 
 
 		public boolean before(Date date) {
-			long timeRef = ref.getTime();
-			long timeDate = date.getTime();
+			return before(date.toInstant());
+		}
+
+
+		public boolean before(Instant date) {
+			long timeRef = ref.toEpochMilli();
+			long timeDate = date.toEpochMilli();
 			if (atLeast) {
 				return timeRef < timeDate - ms;
 			}
@@ -145,10 +187,15 @@ public class TimeDsl {
 
 
 		public boolean after(Date date) {
-			long timeRef = ref.getTime();
-			long timeDate = date.getTime();
+			return after(date.toInstant());
+		}
+
+
+		public boolean after(Instant date) {
+			long timeRef = ref.toEpochMilli();
+			long timeDate = date.toEpochMilli();
 			if (atLeast) {
-				return ref.getTime() > date.getTime() + ms;
+				return ref.toEpochMilli() > date.toEpochMilli() + ms;
 			}
 			return timeRef <= timeDate + ms && timeRef >= timeDate;
 		}
@@ -158,20 +205,25 @@ public class TimeDsl {
 	/** TimeDsl Builder */
 	public static class BetweenTimeBuilder {
 
-		private Date ref;
-		private Date start;
+		private Instant ref;
+		private Instant start;
 
 
-		BetweenTimeBuilder(Date ref, Date start) {
+		BetweenTimeBuilder(Instant ref, Instant start) {
 			this.ref = ref;
 			this.start = start;
 		}
 
 
 		public boolean and(Date end) {
-			long timeRef = ref.getTime();
-			long timeStart = start.getTime();
-			long timeEnd = end.getTime();
+			return and(end.toInstant());
+		}
+
+
+		public boolean and(Instant end) {
+			long timeRef = ref.toEpochMilli();
+			long timeStart = start.toEpochMilli();
+			long timeEnd = end.toEpochMilli();
 			if (timeStart > timeEnd) {
 				long temp = timeStart;
 				timeStart = timeEnd;

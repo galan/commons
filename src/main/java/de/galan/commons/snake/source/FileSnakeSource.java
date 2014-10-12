@@ -22,6 +22,7 @@ public class FileSnakeSource implements SnakeSource {
 		String snakeFile = access.get("snake.file");
 		String snakeFileOverwrite = access.get("snake.file.overwrite");
 
+		// changes do not disappear after removed daniel.properties -> RefreshPropertiesListener.refresh()
 		File file = determineSnakeFile(access, snakeFile); // Necessary system property file
 		File fileOverwrite = determineSnakeOverwriteFile(access, snakeFileOverwrite); // Optional override file
 
@@ -54,7 +55,7 @@ public class FileSnakeSource implements SnakeSource {
 				terminateApplication(access, "No file for Snake properties is given.");
 			}
 		}
-		if (!file.exists()) {
+		if (!file.exists() || file.isDirectory()) {
 			terminateApplication(access, "The given Snake properties-file could not be found (" + filename + ")");
 		}
 		return file;
@@ -62,21 +63,21 @@ public class FileSnakeSource implements SnakeSource {
 
 
 	protected File determineSnakeOverwriteFile(PropertyAccess access, String filename) {
-		File fileOverride = null;
+		File result = null;
 		if (isNotEmpty(filename)) {
-			fileOverride = new File(filename);
-			if (!fileOverride.exists()) {
-				fileOverride = null;
-			}
+			File file = new File(filename);
+			//if (file.exists()) {
+			result = file;
+			//}
 		}
 		else {
 			String instanceFilename = access.getDirectoryConfiguration() + access.system().getUserName() + ".properties";
 			File fileInstance = new File(instanceFilename);
-			if (fileInstance.exists()) {
-				fileOverride = fileInstance;
-			}
+			//if (fileInstance.exists()) {
+			result = fileInstance;
+			//}
 		}
-		return fileOverride;
+		return result;
 	}
 
 

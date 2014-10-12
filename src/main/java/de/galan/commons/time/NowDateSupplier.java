@@ -13,7 +13,7 @@ public class NowDateSupplier implements Supplier<Date> {
 
 	@Override
 	public Date get() {
-		return new Date();
+		return new Date(ApplicationClock.getClock().millis());
 	}
 
 }

@@ -4,7 +4,7 @@ import de.galan.commons.snake.access.PropertyAccess;
 
 
 /**
- * daniel should have written a comment here.
+ * experimental
  *
  * @author daniel
  */
@@ -12,6 +12,7 @@ public class HttpSnakeSource implements SnakeSource {
 
 	@Override
 	public void initialize(PropertyAccess access, boolean observe) {
+		//String snakeHttp = access.get("snake.source.http");
 		//TODO
 	}
 

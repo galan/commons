@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.galan.commons.logging.Say;
 import de.galan.commons.test.AbstractTestParent;
 import de.galan.commons.time.Sleeper;
 
@@ -156,6 +157,7 @@ public class FileObserverTest extends AbstractTestParent {
 
 	protected void touch(File file) throws IOException {
 		FileUtils.touch(file);
+		Say.info("touched");
 		Sleeper.sleep(20L);
 	}
 
@@ -191,6 +193,7 @@ class StubListener implements FileListener {
 
 	@Override
 	public void notifyFileChanged(File file) {
+		Say.info("file changed {}", file);
 		countChanged++;
 		lastChanged = file;
 	}
@@ -198,6 +201,7 @@ class StubListener implements FileListener {
 
 	@Override
 	public void notifyFileDeleted(File file) {
+		Say.info("file deleted {}", file);
 		countDeleted++;
 		lastDeleted = file;
 	}
@@ -205,6 +209,7 @@ class StubListener implements FileListener {
 
 	@Override
 	public void notifyFileCreated(File file) {
+		Say.info("file created {}", file);
 		countCreated++;
 		lastCreated = file;
 	}

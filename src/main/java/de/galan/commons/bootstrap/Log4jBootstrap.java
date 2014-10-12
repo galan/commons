@@ -20,8 +20,8 @@ public class Log4jBootstrap {
 		if (isBlank(System.getProperty(LOG4J_PROPERTY))) {
 			String log4jPath = log4jXmlDirectory + "log4j.xml";
 			File log4jFile = new File(log4jPath);
+			String log4jUrl = null;
 			if (log4jFile.exists()) {
-				String log4jUrl;
 				try {
 					log4jUrl = log4jFile.toURI().toURL().toString();
 				}

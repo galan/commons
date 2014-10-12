@@ -1,6 +1,6 @@
 package de.galan.commons.time;
 
-import static de.galan.commons.time.DateDsl.*;
+import static de.galan.commons.time.Instants.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -9,31 +9,31 @@ import java.util.Date;
 import org.junit.Test;
 
 import de.galan.commons.test.AbstractTestParent;
-import de.galan.commons.test.FixedDateSupplier;
 
 
 /**
  * CUT HumanTime
- * 
+ *
  * @author daniel
  */
 public class HumanTimeTest extends AbstractTestParent {
 
 	@Test
 	public void timeAgo() {
-		assertEquals("2d 7h 26m 48s", HumanTime.timeAgo(date("2012-01-22 02:33:12"), date("2012-01-24 10:00:00")));
-		assertEquals("65d 16h 46m 8s", HumanTime.timeAgo(date("2011-11-19 17:14:12"), date("2012-01-24 10:00:20")));
-		assertEquals("15363d 9h 20s", HumanTime.timeAgo(new Date(0L), date("2012-01-24 10:00:20")));
-		assertEquals("", HumanTime.timeAgo(null, date("2012-01-24 10:00:20")));
+		assertEquals("2d 7h 26m 48s", HumanTime.timeAgo(instantLocal("2012-01-22 02:33:12"), instantLocal("2012-01-24 10:00:00")));
+		assertEquals("65d 16h 46m 8s", HumanTime.timeAgo(instantLocal("2011-11-19 17:14:12"), instantLocal("2012-01-24 10:00:20")));
+		assertEquals("15363d 9h 20s", HumanTime.timeAgo(instant(0L), instantLocal("2012-01-24 10:00:20")));
+		assertEquals("", HumanTime.timeAgo(null, instantLocal("2012-01-24 10:00:20")));
 		assertEquals("", HumanTime.timeAgo(new Date(System.currentTimeMillis() + 1000L))); // in the future
 	}
 
 
 	@Test
 	public void timeLeft() {
-		DateDsl.setDateSupplier(new FixedDateSupplier("2012-11-20 09:15:00"));
-		assertEquals("1m 10s", HumanTime.timeLeft(date("2012-11-20 09:16:10")));
-		assertEquals("", HumanTime.timeLeft(date("2012-11-20 09:13:33"))); // in the past
+		ApplicationClock.setLocal("2012-11-20 09:15:00");
+		//Dates.setDateSupplier(new FixedDateSupplier("2012-11-20 09:15:00"));
+		assertEquals("1m 10s", HumanTime.timeLeft(instantLocal("2012-11-20 09:16:10")));
+		assertEquals("", HumanTime.timeLeft(instantLocal("2012-11-20 09:13:33"))); // in the past
 	}
 
 

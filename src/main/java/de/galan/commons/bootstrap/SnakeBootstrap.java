@@ -1,13 +1,19 @@
 package de.galan.commons.bootstrap;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import org.apache.commons.io.FileUtils;
 
 import de.galan.commons.snake.Snake;
 import de.galan.commons.snake.SnakeModel;
-import de.galan.commons.snake.access.MapPropertyAccess;
+import de.galan.commons.snake.access.DefaultPropertyAccessSupplier;
 import de.galan.commons.snake.access.PropertyAccess;
 import de.galan.commons.snake.source.FileSnakeSource;
 import de.galan.commons.snake.source.SnakeSource;
+import de.galan.commons.util.JvmUtils;
 
 
 /**
@@ -17,25 +23,49 @@ import de.galan.commons.snake.source.SnakeSource;
  */
 public class SnakeBootstrap {
 
-	private Supplier<PropertyAccess> supplierPropertyAccess = MapPropertyAccess::new;
-	private Supplier<SnakeSource> supplierInit = FileSnakeSource::new;
+	private Supplier<PropertyAccess> supplierPropertyAccess = new DefaultPropertyAccessSupplier();
+	private Supplier<SnakeSource> supplierSource = FileSnakeSource::new;
 
 	private boolean flagObserve = true;
 
 
+	//private Consumer<PropertyAccess> afterConsumer;
+
 	public SnakeModel initialize() {
 		PropertyAccess access = supplierPropertyAccess.get();
-		// Set snake system properties to PropertyAccess (in case they use the default values and are not defined),
-		// so other configuration files can substitute them (such as log4j.xml)
-		access.set(PropertyAccess.KEY_SNAKE_BASE, access.getDirectoryBase());
-		access.set(PropertyAccess.KEY_SNAKE_INSTANCE, access.getInstance());
+		//afterConsumer.accept(access);
 
+		createDirectories(access);
 		new Log4jBootstrap().initialize(access.getDirectoryConfiguration());
-		supplierInit.get().initialize(access, flagObserve);
+
+		supplierSource.get().initialize(access, flagObserve);
 
 		SnakeModel model = new SnakeModel(access);
 		Snake.setSnakeModel(model);
 		return model;
+	}
+
+
+	protected void createDirectories(PropertyAccess access) {
+		File instance = new File(access.getDirectoryInstance());
+		if (!instance.isDirectory() || !instance.exists() || !instance.canExecute() || !instance.canWrite()) {
+			JvmUtils.terminate().threaded(false).message("Instance-directory not available to write {" + instance + "}").now();
+		}
+		createDirectory(access.getDirectoryConfiguration());
+		createDirectory(access.getDirectoryLog());
+		createDirectory(access.getDirectoryScript());
+		createDirectory(access.getDirectoryStorage());
+		createDirectory(access.getDirectoryTemp());
+	}
+
+
+	protected void createDirectory(String directory) {
+		try {
+			FileUtils.forceMkdir(new File(directory));
+		}
+		catch (IOException ex) {
+			JvmUtils.terminate().threaded(false).message("Unable to create directory {" + directory + "}").now();
+		}
 	}
 
 
@@ -45,8 +75,14 @@ public class SnakeBootstrap {
 	}
 
 
-	public SnakeBootstrap withInit(Supplier<SnakeSource> initSupplier) {
-		supplierInit = initSupplier;
+	public SnakeBootstrap withSource(Supplier<SnakeSource> sourceSupplier) {
+		supplierSource = sourceSupplier;
+		return this;
+	}
+
+
+	public SnakeBootstrap afterDefaults(Consumer<PropertyAccess> after) {
+		//afterConsumer = after;
 		return this;
 	}
 

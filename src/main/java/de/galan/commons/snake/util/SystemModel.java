@@ -32,7 +32,7 @@ public class SystemModel {
 	 * @return The value from the SystemProperty "http.proxyHost"
 	 */
 	public String getProxyHost() {
-		return System.getProperty(HTTP_PROXY_HOST);
+		return get(HTTP_PROXY_HOST);
 	}
 
 
@@ -42,7 +42,7 @@ public class SystemModel {
 	 * @param host The new host, which is used by the JVM as proxy
 	 */
 	public void setProxyHost(String host) {
-		System.setProperty(HTTP_PROXY_HOST, host);
+		set(HTTP_PROXY_HOST, host);
 	}
 
 
@@ -52,7 +52,7 @@ public class SystemModel {
 	 * @return The value from the SystemProperty "http.proxyPort"
 	 */
 	public Integer getProxyPort() {
-		return Ints.tryParse(System.getProperty(HTTP_PROXY_PORT));
+		return Ints.tryParse(get(HTTP_PROXY_PORT));
 	}
 
 
@@ -62,7 +62,7 @@ public class SystemModel {
 	 * @param host The new port, which is used by the JVM for the SystemProperty "http.proxyPort"
 	 */
 	public void setProxyPort(Integer port) {
-		System.setProperty(HTTP_PROXY_PORT, port != null ? port.toString() : null);
+		set(HTTP_PROXY_PORT, port != null ? port.toString() : null);
 	}
 
 
@@ -72,7 +72,7 @@ public class SystemModel {
 	 * @return The value from the SystemProperty "http.nonProxyHosts"
 	 */
 	public String getNonProxyHosts() {
-		return System.getProperty(HTTP_NON_PROXY_HOST);
+		return get(HTTP_NON_PROXY_HOST);
 	}
 
 
@@ -82,7 +82,7 @@ public class SystemModel {
 	 * @param nonHosts The value for the SystemProperty "http.nonProxyHosts"
 	 */
 	public void setNonProxyHosts(String nonHosts) {
-		System.setProperty(HTTP_NON_PROXY_HOST, nonHosts);
+		set(HTTP_NON_PROXY_HOST, nonHosts);
 	}
 
 
@@ -123,6 +123,18 @@ public class SystemModel {
 	 */
 	public String getUserHome() {
 		return USER_HOME;
+	}
+
+
+	/** Gets the system property for the specified key */
+	public String get(String key) {
+		return System.getProperty(key);
+	}
+
+
+	/** Sets the system property for the specified key */
+	public void set(String key, String value) {
+		System.setProperty(key, value);
 	}
 
 }

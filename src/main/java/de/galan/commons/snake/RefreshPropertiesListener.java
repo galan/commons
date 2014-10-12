@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 import java.io.File;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +37,9 @@ public class RefreshPropertiesListener implements FileListener {
 
 	@Override
 	public void notifyFileCreated(File f) {
-		refresh();
+		if (isTrackingAll()) {
+			refresh();
+		}
 	}
 
 
@@ -48,25 +51,35 @@ public class RefreshPropertiesListener implements FileListener {
 
 	@Override
 	public void notifyFileDeleted(File f) {
-		refresh();
+		if (isTrackingAll()) {
+			refresh();
+		}
+	}
+
+
+	// http://stackoverflow.com/questions/607435/why-does-vim-save-files-with-a-extension
+	protected boolean isTrackingAll() {
+		String modificationsOnly = access.get("snake.track.anychange");
+		return "true".equals(modificationsOnly);
 	}
 
 
 	public void refresh() {
+		Predicate<String> filterDefaults = (k) -> !defaults.containsKey(k);
 		Map<String, String> properties = source.get();
-		for (String key: properties.keySet()) {
-			if (!defaults.containsKey(key)) {
-				// Whitespaces may lead to unrecognized properties
-				String property = trimToEmpty(properties.get(key));
-				String current = access.get(property);
-				if (!StringUtils.equals(current, property)) {
-					access.set(key, property);
-					//setQuietly((String)key, property);
-				}
+		properties.keySet().stream().filter(filterDefaults).forEach((k) -> {
+			// Whitespaces may lead to unrecognized properties
+			String valueNew = trimToEmpty(properties.get(k));
+			String valueCurrent = access.get(k);
+			if (!StringUtils.equals(valueCurrent, valueNew)) {
+				access.set(k, valueNew); //TODO setQuietly((String)key, property); ?
 			}
-		}
+		});
+
+		// Remove missing properties
+		access.getProperties().keySet().stream().filter(filterDefaults).filter((k) -> !properties.containsKey(k)).forEach((k) -> access.remove(k));
+
 		access.printProperties();
 		access.notifyRefreshed();
 	}
-
 }

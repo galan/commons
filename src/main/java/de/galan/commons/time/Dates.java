@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -11,7 +12,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.function.Supplier;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -20,19 +20,21 @@ import de.galan.commons.logging.Logr;
 
 
 /**
- * Construction of Date-objects with a fluent interface.<br/>
- * See also https://github.com/galan/commons/wiki/DateDsl
+ * Construction of Date-objects with a fluent interface. Provides a a simple but useful subset for creating, modfing and
+ * formatting time-based objects. Application-wide time will be setup in ApplicationClock.<br/>
+ * See also https://github.com/galan/commons/wiki/DateDsl<br/>
+ * <br/>
+ * Deprecated in favor of de.galan.commons.time.Instants.<br/>
  *
  * @author daniel
  */
-public class DateDsl {
+@Deprecated
+public class Dates {
 
 	private static final Logger LOG = Logr.get();
 
 	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	public static final String DATE_FORMAT_ISO = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-
-	private static Supplier<Date> supplier = new NowDateSupplier();
 
 	private static final ThreadLocal<Map<String, SimpleDateFormat>> localSdf = ThreadLocal.withInitial(HashMap::new);
 
@@ -52,12 +54,7 @@ public class DateDsl {
 
 
 	public static Date now() {
-		return supplier.get();
-	}
-
-
-	public static void setDateSupplier(Supplier<Date> supplier) {
-		DateDsl.supplier = supplier;
+		return new Date(ApplicationClock.getClock().millis());
 	}
 
 
@@ -296,26 +293,17 @@ public class DateDsl {
 			int hour = Integer.valueOf(split[0]);
 			int min = Integer.valueOf(split[1]);
 			int sec = Integer.valueOf(split[2]);
-			cal.set(Calendar.HOUR_OF_DAY, hour);
-			cal.set(Calendar.MINUTE, min);
-			cal.set(Calendar.SECOND, sec);
-			return this;
+			return at(hour, min, sec);
 		}
 
 
 		public DateBuilder atMidnight() {
-			cal.set(Calendar.HOUR_OF_DAY, 0);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			return this;
+			return at(0, 0, 0);
 		}
 
 
 		public DateBuilder atNoon() {
-			cal.set(Calendar.HOUR_OF_DAY, 12);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			return this;
+			return at(12, 0, 0);
 		}
 
 
@@ -368,6 +356,10 @@ public class DateDsl {
 			return cal.getTimeInMillis();
 		}
 
+
+		public Instant toInstant() {
+			return Instant.ofEpochMilli(toLong());
+		}
 	}
 
 	/** Units as own enum for better code-completition support (instead of having ints everywhere) */

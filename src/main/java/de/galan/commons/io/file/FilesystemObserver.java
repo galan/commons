@@ -125,7 +125,7 @@ public class FilesystemObserver {
 
 			// reset key and remove from set if directory no longer accessible
 			boolean valid = key.reset();
-			Sleeper.sleep(100L); // avoids duplicates - http://stackoverflow.com/questions/16133590/why-does-watchservice-generate-so-many-operations
+			//TODO paramter in constructor? -- Sleeper.sleep(100L); // avoids duplicates - http://stackoverflow.com/questions/16133590/why-does-watchservice-generate-so-many-operations
 			if (!valid) {
 				keysDirectoryListener.remove(key);
 

@@ -1,10 +1,11 @@
 package de.galan.commons.time;
 
 import static de.galan.commons.test.Tests.*;
-import static de.galan.commons.time.DateDsl.*;
+import static de.galan.commons.time.Dates.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -20,7 +21,8 @@ import de.galan.commons.test.AbstractTestParent;
  *
  * @author daniel
  */
-public class DateDslTest extends AbstractTestParent {
+@Deprecated
+public class DatesTest extends AbstractTestParent {
 
 	@Test
 	public void testNow() {
@@ -209,6 +211,15 @@ public class DateDslTest extends AbstractTestParent {
 		assertThat(from(date(timeWithoutMillis)).toLong()).isEqualTo(timeWithoutMillis);
 		long timeWithMillis = 1372930571123L;
 		assertThat(from(date(timeWithMillis)).toLong()).isEqualTo(timeWithMillis);
+	}
+
+
+	@Test
+	public void toInstant() throws Exception {
+		long timeWithoutMillis = 1372930571000L;
+		assertThat(from(date(timeWithoutMillis)).toInstant()).isEqualTo(Instant.ofEpochMilli(timeWithoutMillis));
+		long timeWithMillis = 1372930571123L;
+		assertThat(from(date(timeWithMillis)).toInstant()).isEqualTo(Instant.ofEpochMilli(timeWithMillis));
 	}
 
 }
