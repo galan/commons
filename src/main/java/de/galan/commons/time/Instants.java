@@ -41,10 +41,10 @@ public class Instants {
 	private static final Logger LOG = Logr.get();
 
 	public static final String DATE_FORMAT_LOCAL = "yyyy-MM-dd HH:mm:ss";
-	public static final String DATE_FORMAT_ISO = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	public static final String DATE_FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-	protected static final ZoneId ZONE_UTC = ZoneId.of("UTC");
-	protected static final ZoneId ZONE_LOCAL = ZoneId.systemDefault();
+	public static final ZoneId ZONE_LOCAL = ZoneId.systemDefault();
+	public static final ZoneId ZONE_UTC = ZoneId.of("UTC");
 
 	private static final Map<String, DateTimeFormatter> formatters = new ConcurrentHashMap<>();
 
@@ -119,7 +119,7 @@ public class Instants {
 	public static Instant instantUtc(String text) {
 		Instant result = null;
 		try {
-			LocalDateTime ldt = LocalDateTime.parse(text, getFormater(DATE_FORMAT_ISO, "UTC"));
+			LocalDateTime ldt = LocalDateTime.parse(text, getFormater(DATE_FORMAT_UTC, "UTC"));
 			result = ldt.toInstant(ZoneOffset.UTC);
 		}
 		catch (DateTimeParseException ex) {
@@ -421,7 +421,7 @@ public class Instants {
 
 
 		public String toStringIsoUtc() {
-			return getFormater(DATE_FORMAT_ISO, "UTC").format(current);
+			return getFormater(DATE_FORMAT_UTC, "UTC").format(current);
 		}
 
 
