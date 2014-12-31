@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -256,6 +257,13 @@ public class InstantsTest extends AbstractTestParent {
 		assertThat(from(date(timeWithoutMillis)).toInstant()).isEqualTo(Instant.ofEpochMilli(timeWithoutMillis));
 		long timeWithMillis = 1372930571123L;
 		assertThat(from(date(timeWithMillis)).toInstant()).isEqualTo(Instant.ofEpochMilli(timeWithMillis));
+	}
+
+
+	@Test
+	public void toZdt() throws Exception {
+		assertThat(from(dateUtc("2014-12-31T13:37:00Z")).toZdt()).isEqualTo(ZonedDateTime.of(2014, 12, 31, 13, 37, 0, 0, ZONE_UTC));
+		assertThat(from(dateUtc("2014-12-31T13:37:00Z")).toZdt(ZONE_UTC)).isEqualTo(ZonedDateTime.of(2014, 12, 31, 13, 37, 0, 0, ZONE_UTC));
 	}
 
 }

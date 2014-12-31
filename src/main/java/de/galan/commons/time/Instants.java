@@ -439,6 +439,17 @@ public class Instants {
 			return Date.from(current);
 		}
 
+
+		/** Returns the instant as ZonedDateTime with UTC as ZoneId */
+		public ZonedDateTime toZdt() {
+			return toZdt(ZONE_UTC);
+		}
+
+
+		public ZonedDateTime toZdt(ZoneId zoneId) {
+			return ZonedDateTime.ofInstant(current, zoneId);
+		}
+
 	}
 
 	/** Units as own enum for better code-completition support (instead of having ints everywhere) */

@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -27,6 +28,28 @@ import de.galan.commons.time.HumanTime;
  * @author daniel
  */
 public class Tests {
+
+	public static String getWorkingDirectory() {
+		// Get the working directory, which is in eclipse/maven the project folder
+		return System.getProperty("user.dir");
+		//return new File("").getAbsolutePath();
+	}
+
+
+	public static File getTestDirectory(boolean cleanup) {
+		File dir = new File(getWorkingDirectory(), "target/tests");
+		if (cleanup) {
+			FileUtils.deleteQuietly(dir);
+		}
+		dir.mkdirs();
+		return dir;
+	}
+
+
+	public static File getTestDirectory() {
+		return getTestDirectory(false);
+	}
+
 
 	public static byte[] readFileBinary(Class<?> clazz, String filename) throws IOException {
 		return Resources.toByteArray(Resources.getResource(clazz, filename));

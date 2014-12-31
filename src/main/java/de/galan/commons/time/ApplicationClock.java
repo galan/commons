@@ -44,13 +44,13 @@ public class ApplicationClock {
 
 
 	/** Creates a fixed Clock. */
-	public static void setIso(Date time) {
+	public static void setUtc(Date time) {
 		setClock(Clock.fixed(time.toInstant(), ZoneId.of("UTC")));
 	}
 
 
 	/** Creates a fixed Clock with the input format "yyyy-MM-dd'T'HH:mm:ss'Z'" using UTC as timezone. */
-	public static void setIso(String time) {
+	public static void setUtc(String time) {
 		Instant instant = Instant.parse(time);
 		setClock(Clock.fixed(instant, ZoneId.of("UTC")));
 	}
