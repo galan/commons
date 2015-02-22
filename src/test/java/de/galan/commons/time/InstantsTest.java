@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,11 +19,19 @@ import de.galan.commons.test.AbstractTestParent;
 
 
 /**
- * CUT DateDsl
+ * CUT Instants
  *
  * @author daniel
  */
 public class InstantsTest extends AbstractTestParent {
+
+	@Test
+	public void proofOfConceptForEqualsOnTimezone() throws Exception {
+		ZonedDateTime zdtUtc = ZonedDateTime.of(2015, 2, 1, 14, 30, 0, 0, ZoneId.of("UTC").normalized());
+		ZonedDateTime zdtZ = ZonedDateTime.of(2015, 2, 1, 14, 30, 0, 0, ZoneId.of("Z").normalized());
+		assertEquals(zdtUtc, zdtZ);
+	}
+
 
 	@Test
 	public void testNow() {

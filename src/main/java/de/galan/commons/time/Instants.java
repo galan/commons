@@ -43,8 +43,8 @@ public class Instants {
 	public static final String DATE_FORMAT_LOCAL = "yyyy-MM-dd HH:mm:ss";
 	public static final String DATE_FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-	public static final ZoneId ZONE_LOCAL = ZoneId.systemDefault();
-	public static final ZoneId ZONE_UTC = ZoneId.of("UTC");
+	public static final ZoneId ZONE_LOCAL = ZoneId.systemDefault().normalized();
+	public static final ZoneId ZONE_UTC = ZoneId.of("UTC").normalized();
 
 	private static final Map<String, DateTimeFormatter> formatters = new ConcurrentHashMap<>();
 
