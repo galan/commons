@@ -9,8 +9,8 @@ import java.net.SocketAddress;
 import org.junit.After;
 import org.junit.Before;
 import org.simpleframework.http.core.Container;
-import org.simpleframework.http.core.ContainerServer;
-import org.simpleframework.transport.Server;
+import org.simpleframework.http.core.ContainerSocketProcessor;
+import org.simpleframework.transport.SocketProcessor;
 import org.simpleframework.transport.connect.SocketConnection;
 import org.slf4j.Logger;
 
@@ -20,14 +20,14 @@ import de.galan.commons.time.Sleeper;
 
 /**
  * Starts/stops a simple webserver. Usage: use startServer(Container) and anonymously override DummyContainer.
- * 
+ *
  * @author daniel
  */
 public class SimpleWebserverTestParent extends AbstractTestParent {
 
 	private static final Logger LOG = Logr.get();
 
-	protected Server server;
+	protected SocketProcessor server; // formerly known as Server
 	private boolean stopped;
 
 	private SocketConnection connection;
@@ -50,7 +50,7 @@ public class SimpleWebserverTestParent extends AbstractTestParent {
 
 	public synchronized void startServer(Container container) {
 		try {
-			server = new ContainerServer(container);
+			server = new ContainerSocketProcessor(container);
 			connection = new SocketConnection(server);
 			SocketAddress address = new InetSocketAddress(getPort());
 			connection.connect(address);
