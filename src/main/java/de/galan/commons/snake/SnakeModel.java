@@ -137,7 +137,7 @@ public class SnakeModel {
 			result = isNotBlank(value) ? Long.valueOf(value) : null;
 		}
 		catch (NumberFormatException nfex) {
-			LOG.error("Property could not be converted to Double: {}", name);
+			LOG.error("Property could not be converted to Long: {}", name);
 		}
 		return result;
 	}
