@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.function.Supplier;
 
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import de.galan.commons.logging.Logr;
 
@@ -19,7 +19,7 @@ import de.galan.commons.logging.Logr;
  */
 public class FilePropertySupplier implements Supplier<Map<String, String>> {
 
-	private final static Logger LOG = Logr.get();
+	private static final Logger LOG = Logr.get();
 
 	private File file;
 	private File overwrite;

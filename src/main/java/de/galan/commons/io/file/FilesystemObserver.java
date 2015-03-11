@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Preconditions;
 
@@ -40,7 +40,7 @@ import de.galan.commons.util.Generics;
  */
 public class FilesystemObserver {
 
-	private final static Logger LOG = Logr.get();
+	private static final Logger LOG = Logr.get();
 	private final static AtomicInteger THREAD_COUNTER = new AtomicInteger();
 
 	WatchService watcher;

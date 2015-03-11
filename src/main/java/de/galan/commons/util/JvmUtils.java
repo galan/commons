@@ -5,7 +5,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import de.galan.commons.logging.Logr;
 import de.galan.commons.snake.util.SystemModel;
@@ -44,7 +44,7 @@ public class JvmUtils {
 	/** Builder to terminate the JVM */
 	public static class TerminateBuilder {
 
-		final static Logger LOG = Logr.get();
+		private static final Logger LOG = Logr.get();
 
 		private int builderReturnCode;
 		private boolean builderThreaded = true;

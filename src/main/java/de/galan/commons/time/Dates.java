@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import de.galan.commons.logging.Logr;
 

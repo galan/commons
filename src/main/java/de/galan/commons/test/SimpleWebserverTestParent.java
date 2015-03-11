@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.simpleframework.http.core.Container;
 import org.simpleframework.http.core.ContainerSocketProcessor;
 import org.simpleframework.transport.SocketProcessor;
 import org.simpleframework.transport.connect.SocketConnection;
-import org.slf4j.Logger;
 
 import de.galan.commons.logging.Logr;
 import de.galan.commons.time.Sleeper;

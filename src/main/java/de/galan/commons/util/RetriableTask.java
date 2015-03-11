@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import de.galan.commons.logging.Logr;
 import de.galan.commons.time.Sleeper;
@@ -12,7 +12,7 @@ import de.galan.commons.time.Sleeper;
 
 /**
  * Runs a Callable until it runs without Exception the specified times of retries.
- * 
+ *
  * @author daniel
  * @param <T> Possible result of the repeating task
  */

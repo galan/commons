@@ -1,12 +1,13 @@
 package de.galan.commons.logging;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
- * Returns the logger for the calling class. Can be used to determine the Logger, reduces errors when copy&paste.
- * 
+ * Returns the logger for the calling class. Can be used to determine the Logger, reduces errors when copy&paste.<br/>
+ * Note: Can be replaced by Log4j2 LogManager.getLogger();
+ *
  * @author daniel
  */
 public class Logr {
@@ -40,11 +41,11 @@ public class Logr {
 
 	/**
 	 * Determines the class and the appropiate logger of the calling class.
-	 * 
+	 *
 	 * @return The (slf4j) logger of the caller
 	 */
 	static Logger determineLogger(String callerClassName) {
-		return LoggerFactory.getLogger(callerClassName);
+		return LogManager.getLogger(callerClassName);
 	}
 
 }
