@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.ReflectionUtil;
 
 
 /**
@@ -336,10 +337,11 @@ public class Say {
 	/**
 	 * Determines the class and the appropiate logger of the calling class.
 	 *
-	 * @return The (log4j) logger of the caller
+	 * @return The logger for the caller
 	 */
 	//static Logger determineLogger(StackTraceElement caller) {
 	static Logger determineLogger(String callerClassName) {
+		/*
 		//String className = caller.getClassName();
 		String className = callerClassName;
 		Logger result = logger.get(className);
@@ -349,6 +351,8 @@ public class Say {
 			// plain log4j: logger.put(className, Logger.getLogger(stackTraceElements[THREAD_TYPE_DEEP].getClassName());
 		}
 		return result;
+		 */
+		return LogManager.getLogger(ReflectionUtil.getCallerClass(3));
 	}
 
 
