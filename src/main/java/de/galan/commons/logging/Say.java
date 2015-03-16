@@ -308,6 +308,11 @@ public class Say {
 
 	// -------------------------------- MISC --------------------------------
 
+	public static Logger getLogger() {
+		return determineLogger(determineCaller());
+	}
+
+
 	public static void please() {
 		String caller = determineCaller();
 		Logger log = determineLogger(caller);
