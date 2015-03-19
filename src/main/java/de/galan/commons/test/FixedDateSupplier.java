@@ -1,5 +1,6 @@
 package de.galan.commons.test;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.function.Supplier;
 
@@ -28,6 +29,11 @@ public class FixedDateSupplier implements Supplier<Date> {
 
 	public FixedDateSupplier(String date, boolean utc) {
 		fixed = utc ? Instants.dateLocal(date) : Instants.dateUtc(date);
+	}
+
+
+	public FixedDateSupplier(Instant instant) {
+		fixed = Date.from(instant);
 	}
 
 
