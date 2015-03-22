@@ -4,7 +4,22 @@ import org.apache.logging.log4j.message.Message;
 
 
 /**
- * daniel should have written a comment here.
+ * Log4j2 Message for Logger that support parameterized messages, using {} or {name} as placeholder, eg.:<br/>
+ * <code>
+ * info("Hello {}", "world"); // => "Hello {world}"<br/>
+ * info("Hello {} {}", "beautiful", "world"); // => "Hello {beautiful} {world}"<br/>
+ * info("The Answer is {answer}", 42L); // => "The Answer is {42}"
+ * </code>
+ * <br/>
+ * <br/>
+ * It is also encouraged to give the parameter names with identifier set to true. This can be useful for later
+ * integrations/parsing. If no parameters are given, key will be generated as sequence numbers. Example:<br/>
+ * <code>
+ * info("Hello {}", "world"); // => "Hello {0:world}"<br/>
+ * info("Hello {} {}", "beautiful", "world"); // => "Hello {0:beautiful} {1:world}"<br/>
+ * info("The Answer is {answer}", 42L); // => "The Answer is {answer:42}"
+ * </code>
+ * <br/>
  *
  * @author daniel
  */
@@ -26,14 +41,15 @@ public class PayloadMessage implements Message {
 
 
 	public PayloadMessage(final String messagePattern, final Object[] argumentsObject) {
-		this(messagePattern, argumentsObject, false);
+		this(messagePattern, argumentsObject, false, null);
 	}
 
 
-	public PayloadMessage(final String messagePattern, final Object[] argumentsObject, boolean includeIdentifier) {
+	public PayloadMessage(final String messagePattern, final Object[] argumentsObject, boolean includeIdentifier, Throwable throwed) {
 		paramArguments = argumentsObject;
 		paramMessagePattern = messagePattern;
 		this.includeIdentifier = includeIdentifier;
+		throwable = throwed;
 		parseMessage(messagePattern);
 		arguments = argumentsToStrings(argumentsObject);
 	}
@@ -46,7 +62,12 @@ public class PayloadMessage implements Message {
 		int patternArguments = getPatternAmountArguments();
 		int realLength = argumentsObject.length;
 		if (realLength > 0 && (realLength - 1 == patternArguments) && Throwable.class.isAssignableFrom(argumentsObject[realLength - 1].getClass())) {
-			throwable = (Throwable)argumentsObject[realLength - 1];
+			if (throwable == null) {
+				throwable = (Throwable)argumentsObject[realLength - 1];
+			}
+			else {
+				// throwable is already given by constructor, throw away superfluent exception
+			}
 			realLength -= 1;
 			Object[] withoutThrowable = new Object[realLength];
 			System.arraycopy(argumentsObject, 0, withoutThrowable, 0, realLength);
