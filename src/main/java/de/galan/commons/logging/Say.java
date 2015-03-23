@@ -1,53 +1,22 @@
 package de.galan.commons.logging;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.ReflectionUtil;
 
 
 /**
- * Facade for the logging-framework (currently Log4j/SLF4J). Support additional functionality, like formatted error
- * messages with parameters.<br/>
- * To use parameterised message, just use <code>%s</code> as placeholder, eg.:
- * <p>
- * <code>
- * info("Hello {}", "world"); // => "Hello {world}"<br/>
- * info("Hello {} {}", "beautiful", "world"); // => "Hello {beautiful} {world}"<br/>
- * info("The Answer is {}", 42L); // => "The Answer is {42}"<br/>
- * </code>
- * </p>
- * To log exceptions you can use one of the following (Note that exceptions have to be declared before the arguments):
- * <p>
- * <code>
- * info("Hello World", ex);<br/>
- * info("Hello {}", ex, "World");<br/>
- * </code>
- * </p>
- * It is also encouraged to give the parameter names, this can be useful for later integrations such as allwissend. If
- * no parameters are given, key will be generated as sequence numbers. Example:
- * <p>
- * <code>
- * info("Hello {person}", "Someone");<br/>
- * </code>
- * </p>
- * Why is there no fatal level? See here: <a href="http://www.slf4j.org/faq.html#fatal">SLF4j FAQ</a>
+ * Facade for the logging-framework (currently Log4j2). Uses the PayloadMessage for parameterization of messages.
  *
  * @author daniel
  */
 public class Say {
 
-	private static final String ARG_OPEN = "{";
-	private static final String ARG_CLOSE = "}";
 	private static final int THREAD_TYPE_DEEP = 2 + 1;
-	private static final String NULL = "null";
-	private static final String SPACE = " ";
-	private static final String FORMAT_PLACEHOLDER = "%s";
+	private static boolean includeIdentifier = false;
 
 	/** Cache of the dynamically created loggers. Multithreading considerations: a simple HashMap is sufficient. */
 	private static Map<String, Logger> logger = new HashMap<String, Logger>();
@@ -73,22 +42,15 @@ public class Say {
 
 	// -------------------------------- TRACE --------------------------------
 
-	public static void trace(Object message) {
-		Logger log = determineLogger(determineCaller());
-		if (log.isTraceEnabled()) {
-			String parsedMessage = parseMessage(message, null);
-			log.trace(parsedMessage);
-		}
+	public static void trace(String message) {
+		//public PayloadMessage(final String messagePattern, final Object[] argumentsObject, boolean includeIdentifier, Throwable throwed) {
+		determineLogger().trace(new PayloadMessage(message, null, includeIdentifier, null));
 	}
 
 
+	/*
 	public static void trace(Object message, Object... args) {
-		Logger log = determineLogger(determineCaller());
-		if (log.isTraceEnabled()) {
-			List<String> keys = provideKeyList(args);
-			String parsedMessage = parseMessage(message, keys);
-			log.trace(format(parsedMessage, encloseArgs(args)));
-		}
+		determineLogger().trace(message,);
 	}
 
 
@@ -166,52 +128,35 @@ public class Say {
 
 
 	// -------------------------------- INFO --------------------------------
+	 */
+
+	protected static PayloadMessage payload(final Object message, final Object[] arguments, Throwable throwable) {
+		return new PayloadMessage(message == null ? null : message.toString(), arguments, includeIdentifier, throwable);
+	}
+
 
 	public static void info(Object message) {
-		Logger log = determineLogger(determineCaller());
-		if (log.isInfoEnabled()) {
-			String parsedMessage = parseMessage(message, null);
-			log.info(parsedMessage);
-		}
+		determineLogger().info(payload(message, null, null));
 	}
 
 
 	public static void info(Object message, Object... args) {
-		Logger log = determineLogger(determineCaller());
-		if (log.isInfoEnabled()) {
-			List<String> keys = provideKeyList(args);
-			String parsedMessage = parseMessage(message, keys);
-			log.info(format(parsedMessage, encloseArgs(args)));
-		}
+		determineLogger().info(payload(message, args, null));
 	}
 
 
 	public static void info(Object message, Throwable throwable) {
-		Logger log = determineLogger(determineCaller());
-		if (log.isInfoEnabled()) {
-			String parsedMessage = parseMessage(message, null);
-			log.info(parsedMessage, throwable);
-		}
+		PayloadMessage payload = payload(message, null, throwable);
+		determineLogger().info(payload, payload.getThrowable());
 	}
 
 
 	public static void info(Object message, Throwable throwable, Object... args) {
-		Logger log = determineLogger(determineCaller());
-		if (log.isInfoEnabled()) {
-			List<String> keys = provideKeyList(args);
-			String parsedMessage = parseMessage(message, keys);
-			log.info(format(parsedMessage, encloseArgs(args)), throwable);
-		}
+		determineLogger().info(payload(message, args, throwable), throwable);
 	}
 
 
-	public static boolean isInfoEnabled() {
-		String caller = determineCaller();
-		Logger log = determineLogger(caller);
-		return log.isInfoEnabled();
-	}
-
-
+	/*
 	// -------------------------------- WARN --------------------------------
 
 	public static void warn(Object message) {
@@ -323,7 +268,7 @@ public class Say {
 	static List<String> provideKeyList(Object[] args) {
 		return new ArrayList<String>(args.length);
 	}
-
+	 */
 
 	/**
 	 * Determines the calling class (and method/linenumber too)
@@ -345,7 +290,7 @@ public class Say {
 	 * @return The logger for the caller
 	 */
 	//static Logger determineLogger(StackTraceElement caller) {
-	static Logger determineLogger(String callerClassName) {
+	static Logger determineLogger() { // (String callerClassName)
 		/*
 		//String className = caller.getClassName();
 		String className = callerClassName;
@@ -357,95 +302,7 @@ public class Say {
 		}
 		return result;
 		 */
-		return LogManager.getLogger(ReflectionUtil.getCallerClass(3));
-	}
-
-
-	/**
-	 * Parses the message String for the keynames, which are enclosed in { and } chars. If not set, the keys will be
-	 * generated as sequence.<br/>
-	 * Before this, the message is checked on null, "" (Empty String) and Exceptions, to fill these with a detailed
-	 * message.
-	 *
-	 * @param message The used message by the user
-	 * @return The cleaned message
-	 */
-	static String parseMessage(Object message, List<String> keyNames) {
-		String result = null;
-		if (message == null || ((message instanceof String) && (StringUtils.isBlank((String)message)))) {
-			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-			// Spaces included, to make the stack clickable in an IDE
-			result = "Empty message from " + ARG_OPEN + SPACE + stackTraceElements[THREAD_TYPE_DEEP] + SPACE + ARG_CLOSE;
-		}
-		else if (Throwable.class.isAssignableFrom(message.getClass())) {
-			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-			// Spaces included, to make the stack clickable in an IDE
-			result = "Exception " + ARG_OPEN + message.toString() + ARG_CLOSE + " from " + ARG_OPEN + SPACE + stackTraceElements[THREAD_TYPE_DEEP] + SPACE
-					+ ARG_CLOSE;
-			//TODO exception as payload?
-		}
-		else if (message instanceof String) {
-			int currentPosition = 0;
-			String msg = (String)message;
-			int open = 0;
-			int argCounter = 1;
-			while((open = StringUtils.indexOf(msg, ARG_OPEN, currentPosition)) != -1) {
-				int close = StringUtils.indexOf(msg, ARG_CLOSE, open);
-				if (close == -1) {
-					break;
-				}
-				String key = StringUtils.substring(msg, open + 1, close);
-				if (StringUtils.isEmpty(key)) {
-					key = "" + argCounter++;
-				}
-				if (keyNames != null) {
-					keyNames.add(key);
-				}
-				msg = StringUtils.substring(msg, 0, open) + FORMAT_PLACEHOLDER + StringUtils.substring(msg, close + 1, msg.length());
-				currentPosition = open + 2;
-			}
-			result = msg;
-		}
-		else {
-			result = message.toString();
-		}
-		return result;
-	}
-
-
-	/**
-	 * Formats the message with the given arguments, and informs if the argument amount is not correct.
-	 *
-	 * @param message The pattern
-	 * @param args The individual arguments
-	 * @return The formated String
-	 */
-	static String format(String message, Object... args) {
-		try {
-			return String.format(message, args);
-		}
-		catch (Exception ex) {
-			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-			return "Amount of logging arguments is not correct: " + ARG_OPEN + message + ARG_CLOSE + " : " + ARG_OPEN + SPACE
-					+ stackTraceElements[THREAD_TYPE_DEEP] + SPACE + ARG_CLOSE;
-		}
-	}
-
-
-	/**
-	 * Encapsulates arguments into their corresponding characters, so they can be parsed.
-	 *
-	 * @param args The used arguments
-	 * @return String-Array including enclosed paramters
-	 */
-	static Object[] encloseArgs(Object... args) {
-		String[] result = new String[args.length];
-		for (int i = 0; i < args.length; i++) {
-			// Performance Hint: Will be converted from the compiler in a StringBuilder anyway.
-			String arg = (args[i] == null) ? NULL : args[i].toString();
-			result[i] = ARG_OPEN + arg + ARG_CLOSE;
-		}
-		return result;
+		return LogManager.getLogger(ReflectionUtil.getCallerClass(3), PayloadMessageFactory.INSTANCE);
 	}
 
 }

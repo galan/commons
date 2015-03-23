@@ -21,7 +21,6 @@ public class PayloadMessageOld implements Message {
 
 
 	public PayloadMessageOld(final String messagePattern, final Object[] argumentsObject) {
-		Say.info("PayloadMessage");
 		paramArguments = argumentsObject;
 		paramMessagePattern = messagePattern;
 		arguments = argumentsToStrings(argumentsObject);
@@ -83,7 +82,7 @@ public class PayloadMessageOld implements Message {
 					}
 					else {
 						builder = new StringBuilder("invalid amount of arguments (only ").append(args == null ? "null" : args.length).append(
-								" available, at least one missing)");
+							" available, at least one missing)");
 						break;
 					}
 					builder.append(DELIM_STOP);

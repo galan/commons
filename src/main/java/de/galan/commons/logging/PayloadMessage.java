@@ -46,7 +46,7 @@ public class PayloadMessage implements Message {
 
 
 	public PayloadMessage(final String messagePattern, final Object[] argumentsObject, boolean includeIdentifier, Throwable throwed) {
-		paramArguments = argumentsObject;
+		paramArguments = argumentsObject == null ? EMPTY_ARGUMENTS : argumentsObject;
 		paramMessagePattern = messagePattern;
 		this.includeIdentifier = includeIdentifier;
 		throwable = throwed;

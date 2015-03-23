@@ -1,11 +1,8 @@
 package de.galan.commons.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
-import de.galan.commons.logging.PayloadMessageFactory;
-import de.galan.commons.test.AbstractTestParent;
+import de.galan.commons.logging.Say;
 
 
 /**
@@ -13,10 +10,15 @@ import de.galan.commons.test.AbstractTestParent;
  *
  * @author daniel
  */
-public class SayTest extends AbstractTestParent {
+public class SayTest {//extends AbstractTestParent {
 
 	@Test
 	public void testName() throws Exception {
+		//Say.info("a {x} b {y}", new NullPointerException("yyy"), 1, 2);
+		//Say.info("a", new NullPointerException("ccc"));
+		Say.info("{}", new NullPointerException("xxx"));
+		//LogManager.getLogger().info(new PayloadMessage("hello", null, false, new NullPointerException("abc")));
+		//LogManager.getLogger().info("abc", new NullPointerException("abc"));
 		//Logger log = LogManager.getLogger();
 		//String[] args = new String[] {"log4j", "slf4j"};
 		//ParameterizedMessage xxx = new MyMessage("a {} b {}", args);
@@ -41,7 +43,7 @@ public class SayTest extends AbstractTestParent {
 	@Test
 	public void factory() throws Exception {
 		//Say.error("a", new NullPointerException());
-		Logger log = LogManager.getLogger(PayloadMessageFactory.INSTANCE);
+		//Logger log = LogManager.getLogger(PayloadMessageFactory.INSTANCE);
 		//Logger log = LogManager.getLogger();
 		//log.error("a {} b {}", new NullPointerException(), "x", "y");
 		//log.error("a {}", new NullPointerException(), "a", "b");
