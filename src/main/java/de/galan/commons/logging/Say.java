@@ -136,12 +136,14 @@ public class Say {
 
 
 	public static void info(Object message) {
-		determineLogger().info(payload(message, null, null));
+		PayloadMessage payload = payload(message, null, null);
+		determineLogger().info(payload, payload.getThrowable());
 	}
 
 
 	public static void info(Object message, Object... args) {
-		determineLogger().info(payload(message, args, null));
+		PayloadMessage payload = payload(message, null, null);
+		determineLogger().info(payload, payload.getThrowable());
 	}
 
 
@@ -152,7 +154,8 @@ public class Say {
 
 
 	public static void info(Object message, Throwable throwable, Object... args) {
-		determineLogger().info(payload(message, args, throwable), throwable);
+		PayloadMessage payload = payload(message, args, throwable);
+		determineLogger().info(payload, payload.getThrowable());
 	}
 
 

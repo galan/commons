@@ -45,21 +45,21 @@ public class PayloadMessage implements Message {
 	}
 
 
-	public PayloadMessage(final String messagePattern, final Object[] argumentsObject, boolean includeIdentifier, Throwable throwed) {
+	public PayloadMessage(final String messagePattern, final Object[] argumentsObject, boolean includeIdentifier, Throwable throwable) {
 		paramArguments = argumentsObject == null ? EMPTY_ARGUMENTS : argumentsObject;
 		paramMessagePattern = messagePattern;
 		this.includeIdentifier = includeIdentifier;
-		throwable = throwed;
+		this.throwable = throwable;
 		parseMessage(messagePattern);
-		arguments = argumentsToStrings(argumentsObject);
+		arguments = argumentsToStrings(paramArguments);
 	}
 
 
 	protected String[] argumentsToStrings(Object[] argumentsObject) {
-		if (argumentsObject == null) {
+		int patternArguments = getPatternAmountArguments();
+		if (argumentsObject.length == 0 && patternArguments == 0) {
 			return EMPTY_ARGUMENTS;
 		}
-		int patternArguments = getPatternAmountArguments();
 		int realLength = argumentsObject.length;
 		if (realLength > 0 && (realLength - 1 == patternArguments) && Throwable.class.isAssignableFrom(argumentsObject[realLength - 1].getClass())) {
 			if (throwable == null) {
@@ -76,6 +76,13 @@ public class PayloadMessage implements Message {
 		String[] strArgs = new String[realLength];
 		for (int i = 0; i < realLength; i++) {
 			strArgs[i] = convertToString(argumentsObject[i]);
+		}
+		if (throwable != null && patternArguments == realLength + 1) {
+			String[] temp = new String[strArgs.length + 1];
+			System.arraycopy(strArgs, 0, temp, 0, strArgs.length);
+			temp[temp.length - 1] = throwable.toString();
+			throwable = null;
+			strArgs = temp;
 		}
 		return strArgs;
 	}
@@ -151,10 +158,10 @@ public class PayloadMessage implements Message {
 			return pattern;
 		}
 		int amount = getPatternAmountArguments();
-		if (paramArguments.length < amount) {
+		if (arguments.length < amount) {
 			errormessage = "Invalid amount of arguments (only " + paramArguments.length + " available, " + (amount - paramArguments.length) + " missing)";
 		}
-		if (paramArguments.length > amount) {
+		if (arguments.length > amount) {
 			errormessage = "Invalid amount of arguments (" + paramArguments.length + " given but only " + amount + " used in pattern)";
 		}
 		if (amount == 0) {

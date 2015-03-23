@@ -14,6 +14,9 @@ import de.galan.commons.test.AbstractTestParent;
  */
 public class PayloadMessageTest extends AbstractTestParent {
 
+	NullPointerException ex = new NullPointerException("BAM");
+
+
 	protected void assertMsg(String pattern, Object[] args, boolean identifier, Throwable throwable, Object[] argsExpected, Throwable throwableExpected, String messageExpected) {
 		PayloadMessage msg = new PayloadMessage(pattern, args, identifier, throwable);
 		assertThat(msg.getFormat()).isEqualTo(pattern);
@@ -92,10 +95,9 @@ public class PayloadMessageTest extends AbstractTestParent {
 
 	@Test
 	public void parameterExplicitThrowableToMuch() throws Exception {
-		NullPointerException exception1 = new NullPointerException("BAM");
-		NullPointerException exception2 = new NullPointerException("BUM");
-		assertMsg("Hello {first} world {second}", args("a", 1, exception2), false, exception1, args("a", 1), exception1, "Hello {a} world {1}");
-		assertMsg("Hello {first} world {second}", args("a", 1, exception2), true, exception1, args("a", 1), exception1, "Hello {first:a} world {second:1}");
+		NullPointerException ex2 = new NullPointerException("BUM");
+		assertMsg("Hello {first} world {second}", args("a", 1, ex2), false, ex, args("a", 1), ex, "Hello {a} world {1}");
+		assertMsg("Hello {first} world {second}", args("a", 1, ex2), true, ex, args("a", 1), ex, "Hello {first:a} world {second:1}");
 	}
 
 
@@ -108,7 +110,6 @@ public class PayloadMessageTest extends AbstractTestParent {
 
 	@Test
 	public void parameterNamesToMuchWithThrowable() throws Exception {
-		NullPointerException ex = new NullPointerException("BAM");
 		assertMsg("{a} x {b}", args("a", 1, 4, ex), false, null, args("a", 1, 4, ex), null, "Invalid amount of arguments (4 given but only 2 used in pattern)");
 		assertMsg("{a} x {b}", args("a", 1, 4, ex), true, null, args("a", 1, 4, ex), null, "Invalid amount of arguments (4 given but only 2 used in pattern)");
 		assertMsg("{a} x {b}", args("a", 1, 4), true, ex, args("a", 1, 4), ex, "Invalid amount of arguments (3 given but only 2 used in pattern)");
@@ -118,9 +119,14 @@ public class PayloadMessageTest extends AbstractTestParent {
 	// Deficit of Log4j not enforcing separation  of arguments and throwable
 	@Test
 	public void parameterNamesIsThrowable() throws Exception {
-		NullPointerException ex = new NullPointerException("BAM");
 		assertMsg("{ex} Lee", args(ex), false, null, args(ex), null, "{java.lang.NullPointerException: BAM} Lee");
 		assertMsg("{ex} Lee", args(ex), true, null, args(ex), null, "{ex:java.lang.NullPointerException: BAM} Lee");
+	}
+
+
+	@Test
+	public void explicitThrowableAsParameter() throws Exception {
+		assertMsg("{ex} Lee", null, false, ex, args(), null, "{java.lang.NullPointerException: BAM} Lee");
 	}
 
 
