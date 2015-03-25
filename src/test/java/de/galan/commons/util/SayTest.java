@@ -17,6 +17,7 @@ public class SayTest {//extends AbstractTestParent {
 		Say.info("a {x} b {y}", new NullPointerException("yyy"), 1, 2);
 		Say.info("a", new NullPointerException("ccc"));
 		Say.info("{}", new NullPointerException("xxx"));
+		Say.please();
 		//LogManager.getLogger().info(new PayloadMessage("hello", null, false, new NullPointerException("abc")));
 		//LogManager.getLogger().info("abc", new NullPointerException("abc"));
 		//Logger log = LogManager.getLogger();

@@ -60,29 +60,33 @@ public class PayloadMessage implements Message {
 		if (argumentsObject.length == 0 && patternArguments == 0) {
 			return EMPTY_ARGUMENTS;
 		}
-		int realLength = argumentsObject.length;
-		if (realLength > 0 && (realLength - 1 == patternArguments) && Throwable.class.isAssignableFrom(argumentsObject[realLength - 1].getClass())) {
+		Object[] objArgs = argumentsObject;
+		int realLength = objArgs.length;
+		// Check if throwable is part of the pattern arguments, and should be added to arguments-array instead
+		if (throwable != null && patternArguments == realLength + 1) {
+			Object[] temp = new Object[objArgs.length + 1];
+			System.arraycopy(objArgs, 0, temp, 0, objArgs.length);
+			temp[temp.length - 1] = throwable;
+			throwable = null; // earase throwable -> is part of the arguments
+			objArgs = temp;
+			realLength = objArgs.length;
+		}
+		// Mimic ParameterizedMessage behaviour, last argument is throwable if not already set and arguments have one left
+		else if (realLength > 0 && (realLength - 1 == patternArguments) && Throwable.class.isAssignableFrom(objArgs[realLength - 1].getClass())) {
 			if (throwable == null) {
-				throwable = (Throwable)argumentsObject[realLength - 1];
+				throwable = (Throwable)objArgs[realLength - 1];
 			}
 			else {
 				// throwable is already given by constructor, throw away superfluent exception
 			}
 			realLength -= 1;
 			Object[] withoutThrowable = new Object[realLength];
-			System.arraycopy(argumentsObject, 0, withoutThrowable, 0, realLength);
+			System.arraycopy(objArgs, 0, withoutThrowable, 0, realLength);
 			paramArguments = withoutThrowable;
 		}
 		String[] strArgs = new String[realLength];
 		for (int i = 0; i < realLength; i++) {
-			strArgs[i] = convertToString(argumentsObject[i]);
-		}
-		if (throwable != null && patternArguments == realLength + 1) {
-			String[] temp = new String[strArgs.length + 1];
-			System.arraycopy(strArgs, 0, temp, 0, strArgs.length);
-			temp[temp.length - 1] = throwable.toString();
-			throwable = null;
-			strArgs = temp;
+			strArgs[i] = convertToString(objArgs[i]);
 		}
 		return strArgs;
 	}
