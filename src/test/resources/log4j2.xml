@@ -2,7 +2,8 @@
 <Configuration status="WARN">
 	<Appenders>
 		<Console name="console" target="SYSTEM_OUT">
-			<PatternLayout pattern="%d{ISO8601} %-5level [%c] %m%n" />
+			<PatternLayout pattern="%d{ISO8601} %-5level [%c] %m%n" /> <!-- Default PatternLayout -->
+			<!-- <PatternLayout pattern="%d{ISO8601} %-5level [%c::%t] %m%n" /> --> <!-- PatternLayout including threadname -->
 		</Console>
 	</Appenders>
 	<Loggers>

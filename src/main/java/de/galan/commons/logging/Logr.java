@@ -2,6 +2,7 @@ package de.galan.commons.logging;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.ReflectionUtil;
 
 
 /**
@@ -12,15 +13,22 @@ import org.apache.logging.log4j.Logger;
  */
 public class Logr {
 
-	private final static int THREAD_TYPE_DEEP = 2;
+	// Using ReflectionUtil directly with "2" like the log4j2 LogManager.getLogger()
+	private static final int THREAD_TYPE_DEEP = 2;
+
+
+	public static Logger get() {
+		return LogManager.getLogger(ReflectionUtil.getCallerClass(THREAD_TYPE_DEEP), PayloadMessageFactory.INSTANCE);
+	}
+
+	//private final static int THREAD_TYPE_DEEP = 2;
 
 	/** A custom security manager that exposes the getClassContext() information */
-	static class CallerSecurityManager extends SecurityManager {
-
-		public String getCallerClassName(int callStackDepth) {
-			return getClassContext()[callStackDepth].getName();
-		}
-	}
+	//static class CallerSecurityManager extends SecurityManager {
+	//	public String getCallerClassName(int callStackDepth) {
+	//		return getClassContext()[callStackDepth].getName();
+	//	}
+	//}
 
 	/**
 	 * Using a Custom SecurityManager to get the caller classname. Using the old reflection approach had some drawbacks:<br/>
@@ -30,22 +38,20 @@ public class Logr {
 	 * <br/>
 	 * See also http://www.infoq.com/news/2013/07/Oracle-Removes-getCallerClass
 	 */
-	private static final CallerSecurityManager CSM = new CallerSecurityManager();
+	//private static final CallerSecurityManager CSM = new CallerSecurityManager();
 
-
-	public static Logger get() {
-		String className = CSM.getCallerClassName(THREAD_TYPE_DEEP);
-		return determineLogger(className);
-	}
-
+	//public static Logger get() {
+	//	String className = CSM.getCallerClassName(THREAD_TYPE_DEEP);
+	//	return determineLogger(className);
+	//}
 
 	/**
 	 * Determines the class and the appropiate logger of the calling class.
 	 *
 	 * @return The (slf4j) logger of the caller
 	 */
-	static Logger determineLogger(String callerClassName) {
-		return LogManager.getLogger(callerClassName);
-	}
+	//static Logger determineLogger(String callerClassName) {
+	//	return LogManager.getLogger(callerClassName);
+	//}
 
 }
