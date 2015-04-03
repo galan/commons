@@ -1,5 +1,6 @@
 package de.galan.commons.logging;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.ReflectionUtil;
@@ -17,6 +18,10 @@ public class Say {
 
 	private static boolean includeIdentifier = false;
 
+
+	// potential improvements:
+	// - Integrate Rethrow into Say
+	// - Say returns generated message
 
 	/**
 	 * Determines the class and the appropiate logger of the calling class.
@@ -56,6 +61,12 @@ public class Say {
 	public static void trace(Object message, Throwable throwable, Object... args) {
 		PayloadMessage payload = payload(message, args, throwable);
 		determineLogger().trace(payload, payload.getThrowable());
+	}
+
+
+	public static <T extends Throwable> T traceThrows(T throwable) throws T {
+		//PayloadMessage payload = payload(message, null, throwable);
+		throw determineLogger().throwing(Level.ERROR, throwable);
 	}
 
 
@@ -160,6 +171,32 @@ public class Say {
 	public static void error(Object message, Throwable throwable, Object... args) {
 		PayloadMessage payload = payload(message, args, throwable);
 		determineLogger().error(payload, payload.getThrowable());
+	}
+
+
+	// -------------------------------- FATAL --------------------------------
+
+	public static void fatal(Object message) {
+		PayloadMessage payload = payload(message, null, null);
+		determineLogger().fatal(payload, payload.getThrowable());
+	}
+
+
+	public static void fatal(Object message, Object... args) {
+		PayloadMessage payload = payload(message, args, null);
+		determineLogger().fatal(payload, payload.getThrowable());
+	}
+
+
+	public static void fatal(Object message, Throwable throwable) {
+		PayloadMessage payload = payload(message, null, throwable);
+		determineLogger().fatal(payload, payload.getThrowable());
+	}
+
+
+	public static void fatal(Object message, Throwable throwable, Object... args) {
+		PayloadMessage payload = payload(message, args, throwable);
+		determineLogger().fatal(payload, payload.getThrowable());
 	}
 
 
