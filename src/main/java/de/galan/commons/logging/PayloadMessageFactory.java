@@ -16,7 +16,7 @@ public class PayloadMessageFactory extends AbstractMessageFactory {
 
 	@Override
 	public Message newMessage(String message, Object... params) {
-		return new PayloadMessageOld(message, params);
+		return new PayloadMessage(message, params);
 	}
 
 }

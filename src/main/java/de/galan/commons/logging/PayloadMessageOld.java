@@ -4,10 +4,11 @@ import org.apache.logging.log4j.message.Message;
 
 
 /**
- * daniel should have written a comment here.
+ * First approach to what is now known as PayloadMessage
  *
  * @author daniel
  */
+@Deprecated
 public class PayloadMessageOld implements Message {
 
 	private static final String[] EMPTY_ARGUMENTS = new String[] {};

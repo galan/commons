@@ -7,8 +7,9 @@ import java.lang.management.RuntimeMXBean;
 
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.base.StandardSystemProperty;
+
 import de.galan.commons.logging.Logr;
-import de.galan.commons.snake.util.SystemModel;
 import de.galan.commons.time.Sleeper;
 
 
@@ -108,19 +109,20 @@ public class JvmUtils {
 		}
 
 
+		//TODO extract infobox to own entity
 		protected void logMessage(String message) {
-			String lf = new SystemModel().getLineSeparator();
+			String ls = StandardSystemProperty.LINE_SEPARATOR.value();
 			String indention = "\t";
-			StringBuilder info = new StringBuilder(lf);
-			info.append(indention + "┏" + repeat("━", 68) + "╍" + lf);
-			info.append(indention + "┃ " + lf);
-			info.append(indention + "┃ " + message + lf);
-			info.append(indention + "┃ " + lf);
+			StringBuilder info = new StringBuilder(ls);
+			info.append(indention + "┏" + repeat("━", 68) + "╍" + ls);
+			info.append(indention + "┃ " + ls);
+			info.append(indention + "┃ " + message + ls);
+			info.append(indention + "┃ " + ls);
 			if (isNotBlank(builderMessage)) {
-				info.append(indention + "┃ " + builderMessage + lf);
-				info.append(indention + "┃ " + lf);
+				info.append(indention + "┃ " + builderMessage + ls);
+				info.append(indention + "┃ " + ls);
 			}
-			info.append(indention + "┗" + repeat("━", 68) + "╍" + lf);
+			info.append(indention + "┗" + repeat("━", 68) + "╍" + ls);
 			LOG.info("{}", info.toString());
 		}
 	}
