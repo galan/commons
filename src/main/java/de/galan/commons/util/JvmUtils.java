@@ -5,11 +5,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
-import org.apache.logging.log4j.Logger;
-
 import com.google.common.base.StandardSystemProperty;
 
-import de.galan.commons.logging.Logr;
 import de.galan.commons.logging.Say;
 import de.galan.commons.time.Sleeper;
 
@@ -46,10 +43,8 @@ public class JvmUtils {
 	/** Builder to terminate the JVM */
 	public static class TerminateBuilder {
 
-		private static final Logger LOG = Logr.get();
-
 		private int builderReturnCode;
-		private boolean builderThreaded = true;
+		private boolean builderThreaded = false;
 		private String builderMessage;
 
 

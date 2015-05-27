@@ -49,11 +49,11 @@ public class MessageBox {
 		else {
 			info.append(indention + "╭" + StringUtils.repeat("─", WIDTH) + "┄" + lf);
 		}
-		info.append(indention + "│" + StringUtils.repeat(" ", WIDTH) + lf);
+		info.append(indention + "│" + lf);
 		for (String line: messageLines) {
 			info.append(indention + "│    " + line + lf);
 		}
-		info.append(indention + "│" + StringUtils.repeat(" ", WIDTH) + lf);
+		info.append(indention + "│" + lf);
 		info.append(indention + "╰" + StringUtils.repeat("─", WIDTH) + "┄" + lf);
 		return info.toString();
 	}
