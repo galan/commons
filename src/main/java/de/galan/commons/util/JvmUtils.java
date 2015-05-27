@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.base.StandardSystemProperty;
 
 import de.galan.commons.logging.Logr;
+import de.galan.commons.logging.Say;
 import de.galan.commons.time.Sleeper;
 
 
@@ -109,21 +110,28 @@ public class JvmUtils {
 		}
 
 
-		//TODO extract infobox to own entity
 		protected void logMessage(String message) {
 			String ls = StandardSystemProperty.LINE_SEPARATOR.value();
-			String indention = "\t";
-			StringBuilder info = new StringBuilder(ls);
-			info.append(indention + "┏" + repeat("━", 68) + "╍" + ls);
-			info.append(indention + "┃ " + ls);
-			info.append(indention + "┃ " + message + ls);
-			info.append(indention + "┃ " + ls);
+			String msg = message;
 			if (isNotBlank(builderMessage)) {
-				info.append(indention + "┃ " + builderMessage + ls);
-				info.append(indention + "┃ " + ls);
+				msg += ls + ls + builderMessage;
 			}
-			info.append(indention + "┗" + repeat("━", 68) + "╍" + ls);
-			LOG.info("{}", info.toString());
+			MessageBox.printBox(null, msg);
+		}
+	}
+
+
+	/** Null-safe shortcut to Runtime method, catching RuntimeExceptions. */
+	public synchronized static void addShutdownHook(Runnable task) {
+		if (task != null) {
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+				try {
+					task.run();
+				}
+				catch (RuntimeException rex) {
+					Say.warn("Exception while processing shutdown-hook", rex);
+				}
+			}));
 		}
 	}
 
