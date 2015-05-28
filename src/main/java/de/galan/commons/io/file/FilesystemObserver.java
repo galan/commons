@@ -141,7 +141,7 @@ public class FilesystemObserver {
 	protected void notifyDirectoryListener(ProxyDirectoryListener proxyDirectoryListener, Kind<?> kind, Path path) {
 		if (proxyDirectoryListener != null) {
 			File file = new File(proxyDirectoryListener.getDirectory(), path.getFileName().toString());
-			LOG.info("dir: " + proxyDirectoryListener.getDirectory().getAbsolutePath() + ", file:" + file.getName());
+			LOG.info("dir: " + proxyDirectoryListener.getDirectory().getAbsolutePath() + ", file:" + file.getName()); //TODO change to debug later
 			if (kind == ENTRY_CREATE) {
 				proxyDirectoryListener.notifyFileCreated(file);
 				if (proxyDirectoryListener.isRecursive() && file.isDirectory()) {
@@ -165,7 +165,7 @@ public class FilesystemObserver {
 
 	protected void notifyFileListener(ProxyFileListener fileListener, Kind<?> kind, Path path) {
 		if (fileListener != null && StringUtils.equals(path.getFileName().toString(), fileListener.getFile().getName())) {
-			LOG.info("kind: " + kind + ", file: " + fileListener.getFile().getAbsolutePath()); // TODO change to debug later
+			LOG.info("kind: " + kind + ", file: " + fileListener.getFile().getAbsolutePath()); //TODO change to debug later
 			if (kind == ENTRY_CREATE) {
 				fileListener.notifyFileCreated(fileListener.getFile());
 			}
