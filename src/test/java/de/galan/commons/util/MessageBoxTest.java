@@ -12,7 +12,7 @@ import de.galan.commons.test.Tests;
 /**
  * CUT MessageBox
  *
- * @author daniel
+ * @author galan
  */
 public class MessageBoxTest {
 

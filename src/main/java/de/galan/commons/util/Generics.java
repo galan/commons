@@ -1,11 +1,9 @@
 package de.galan.commons.util;
 
-
-
 /**
  * Helpermethods, that simplify working with generics.
  *
- * @author daniel
+ * @author galan
  */
 public class Generics {
 

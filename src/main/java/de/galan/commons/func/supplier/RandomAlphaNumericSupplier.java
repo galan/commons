@@ -8,7 +8,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 /**
  * Provides simple random alphanumeric strings.
  *
- * @author daniel
+ * @author galan
  */
 public class RandomAlphaNumericSupplier implements Supplier<String> {
 

@@ -10,7 +10,7 @@ import de.galan.commons.time.Instants;
 /**
  * Provides a fixed date given by the constructor.
  *
- * @author daniel
+ * @author galan
  */
 public class FixedDateSupplier implements Supplier<Date> {
 

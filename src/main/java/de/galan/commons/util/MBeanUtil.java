@@ -13,7 +13,7 @@ import de.galan.commons.logging.Say;
 /**
  * MBean helper, registers MBeans with given package-name.
  *
- * @author daniel
+ * @author galan
  */
 public class MBeanUtil {
 

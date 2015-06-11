@@ -15,7 +15,7 @@ import de.galan.commons.time.ApplicationClock;
 /**
  * Test parent for unit tests.
  *
- * @author daniel
+ * @author galan
  */
 public class AbstractTestParent {
 

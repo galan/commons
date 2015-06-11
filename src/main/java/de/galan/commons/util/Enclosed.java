@@ -5,8 +5,8 @@ import java.util.Collection;
 
 /**
  * Simple utility class, that checks if an element is in an (vararg) array.
- * 
- * @author daniel
+ *
+ * @author galan
  */
 public class Enclosed {
 
@@ -92,6 +92,6 @@ public class Enclosed {
 	private static void test() {
 		int a = $("a", "b").length;
 	}
-	*/
+	 */
 
 }

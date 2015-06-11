@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Clock that acts as time emitter for the application. Uses a java.time.clock.SystemClock (UTC) by default.
  *
- * @author daniel
+ * @author galan
  */
 public class ApplicationClock {
 

@@ -26,7 +26,7 @@ import de.galan.commons.logging.Logr;
  * <br/>
  * Deprecated in favor of de.galan.commons.time.Instants.<br/>
  *
- * @author daniel
+ * @author galan
  */
 @Deprecated
 public class Dates {

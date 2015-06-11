@@ -15,7 +15,7 @@ import de.galan.commons.test.AbstractTestParent;
 /**
  * CUT TimeDsl
  *
- * @author daniel
+ * @author galan
  */
 public class TimeDslTest extends AbstractTestParent {
 

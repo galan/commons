@@ -16,7 +16,7 @@ import de.galan.commons.time.HumanTime;
 /**
  * Some benchmarks
  *
- * @author daniel
+ * @author galan
  */
 @Ignore
 public class LogPerformanceIT {

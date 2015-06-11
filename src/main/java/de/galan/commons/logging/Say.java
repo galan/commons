@@ -9,7 +9,7 @@ import org.apache.logging.log4j.util.ReflectionUtil;
 /**
  * Facade for the logging-framework (currently Log4j2). Uses the PayloadMessage for parameterization of messages.
  *
- * @author daniel
+ * @author galan
  */
 public class Say {
 

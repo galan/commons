@@ -7,7 +7,7 @@ import org.apache.logging.log4j.message.Message;
 /**
  * Construction of PayloadMessages
  *
- * @author daniel
+ * @author galan
  */
 public class PayloadMessageFactory extends AbstractMessageFactory {
 

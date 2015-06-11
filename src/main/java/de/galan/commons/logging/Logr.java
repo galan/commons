@@ -9,7 +9,7 @@ import org.apache.logging.log4j.util.ReflectionUtil;
  * Returns the logger for the calling class. Can be used to determine the Logger, reduces errors when copy&paste.<br/>
  * Note: Can be replaced by Log4j2 LogManager.getLogger();
  *
- * @author daniel
+ * @author galan
  */
 public class Logr {
 

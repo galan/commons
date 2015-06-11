@@ -14,7 +14,7 @@ import de.galan.commons.test.AbstractTestParent;
 /**
  * CUT HumanTime
  *
- * @author daniel
+ * @author galan
  */
 public class HumanTimeTest extends AbstractTestParent {
 

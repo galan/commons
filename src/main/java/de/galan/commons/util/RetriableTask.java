@@ -13,7 +13,7 @@ import de.galan.commons.time.Sleeper;
 /**
  * Runs a Callable until it runs without Exception the specified times of retries.
  *
- * @author daniel
+ * @author galan
  * @param <T> Possible result of the repeating task
  */
 public class RetriableTask<T> implements Callable<T> {

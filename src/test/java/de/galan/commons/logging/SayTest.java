@@ -6,7 +6,7 @@ import org.junit.Test;
 /**
  * CUT Say
  *
- * @author daniel
+ * @author galan
  */
 public class SayTest { //extends AbstractTestParent {
 

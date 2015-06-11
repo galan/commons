@@ -25,7 +25,7 @@ import de.galan.commons.time.HumanTime;
 /**
  * Common helper methods that are helpful for the AbstractTestParent and Test-Classes via static imports.
  *
- * @author daniel
+ * @author galan
  */
 public class Tests {
 

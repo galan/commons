@@ -30,7 +30,7 @@ import de.galan.commons.logging.Logr;
  * formatting time-based objects. Application-wide time will be setup in ApplicationClock.<br/>
  * See also https://github.com/galan/commons/wiki/...
  *
- * @author daniel
+ * @author galan
  */
 public class Instants {
 

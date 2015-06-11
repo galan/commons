@@ -9,7 +9,7 @@ import java.net.MalformedURLException;
 /**
  * Initializes the log4j xml configuration
  *
- * @author daniel
+ * @author galan
  */
 public class Log4jBootstrap {
 

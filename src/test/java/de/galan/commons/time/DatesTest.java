@@ -19,7 +19,7 @@ import de.galan.commons.test.AbstractTestParent;
 /**
  * CUT DateDsl
  *
- * @author daniel
+ * @author galan
  */
 @Deprecated
 public class DatesTest extends AbstractTestParent {

@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 /**
  * Provides sequences of long values, starting with startValue or zero.
  *
- * @author daniel
+ * @author galan
  */
 public class LongSequenceSupplier implements Supplier<Long> {
 

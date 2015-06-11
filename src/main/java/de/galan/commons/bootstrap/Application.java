@@ -3,7 +3,7 @@ package de.galan.commons.bootstrap;
 /**
  * Simple lifecycle of an application
  *
- * @author daniel
+ * @author galan
  */
 public interface Application {
 

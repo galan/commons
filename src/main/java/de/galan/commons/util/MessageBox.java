@@ -16,7 +16,7 @@ import de.galan.commons.logging.Say;
 /**
  * Print generic message-boxes to the logging system
  *
- * @author daniel
+ * @author galan
  */
 public class MessageBox {
 

@@ -2,8 +2,8 @@ package de.galan.commons.util;
 
 /**
  * Exception is thrown, when retries didn't finished successfully.
- * 
- * @author daniel
+ *
+ * @author galan
  */
 public class RetryException extends Exception {
 

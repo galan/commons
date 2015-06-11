@@ -21,7 +21,7 @@ import de.galan.commons.time.Sleeper;
 /**
  * Starts/stops a simple webserver. Usage: use startServer(Container) and anonymously override DummyContainer.
  *
- * @author daniel
+ * @author galan
  */
 public class SimpleWebserverTestParent extends AbstractTestParent {
 

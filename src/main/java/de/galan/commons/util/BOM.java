@@ -11,7 +11,7 @@ import com.google.common.base.Charsets;
 /**
  * Adding and remove BOM (byteordermark) UTF-8 headers.
  *
- * @author daniel
+ * @author galan
  */
 public class BOM {
 

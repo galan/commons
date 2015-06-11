@@ -13,7 +13,7 @@ import de.galan.commons.test.AbstractTestParent;
 /**
  * CUT GenericUtil
  *
- * @author daniel
+ * @author galan
  */
 public class GenericsTest extends AbstractTestParent {
 

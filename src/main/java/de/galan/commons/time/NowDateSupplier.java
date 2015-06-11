@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 /**
  * Provides the current Date
  *
- * @author daniel
+ * @author galan
  */
 public class NowDateSupplier implements Supplier<Date> {
 

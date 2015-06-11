@@ -14,7 +14,7 @@ import de.galan.commons.time.Sleeper;
 /**
  * Provides access to information about the currently running JVM and some process-control.
  *
- * @author daniel
+ * @author galan
  */
 public class JvmUtils {
 

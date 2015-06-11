@@ -11,7 +11,7 @@ import org.apache.logging.log4j.jul.LogManager;
 /**
  * Configures the logger (Log4j2)
  *
- * @author daniel
+ * @author galan
  */
 public class BootstrapLogger {
 

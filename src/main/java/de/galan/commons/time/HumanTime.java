@@ -16,7 +16,7 @@ import de.galan.commons.collection.SoftReferenceCache;
 /**
  * Utility class to handle human readable time periods.
  *
- * @author daniel
+ * @author galan
  */
 public class HumanTime {
 

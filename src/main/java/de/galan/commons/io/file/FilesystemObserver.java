@@ -36,7 +36,7 @@ import de.galan.commons.util.Generics;
  * File- and DirectoryListener can be registered at the observer to recevive notifications if they change. Uses
  * internally the WatchService.
  *
- * @author daniel
+ * @author galan
  */
 public class FilesystemObserver {
 

@@ -3,7 +3,7 @@ package de.galan.commons.bootstrap;
 /**
  * Initializes and starts the application
  *
- * @author daniel
+ * @author galan
  */
 public class Launcher {
 

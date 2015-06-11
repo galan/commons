@@ -21,7 +21,7 @@ import org.apache.logging.log4j.message.Message;
  * </code>
  * <br/>
  *
- * @author daniel
+ * @author galan
  */
 public class PayloadMessage implements Message {
 

@@ -11,8 +11,8 @@ import de.galan.commons.test.AbstractTestParent;
 
 /**
  * CUT RetriableTask
- * 
- * @author daniel
+ *
+ * @author galan
  */
 public class RetriableTaskTest extends AbstractTestParent {
 
