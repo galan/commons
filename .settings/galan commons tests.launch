@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
+<listAttribute key="com.mountainminds.eclemma.core.SCOPE_IDS">
+<listEntry value="=galan-commons/src\/main\/java"/>
+<listEntry value="=galan-commons/src\/main\/resources"/>
+</listAttribute>
 <setAttribute key="name.schedenig.eclipse.grepconsole.DisabledIds"/>
 <setAttribute key="name.schedenig.eclipse.grepconsole.EnabledIds"/>
 <setAttribute key="name.schedenig.eclipse.grepconsole.FilterDisabledIds"/>
