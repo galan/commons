@@ -3,7 +3,9 @@ package de.galan.commons.time;
 import static de.galan.commons.time.Instants.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,11 +16,11 @@ import de.galan.commons.collection.SoftReferenceCache;
 
 
 /**
- * Utility class to handle human readable time periods.
+ * Utility class to handle human readable time durations.
  *
  * @author galan
  */
-public class HumanTime {
+public class Durations {
 
 	private static final Pattern PATTERN_HUMAN_TIME = Pattern.compile("^([0-9]+w)?[ ]*([0-9]+d)?[ ]*([0-9]+h)?[ ]*([0-9]+m[^s]{0})?[ ]*([0-9]+s)?[ ]*([0-9]+ms)?$");
 
@@ -61,18 +63,18 @@ public class HumanTime {
 		String result = "";
 		if ((date != null) && (reference != null)) {
 			long time = reference.toEpochMilli() - date.toEpochMilli();
-			result = humanizeTime(time, " ");
+			result = humanize(time, " ");
 		}
 		return result;
 	}
 
 
 	public static String humanizeTime(long time) {
-		return humanizeTime(time, "");
+		return humanize(time, EMPTY);
 	}
 
 
-	private static String humanizeTime(long time, String separator) {
+	private static String humanize(long time, String separator) {
 		StringBuilder result = new StringBuilder();
 		if (time == 0L) {
 			result.append("0ms");
@@ -110,7 +112,7 @@ public class HumanTime {
 	}
 
 
-	public static Long dehumanizeTime(String time) {
+	public static Long dehumanize(String time) {
 		Long result = getHumantimeCache().get(time);
 		if (result == null) {
 			if (isNotBlank(time)) {
@@ -145,6 +147,14 @@ public class HumanTime {
 			result = Long.valueOf(longString) * unit;
 		}
 		return result;
+	}
+
+
+	public static Duration toDuration(String time) {
+		if (isBlank(time)) {
+			return Duration.ZERO;
+		}
+		return Duration.of(dehumanize(time), ChronoUnit.MILLIS);
 	}
 
 }

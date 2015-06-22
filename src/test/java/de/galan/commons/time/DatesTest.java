@@ -165,7 +165,7 @@ public class DatesTest extends AbstractTestParent {
 
 	@Test
 	public void fromDuskTillDawn() throws Exception {
-		long expected = HumanTime.dehumanizeTime("12h").longValue();
+		long expected = Durations.dehumanize("12h").longValue();
 		Date dusk = date("2012-11-01 18:00:00");
 		Date dawn = date("2012-11-02 06:00:00");
 		assertEquals(expected, from(dusk).till(dawn));

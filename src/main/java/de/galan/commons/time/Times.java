@@ -122,7 +122,7 @@ public class Times {
 
 
 		public IsTimeBuilder isAtLeast(String time) {
-			return isAtLeast(HumanTime.dehumanizeTime(time));
+			return isAtLeast(Durations.dehumanize(time));
 		}
 
 
@@ -132,7 +132,7 @@ public class Times {
 
 
 		public IsTimeBuilder isAtMost(String time) {
-			return isAtMost(HumanTime.dehumanizeTime(time));
+			return isAtMost(Durations.dehumanize(time));
 		}
 
 

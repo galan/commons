@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.google.common.base.Stopwatch;
 
 import de.galan.commons.logging.Say;
-import de.galan.commons.time.HumanTime;
+import de.galan.commons.time.Durations;
 
 
 /**
@@ -41,8 +41,8 @@ public class LogPerformanceIT {
 		}
 		watchLog.stop();
 
-		Say.info("Simple Say {} took {}", loops, HumanTime.humanizeTime(watchSay.elapsed(TimeUnit.MILLISECONDS)));
-		Say.info("Simple Log {} took {}", loops, HumanTime.humanizeTime(watchLog.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Simple Say {} took {}", loops, Durations.humanizeTime(watchSay.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Simple Log {} took {}", loops, Durations.humanizeTime(watchLog.elapsed(TimeUnit.MILLISECONDS)));
 	}
 
 
@@ -64,8 +64,8 @@ public class LogPerformanceIT {
 		}
 		watchLog.stop();
 
-		Say.info("Parameter Say {} took {}", loops, HumanTime.humanizeTime(watchSay.elapsed(TimeUnit.MILLISECONDS)));
-		Say.info("Parameter Log {} took {}", loops, HumanTime.humanizeTime(watchLog.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Parameter Say {} took {}", loops, Durations.humanizeTime(watchSay.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Parameter Log {} took {}", loops, Durations.humanizeTime(watchLog.elapsed(TimeUnit.MILLISECONDS)));
 	}
 
 
@@ -87,8 +87,8 @@ public class LogPerformanceIT {
 		}
 		watchLog.stop();
 
-		Say.info("Simple Say {} took {}", loops, HumanTime.humanizeTime(watchSay.elapsed(TimeUnit.MILLISECONDS)));
-		Say.info("Simple Log {} took {}", loops, HumanTime.humanizeTime(watchLog.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Simple Say {} took {}", loops, Durations.humanizeTime(watchSay.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Simple Log {} took {}", loops, Durations.humanizeTime(watchLog.elapsed(TimeUnit.MILLISECONDS)));
 	}
 
 }

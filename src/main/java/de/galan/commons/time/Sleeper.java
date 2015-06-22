@@ -13,7 +13,7 @@ public class Sleeper {
 	 * @param humanTime The time in a format such as 30m10s10ms
 	 */
 	public static void sleep(String humanTime) {
-		sleep(HumanTime.dehumanizeTime(humanTime));
+		sleep(Durations.dehumanize(humanTime));
 	}
 
 

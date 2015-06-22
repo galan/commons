@@ -19,7 +19,7 @@ import org.hamcrest.collection.IsIterableContainingInOrder;
 
 import com.google.common.io.Resources;
 
-import de.galan.commons.time.HumanTime;
+import de.galan.commons.time.Durations;
 
 
 /**
@@ -133,7 +133,7 @@ public class Tests {
 
 
 	public static void assertDateNear(String timeThreshold, Date actual, boolean truncateMillis) {
-		assertDateNear(HumanTime.dehumanizeTime(timeThreshold), actual, truncateMillis);
+		assertDateNear(Durations.dehumanize(timeThreshold), actual, truncateMillis);
 	}
 
 

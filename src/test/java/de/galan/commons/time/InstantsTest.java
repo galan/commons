@@ -200,7 +200,7 @@ public class InstantsTest extends AbstractTestParent {
 
 	@Test
 	public void fromDuskTillDawnDate() throws Exception {
-		long expected = HumanTime.dehumanizeTime("12h").longValue();
+		long expected = Durations.dehumanize("12h").longValue();
 		Date dusk = dateLocal("2012-11-01 18:00:00");
 		Date dawn = dateLocal("2012-11-02 06:00:00");
 		assertEquals(expected, from(dusk).till(dawn));
@@ -209,7 +209,7 @@ public class InstantsTest extends AbstractTestParent {
 
 	@Test
 	public void fromDuskTillDawnInstant() throws Exception {
-		long expected = HumanTime.dehumanizeTime("12h").longValue();
+		long expected = Durations.dehumanize("12h").longValue();
 		Instant dusk = instantLocal("2012-11-01 18:00:00");
 		Instant dawn = instantLocal("2012-11-02 06:00:00");
 		assertEquals(expected, from(dusk).till(dawn));
