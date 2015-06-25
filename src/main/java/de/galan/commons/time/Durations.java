@@ -69,7 +69,7 @@ public class Durations {
 	}
 
 
-	public static String humanizeTime(long time) {
+	public static String humanize(long time) {
 		return humanize(time, EMPTY);
 	}
 

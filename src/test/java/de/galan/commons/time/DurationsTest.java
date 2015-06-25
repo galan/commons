@@ -2,7 +2,6 @@ package de.galan.commons.time;
 
 import static de.galan.commons.time.Instants.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import java.util.Date;
@@ -40,38 +39,38 @@ public class DurationsTest extends AbstractTestParent {
 
 	@Test
 	public void humanize() {
-		assertEquals("0ms", Durations.humanizeTime(0L));
-		assertEquals("1s200ms", Durations.humanizeTime(1200L));
+		assertEquals("0ms", Durations.humanize(0L));
+		assertEquals("1s200ms", Durations.humanize(1200L));
 	}
 
 
 	@Test
 	public void dehumanize() {
-		assertThat(Durations.dehumanize("0"), is(equalTo(0L)));
+		assertThat(Durations.dehumanize("0")).isEqualTo(0L);
 		assertNull(Durations.dehumanize(""));
 		assertNull(Durations.dehumanize(null));
 		assertNull(Durations.dehumanize("4h30m200"));
 
-		assertThat(Durations.dehumanize("1200"), is(equalTo(1200L)));
-		assertThat(Durations.dehumanize("1200ms"), is(equalTo(1200L)));
-		assertThat(Durations.dehumanize("1s200ms"), is(equalTo(1200L)));
-		assertThat(Durations.dehumanize("1s 200ms"), is(equalTo(1200L)));
-		assertThat(Durations.dehumanize(" 1s    200ms "), is(equalTo(1200L)));
+		assertThat(Durations.dehumanize("1200")).isEqualTo(1200L);
+		assertThat(Durations.dehumanize("1200ms")).isEqualTo(1200L);
+		assertThat(Durations.dehumanize("1s200ms")).isEqualTo(1200L);
+		assertThat(Durations.dehumanize("1s 200ms")).isEqualTo(1200L);
+		assertThat(Durations.dehumanize(" 1s    200ms ")).isEqualTo(1200L);
 
-		assertThat(Durations.dehumanize("4h30m200ms"), is(equalTo(16200200L)));
-		assertThat(Durations.dehumanize("4h 30m 200ms"), is(equalTo(16200200L)));
-		assertThat(Durations.dehumanize("4h  30m200ms"), is(equalTo(16200200L)));
+		assertThat(Durations.dehumanize("4h30m200ms")).isEqualTo(16200200L);
+		assertThat(Durations.dehumanize("4h 30m 200ms")).isEqualTo(16200200L);
+		assertThat(Durations.dehumanize("4h  30m200ms")).isEqualTo(16200200L);
 
-		assertThat(Durations.dehumanize("2w3d4h5m6s7ms"), is(equalTo(1483506007L)));
+		assertThat(Durations.dehumanize("2w3d4h5m6s7ms")).isEqualTo(1483506007L);
 
-		assertThat(Durations.dehumanize("4m"), is(equalTo(240000L)));
+		assertThat(Durations.dehumanize("4m")).isEqualTo(240000L);
 	}
 
 
 	@Test
 	public void dehumanizeTimeCache() {
-		assertThat(Durations.dehumanize("2w3d4h5m6s7ms"), is(equalTo(1483506007L)));
-		assertThat(Durations.dehumanize("2w3d4h5m6s7ms"), is(equalTo(1483506007L)));
+		assertThat(Durations.dehumanize("2w3d4h5m6s7ms")).isEqualTo(1483506007L);
+		assertThat(Durations.dehumanize("2w3d4h5m6s7ms")).isEqualTo(1483506007L);
 	}
 
 

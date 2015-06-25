@@ -41,8 +41,8 @@ public class LogPerformanceIT {
 		}
 		watchLog.stop();
 
-		Say.info("Simple Say {} took {}", loops, Durations.humanizeTime(watchSay.elapsed(TimeUnit.MILLISECONDS)));
-		Say.info("Simple Log {} took {}", loops, Durations.humanizeTime(watchLog.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Simple Say {} took {}", loops, Durations.humanize(watchSay.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Simple Log {} took {}", loops, Durations.humanize(watchLog.elapsed(TimeUnit.MILLISECONDS)));
 	}
 
 
@@ -64,8 +64,8 @@ public class LogPerformanceIT {
 		}
 		watchLog.stop();
 
-		Say.info("Parameter Say {} took {}", loops, Durations.humanizeTime(watchSay.elapsed(TimeUnit.MILLISECONDS)));
-		Say.info("Parameter Log {} took {}", loops, Durations.humanizeTime(watchLog.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Parameter Say {} took {}", loops, Durations.humanize(watchSay.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Parameter Log {} took {}", loops, Durations.humanize(watchLog.elapsed(TimeUnit.MILLISECONDS)));
 	}
 
 
@@ -87,8 +87,8 @@ public class LogPerformanceIT {
 		}
 		watchLog.stop();
 
-		Say.info("Simple Say {} took {}", loops, Durations.humanizeTime(watchSay.elapsed(TimeUnit.MILLISECONDS)));
-		Say.info("Simple Log {} took {}", loops, Durations.humanizeTime(watchLog.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Simple Say {} took {}", loops, Durations.humanize(watchSay.elapsed(TimeUnit.MILLISECONDS)));
+		Say.info("Simple Log {} took {}", loops, Durations.humanize(watchLog.elapsed(TimeUnit.MILLISECONDS)));
 	}
 
 }

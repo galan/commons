@@ -13,9 +13,6 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
-import org.hamcrest.collection.IsIterableContainingInOrder;
 
 import com.google.common.io.Resources;
 
@@ -134,18 +131,6 @@ public class Tests {
 
 	public static void assertDateNear(String timeThreshold, Date actual, boolean truncateMillis) {
 		assertDateNear(Durations.dehumanize(timeThreshold), actual, truncateMillis);
-	}
-
-
-	// helper for hamcrest
-	public static <T extends Comparable<T>> Matcher<T> between(T lower, T upper) {
-		return Matchers.allOf(Matchers.greaterThanOrEqualTo(lower), Matchers.lessThanOrEqualTo(upper));
-	}
-
-
-	@SuppressWarnings("unchecked")
-	public static <T> Matcher<java.lang.Iterable<? extends T>> containsInOrder(T... items) {
-		return IsIterableContainingInOrder.<T> contains(items);
 	}
 
 }
