@@ -3,17 +3,20 @@
 
 	<groupId>de.galan</groupId>
 	<artifactId>commons</artifactId>
-	<version>0.9-SNAPSHOT</version>
-	<name>Commons</name>
-	<description>Generic functionality</description>
+	<version>0.9.0-SNAPSHOT</version>
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>Utility library, that is also used accross the ${project.groupId} components</description>
+	<url>https://github.com/galan/commons</url>
 
 	<parent>
 		<groupId>de.galan</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.8</version>
+		<version>0.9.0</version>
 	</parent>
 
 	<scm>
+		<connection>scm:git:ssh://github.com/galan/commons.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/galan/commons.git</developerConnection>
 		<url>https://github.com/galan/commons</url>
 	</scm>
