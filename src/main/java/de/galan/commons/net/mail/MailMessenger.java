@@ -46,7 +46,7 @@ public class MailMessenger {
 	private String xmailer;
 
 
-	private MailMessenger(MailMessengerBuilder builder) {
+	protected MailMessenger(MailMessengerBuilder builder) {
 		noreply = builder.builderNoreply;
 		smtpAuth = builder.builderSmtpAuth;
 		smtpStarttls = builder.builderSmtpStarttls;
@@ -62,6 +62,7 @@ public class MailMessenger {
 		return new MailMessengerBuilder();
 	}
 
+	/** Builder for sending mails */
 	public static class MailMessengerBuilder {
 
 		private String builderNoreply;

@@ -202,7 +202,7 @@ public class Say {
 
 	// -------------------------------- MISC --------------------------------
 
-	public static Logger getLogger() {
+	public static Logger/*checkstyle*/ getLogger() {
 		return determineLogger();
 	}
 

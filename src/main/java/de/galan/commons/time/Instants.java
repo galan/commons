@@ -40,24 +40,24 @@ public class Instants {
 
 	private static final Logger LOG = Logr.get();
 
-	public static final String DATE_FORMAT_LOCAL = "yyyy-MM-dd HH:mm:ss";
-	public static final String DATE_FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	public static final String DATE_FORMAT_LOCAL = "yyyy-MM-dd HH:mm:ss[.SSS]";
+	public static final String DATE_FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss[.SSS]'Z'";
 
 	public static final ZoneId ZONE_LOCAL = ZoneId.systemDefault().normalized();
 	public static final ZoneId ZONE_UTC = ZoneId.of("UTC").normalized();
 
-	private static final Map<String, DateTimeFormatter> formatters = new ConcurrentHashMap<>();
+	private static final Map<String, DateTimeFormatter> FORMATTERS = new ConcurrentHashMap<>();
 
 
 	private static DateTimeFormatter getFormater(String pattern, String timezone) {
 		String key = pattern + "//" + timezone;
-		DateTimeFormatter result = formatters.get(key);
+		DateTimeFormatter result = FORMATTERS.get(key);
 		if (result == null) {
 			result = DateTimeFormatter.ofPattern(pattern);
 			if (isNotBlank(timezone)) {
 				result = result.withZone(ZoneId.of(timezone));
 			}
-			formatters.put(key, result);
+			FORMATTERS.put(key, result);
 		}
 		return result;
 	}

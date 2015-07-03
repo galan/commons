@@ -36,18 +36,18 @@ public class Dates {
 	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	public static final String DATE_FORMAT_ISO = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-	private static final ThreadLocal<Map<String, SimpleDateFormat>> localSdf = ThreadLocal.withInitial(HashMap::new);
+	private static final ThreadLocal<Map<String, SimpleDateFormat>> LOCAL_SDF = ThreadLocal.withInitial(HashMap::new);
 
 
 	private static SimpleDateFormat getDateFormater(String pattern, String timezone) {
 		String key = pattern + "//" + timezone;
-		SimpleDateFormat result = localSdf.get().get(key);
+		SimpleDateFormat result = LOCAL_SDF.get().get(key);
 		if (result == null) {
 			result = new SimpleDateFormat(pattern);
 			if (isNotBlank(timezone)) {
 				result.setTimeZone(TimeZone.getTimeZone(timezone));
 			}
-			localSdf.get().put(key, result);
+			LOCAL_SDF.get().put(key, result);
 		}
 		return result;
 	}

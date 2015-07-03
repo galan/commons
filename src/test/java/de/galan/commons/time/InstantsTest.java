@@ -2,7 +2,8 @@ package de.galan.commons.time;
 
 import static de.galan.commons.test.Tests.*;
 import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
@@ -72,11 +73,11 @@ public class InstantsTest extends AbstractTestParent {
 
 	@Test
 	public void toStringFormat() throws Exception {
-		assertThat("2012-05-31 17:51:01").isEqualTo(from(instantLocal("2012-05-31 17:51:01")).toString());
-		assertThat("2014-08-10 20:45:15").isEqualTo(from(instantLocal("2014-08-10 20:45:15")).toString());
-		assertThat("2014-08-10 20:45:15").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toString());
-		assertThat("2014-12-10 19:45:15").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toString());
-		assertThat("2014-12-10 19:45:15").isEqualTo(from(instantLocal("2014-12-10 19:45:15")).toString());
+		assertThat("2012-05-31 17:51:01.000").isEqualTo(from(instantLocal("2012-05-31 17:51:01")).toString());
+		assertThat("2014-08-10 20:45:15.000").isEqualTo(from(instantLocal("2014-08-10 20:45:15")).toString());
+		assertThat("2014-08-10 20:45:15.000").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toString());
+		assertThat("2014-12-10 19:45:15.000").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toString());
+		assertThat("2014-12-10 19:45:15.000").isEqualTo(from(instantLocal("2014-12-10 19:45:15")).toString());
 	}
 
 
@@ -88,65 +89,65 @@ public class InstantsTest extends AbstractTestParent {
 
 	@Test
 	public void testFromTo() {
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).toString()).isEqualTo("2012-05-31 17:51:01");
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).toString()).isEqualTo("2012-05-31 17:51:01.000");
 		assertDateNear("1s", from(now()).toDate());
 	}
 
 
 	@Test
 	public void testIn() {
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(2, days()).toString()).isEqualTo("2012-06-02 17:51:01");
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(3, months()).toString()).isEqualTo("2012-08-31 17:51:01");
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(1, year()).toString()).isEqualTo("2013-05-31 17:51:01");
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(1, year()).toStringIsoUtc()).isEqualTo("2013-05-31T15:51:01Z");
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(2, days()).toString()).isEqualTo("2012-06-02 17:51:01.000");
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(3, months()).toString()).isEqualTo("2012-08-31 17:51:01.000");
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(1, year()).toString()).isEqualTo("2013-05-31 17:51:01.000");
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(1, year()).toStringIsoUtc()).isEqualTo("2013-05-31T15:51:01.000Z");
 
 		String date = from(instantLocal("2012-05-31 17:51:01")).in(2, years()).in(3, months()).in(1, hour()).in(10, minutes()).in(20, seconds()).toString();
-		assertThat(date).isEqualTo("2014-08-31 19:01:21");
+		assertThat(date).isEqualTo("2014-08-31 19:01:21.000");
 	}
 
 
 	@Test
 	public void testBefore() {
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).before(2, days()).toString()).isEqualTo("2012-05-29 17:51:01");
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).before(3, months()).toString()).isEqualTo("2012-02-29 17:51:01"); // -ST>WT -1-
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).before(1, year()).toString()).isEqualTo("2011-05-31 17:51:01");
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).before(2, days()).toString()).isEqualTo("2012-05-29 17:51:01.000");
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).before(3, months()).toString()).isEqualTo("2012-02-29 17:51:01.000"); // -ST>WT -1-
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).before(1, year()).toString()).isEqualTo("2011-05-31 17:51:01.000");
 
 		String date = from(instantLocal("2012-05-31 17:51:01")).before(2, years()).before(3, months()).before(1, hour()).before(10, minutes()).before(20,
 			seconds()).toString();
-		assertThat(date).isEqualTo("2010-02-28 16:40:41"); // -ST>WT -1-
+		assertThat(date).isEqualTo("2010-02-28 16:40:41.000"); // -ST>WT -1-
 	}
 
 
 	@Test
 	public void testNext() {
-		assertEquals("2013-01-01 00:00:00", from(instantLocal("2012-05-31 17:51:01")).next(year()).toString());
-		assertEquals("2012-06-01 00:00:00", from(instantLocal("2012-05-31 17:51:01")).next(month()).toString());
-		assertEquals("2012-06-07 17:51:01", from(instantLocal("2012-05-31 17:51:01")).next(week()).toString());
-		assertEquals("2012-06-01 00:00:00", from(instantLocal("2012-05-31 17:51:01")).next(day()).toString());
-		assertEquals("2012-05-31 18:00:00", from(instantLocal("2012-05-31 17:51:01")).next(hour()).toString());
-		assertEquals("2012-05-31 17:52:00", from(instantLocal("2012-05-31 17:51:01")).next(minute()).toString());
-		assertEquals("2012-05-31 17:51:02", from(instantLocal("2012-05-31 17:51:01")).next(second()).toString());
+		assertEquals("2013-01-01 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).next(year()).toString());
+		assertEquals("2012-06-01 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).next(month()).toString());
+		assertEquals("2012-06-07 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).next(week()).toString());
+		assertEquals("2012-06-01 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).next(day()).toString());
+		assertEquals("2012-05-31 18:00:00.000", from(instantLocal("2012-05-31 17:51:01")).next(hour()).toString());
+		assertEquals("2012-05-31 17:52:00.000", from(instantLocal("2012-05-31 17:51:01")).next(minute()).toString());
+		assertEquals("2012-05-31 17:51:02.000", from(instantLocal("2012-05-31 17:51:01")).next(second()).toString());
 	}
 
 
 	@Test
 	public void testPrevious() {
-		assertEquals("2011-01-01 00:00:00", from(instantLocal("2012-05-31 17:51:01")).previous(year()).toString());
-		assertEquals("2012-04-01 00:00:00", from(instantLocal("2012-05-31 17:51:01")).previous(month()).toString());
-		assertEquals("2012-05-24 17:51:01", from(instantLocal("2012-05-31 17:51:01")).previous(week()).toString());
-		assertEquals("2012-05-30 00:00:00", from(instantLocal("2012-05-31 17:51:01")).previous(day()).toString());
-		assertEquals("2012-05-31 16:00:00", from(instantLocal("2012-05-31 17:51:01")).previous(hour()).toString());
-		assertEquals("2012-05-31 17:50:00", from(instantLocal("2012-05-31 17:51:01")).previous(minute()).toString());
-		assertEquals("2012-05-31 17:51:00", from(instantLocal("2012-05-31 17:51:01")).previous(second()).toString());
+		assertEquals("2011-01-01 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(year()).toString());
+		assertEquals("2012-04-01 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(month()).toString());
+		assertEquals("2012-05-24 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).previous(week()).toString());
+		assertEquals("2012-05-30 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(day()).toString());
+		assertEquals("2012-05-31 16:00:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(hour()).toString());
+		assertEquals("2012-05-31 17:50:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(minute()).toString());
+		assertEquals("2012-05-31 17:51:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(second()).toString());
 	}
 
 
 	@Test
 	public void testAt() {
-		assertEquals("2012-05-31 12:00:00", from(instantLocal("2012-05-31 17:51:01")).atNoon().toString());
-		assertEquals("2012-05-31 00:00:00", from(instantLocal("2012-05-31 17:51:01")).atMidnight().toString());
-		assertEquals("2012-05-31 22:13:09", from(instantLocal("2012-05-31 17:51:01")).at("22:13:09").toString());
-		assertEquals("2012-05-31 22:13:09", from(instantLocal("2012-05-31 17:51:01")).at(22, 13, 9).toString());
+		assertEquals("2012-05-31 12:00:00.000", from(instantLocal("2012-05-31 17:51:01")).atNoon().toString());
+		assertEquals("2012-05-31 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).atMidnight().toString());
+		assertEquals("2012-05-31 22:13:09.000", from(instantLocal("2012-05-31 17:51:01")).at("22:13:09").toString());
+		assertEquals("2012-05-31 22:13:09.000", from(instantLocal("2012-05-31 17:51:01")).at(22, 13, 9).toString());
 	}
 
 
@@ -176,25 +177,25 @@ public class InstantsTest extends AbstractTestParent {
 
 	@Test
 	public void testNextWeekday() {
-		assertEquals("2012-06-07 17:51:01", from(instantLocal("2012-05-31 17:51:01")).next(thursday()).toString());
-		assertEquals("2012-06-01 17:51:01", from(instantLocal("2012-05-31 17:51:01")).next(friday()).toString());
-		assertEquals("2012-06-02 17:51:01", from(instantLocal("2012-05-31 17:51:01")).next(saturday()).toString());
-		assertEquals("2012-06-03 17:51:01", from(instantLocal("2012-05-31 17:51:01")).next(sunday()).toString());
-		assertEquals("2012-06-04 17:51:01", from(instantLocal("2012-05-31 17:51:01")).next(monday()).toString());
-		assertEquals("2012-06-05 17:51:01", from(instantLocal("2012-05-31 17:51:01")).next(tuesday()).toString());
-		assertEquals("2012-06-06 17:51:01", from(instantLocal("2012-05-31 17:51:01")).next(wednesday()).toString());
+		assertEquals("2012-06-07 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).next(thursday()).toString());
+		assertEquals("2012-06-01 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).next(friday()).toString());
+		assertEquals("2012-06-02 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).next(saturday()).toString());
+		assertEquals("2012-06-03 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).next(sunday()).toString());
+		assertEquals("2012-06-04 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).next(monday()).toString());
+		assertEquals("2012-06-05 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).next(tuesday()).toString());
+		assertEquals("2012-06-06 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).next(wednesday()).toString());
 	}
 
 
 	@Test
 	public void testPreviousWeekday() {
-		assertEquals("2012-05-24 17:51:01", from(instantLocal("2012-05-31 17:51:01")).previous(thursday()).toString());
-		assertEquals("2012-05-25 17:51:01", from(instantLocal("2012-05-31 17:51:01")).previous(friday()).toString());
-		assertEquals("2012-05-26 17:51:01", from(instantLocal("2012-05-31 17:51:01")).previous(saturday()).toString());
-		assertEquals("2012-05-27 17:51:01", from(instantLocal("2012-05-31 17:51:01")).previous(sunday()).toString());
-		assertEquals("2012-05-28 17:51:01", from(instantLocal("2012-05-31 17:51:01")).previous(monday()).toString());
-		assertEquals("2012-05-29 17:51:01", from(instantLocal("2012-05-31 17:51:01")).previous(tuesday()).toString());
-		assertEquals("2012-05-30 17:51:01", from(instantLocal("2012-05-31 17:51:01")).previous(wednesday()).toString());
+		assertEquals("2012-05-24 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).previous(thursday()).toString());
+		assertEquals("2012-05-25 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).previous(friday()).toString());
+		assertEquals("2012-05-26 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).previous(saturday()).toString());
+		assertEquals("2012-05-27 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).previous(sunday()).toString());
+		assertEquals("2012-05-28 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).previous(monday()).toString());
+		assertEquals("2012-05-29 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).previous(tuesday()).toString());
+		assertEquals("2012-05-30 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).previous(wednesday()).toString());
 	}
 
 
@@ -219,7 +220,7 @@ public class InstantsTest extends AbstractTestParent {
 	@Test
 	public void toIso8601Utc() throws Exception {
 		Date dateLocal = dateLocal("2013-07-04 09:36:11");
-		assertEquals("2013-07-04T07:36:11Z", from(dateLocal).toStringIsoUtc());
+		assertEquals("2013-07-04T07:36:11.000Z", from(dateLocal).toStringIsoUtc());
 	}
 
 

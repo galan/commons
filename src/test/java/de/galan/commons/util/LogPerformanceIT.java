@@ -34,10 +34,10 @@ public class LogPerformanceIT {
 		}
 		watchSay.stop();
 
-		final Logger LOG = LogManager.getLogger();
+		final Logger log = LogManager.getLogger();
 		Stopwatch watchLog = Stopwatch.createStarted();
 		for (int i = 0; i < loops; i++) {
-			LOG.info(simpleMessage);
+			log.info(simpleMessage);
 		}
 		watchLog.stop();
 
@@ -57,10 +57,10 @@ public class LogPerformanceIT {
 		}
 		watchSay.stop();
 
-		final Logger LOG = LogManager.getLogger();
+		final Logger log = LogManager.getLogger();
 		Stopwatch watchLog = Stopwatch.createStarted();
 		for (int i = 0; i < loops; i++) {
-			LOG.info(message, "world", 42L);
+			log.info(message, "world", 42L);
 		}
 		watchLog.stop();
 
@@ -80,10 +80,10 @@ public class LogPerformanceIT {
 		}
 		watchSay.stop();
 
-		final Logger LOG = LogManager.getLogger();
+		final Logger log = LogManager.getLogger();
 		Stopwatch watchLog = Stopwatch.createStarted();
 		for (int i = 0; i < loops; i++) {
-			LOG.debug(message, "world", 42L);
+			log.debug(message, "world", 42L);
 		}
 		watchLog.stop();
 
