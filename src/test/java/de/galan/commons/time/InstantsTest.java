@@ -2,8 +2,8 @@ package de.galan.commons.time;
 
 import static de.galan.commons.test.Tests.*;
 import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.StrictAssertions.*;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
@@ -221,6 +221,8 @@ public class InstantsTest extends AbstractTestParent {
 	public void toIso8601Utc() throws Exception {
 		Date dateLocal = dateLocal("2013-07-04 09:36:11");
 		assertEquals("2013-07-04T07:36:11.000Z", from(dateLocal).toStringIsoUtc());
+		Date dateLocalMs = dateLocal("2013-07-04 09:36:11.123");
+		assertEquals("2013-07-04T07:36:11.123Z", from(dateLocalMs).toStringIsoUtc());
 	}
 
 
@@ -228,6 +230,13 @@ public class InstantsTest extends AbstractTestParent {
 	public void testLocalUtc() throws Exception {
 		assertEquals(dateUtc("2013-07-04T07:36:11Z"), dateLocal("2013-07-04 09:36:11"));
 		assertEquals(instantUtc("2013-07-04T07:36:11Z"), instantLocal("2013-07-04 09:36:11"));
+	}
+
+
+	@Test
+	public void invalidInput() throws Exception {
+		assertThat(instantLocal("abc")).isNull();
+		assertThat(dateLocal("abc")).isNull();
 	}
 
 

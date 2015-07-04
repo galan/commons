@@ -20,9 +20,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.logging.log4j.Logger;
-
-import de.galan.commons.logging.Logr;
+import de.galan.commons.logging.Say;
 
 
 /**
@@ -37,8 +35,6 @@ public class Instants {
 	/*
 	TemporalAdjuster
 	 */
-
-	private static final Logger LOG = Logr.get();
 
 	public static final String DATE_FORMAT_LOCAL = "yyyy-MM-dd HH:mm:ss[.SSS]";
 	public static final String DATE_FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss[.SSS]'Z'";
@@ -79,7 +75,8 @@ public class Instants {
 
 
 	public static Date dateLocal(String text) {
-		return Date.from(instantLocal(text));
+		Instant instant = instantLocal(text);
+		return instant != null ? Date.from(instant) : null;
 	}
 
 
@@ -94,13 +91,13 @@ public class Instants {
 	}
 
 
-	/** Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss", system default (local) timezone is used. */
+	/** Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss[.SSS]", system default (local) timezone is used. */
 	public static Instant instantLocal(String text) {
 		return instant(text, ZONE_LOCAL);
 	}
 
 
-	/** Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss", given timezone is used. */
+	/** Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss[.SSS]", given timezone is used. */
 	public static Instant instant(String text, ZoneId zone) {
 		Instant result = null;
 		try {
@@ -109,13 +106,13 @@ public class Instants {
 			result = zdt.toInstant();
 		}
 		catch (DateTimeParseException ex) {
-			LOG.warn("Instant not constructable {}", ex, text);
+			Say.warn("Instant not constructable {}", ex, text);
 		}
 		return result;
 	}
 
 
-	/** Creates an Instant, input format is "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone is UTC. */
+	/** Creates an Instant, input format is "yyyy-MM-dd'T'HH:mm:ss[.SSS]'Z'", timezone is UTC. */
 	public static Instant instantUtc(String text) {
 		Instant result = null;
 		try {
@@ -123,7 +120,7 @@ public class Instants {
 			result = ldt.toInstant(ZoneOffset.UTC);
 		}
 		catch (DateTimeParseException ex) {
-			LOG.warn("Instant not constructable {}", ex, text);
+			Say.warn("Instant not constructable {}", ex, text);
 		}
 		return result;
 	}
