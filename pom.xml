@@ -19,8 +19,8 @@
 		<connection>scm:git:ssh://github.com/galan/commons.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/galan/commons.git</developerConnection>
 		<url>https://github.com/galan/commons</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<dependencies>
 		<!-- utility -->
