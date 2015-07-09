@@ -1,6 +1,6 @@
 package de.galan.commons.io.file;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.StrictAssertions.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -158,7 +158,7 @@ public class FileObserverTest extends AbstractTestParent {
 	protected void touch(File file) throws IOException {
 		FileUtils.touch(file);
 		Say.info("touched");
-		Sleeper.sleep(20L);
+		Sleeper.sleep(50L);
 	}
 
 
