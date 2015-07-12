@@ -1,39 +1,55 @@
 # Abstract
 Instants provides a fluent interface to create Instant (and Date) objects with ease, and typical pitfalls when dealing with Instant and Date can be avoided. It is best used with static imports and IDE support, so you have to make sure that you have the `de.galan.commons.time.Instants` class in eg. for eclipse in your [Java Content Assist Favorites Preferences](http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Feditor%2Fref-preferences-content-assist-favorites.htm). 
 
-An Instant created with Instants will be using ApplicationClock, so testing time-affected methods become quite simple.
-
 # Notation
+
+## Instant creation methods
+
+| method | parameter | description |
+|---|---|---|
+| `now` | | Instant now |
+| `tomorrow` | | Instant in one day from now |
+| `yesterday` | | Instant before one day from now |
+| `dateLocal` | String | Date in the form "yyyy-MM-dd HH:mm:ss", using the local timezone |
+| `date` | long | Date using the milliseconds since the epoch |
+| `dateUtc` | String | Date in the form ""yyyy-MM-dd'T'HH:mm:ss[.SSS]'Z'", using UTC as timezone |
+| `instantLocal` | String | Instant in the form "yyyy-MM-dd HH:mm:ss[.SSS]", using the local timezone |
+| `instant` | String, ZoneId | Instant in the form "yyyy-MM-dd HH:mm:ss[.SSS]", using the given timezone |
+| `instantUtc` | String | Instant in the form "yyyy-MM-dd HH:mm:ss[.SSS]", using UTC as timezone |
+| `instant` | long | Instant using the milliseconds since the epoch |
+
+The methods can be used by `from(Instant)` or `from(Date)`, but also independently of Instants, which makes the methods even more helpful.
+
+An Instant created with Instants will be using ApplicationClock, so testing time-affected code become quite simple.
+
 
 ## Builder methods
 
 | method | parameter | description |
 |---|---|---|
-|  `from` | Date | Creates a builder, so the following methods can be chained to create a date relative to the given date. For predefined dates see below. |
-| `in` | int amount, DatetimeUnit unit | Shifts the date amount units to the future. |
-| `before` | int amount, DatetimeUnit unit | Shifts the date amount units to the past. |
-| `next` | DatetimeUnit unit | Shifts the date one unit to the future and resets all smaller units. |
-| `previous` | DatetimeUnit unit | Shifts the date one unit to the past and resets all smaller units. |
-| `next` | WeekdayUnit unit | Shifts the date one unit to the future. |
-| `previous` | WeekdayUnit unit | Shifts the date one unit to the past. |
+| `from` | Instant/Date | Creates a builder, so the following methods can be chained to create a instant or date relative to the given value. |
+| `in` | int, DatetimeUnit | Shifts the value the given amount of the given unit to the future. |
+| `before` | int, DatetimeUnit | Shifts the value the given amount of the given units to the past. |
+| `next` | DatetimeUnit | Shifts the value one unit to the future and resets all smaller units. |
+| `previous` | WeekdayUnit | Shifts the value one unit to the past. |
+| `truncate` | DatetimeUnit | Resets all values from the given unit downwards |
+| `next` | WeekdayUnit | Shifts the value one unit to the future. |
+| `previous` | DatetimeUnit | Shifts the value one unit to the past and resets all smaller units. |
 | `at` | int hour, int minute, int second | Sets the time to the given amount of hours, minutes and seconds. |
-| `at` | String time | Sets the time to the given time in the format HH:mm:ss. |
+| `at` | String | Sets the time to the given time in the format "HH:mm:ss". |
 | `atMidnight` |  | Sets the time to "00:00:00". |
 | `atNoon` |  | Sets the time to "12:00:00". |
-| `till` | Date | Returns the time in millis till the given second date. |
-| `toDate` |  | Returns the date from the builder. |
-| `toString` |  | Return a String representation from the builder in the form "yyyy-MM-dd HH:mm:ss". |
-| `toString` | String format | Return a String representation from the builder in the given format. |
-| `toIso8601Utc` |  | Returns a String representation from the builder in the form "yyyy-MM-dd'T'HH:mm:ss'Z", set to UTC timezone. |
-
-## Date creation methods
-* now()
-* tomorrow()
-* yesterday()
-* date(String date) - In the form "yyyy-MM-dd HH:mm:ss"
-* date(int year, int month, int day, int hour, int minute, int second)
-
-The methods can be used by from(Date), but also independently of DateDsl, which makes the code even more helpful.
+| `till` | Instant/Date | Returns the time in millis till the given second value. |
+| `with` | TemporalAdjuster | Applies the adjuster to the current value |
+| `zone` | ZoneId | Uses the given zone |
+| `toInstant` |  | Returns the Instant from the builder. |
+| `toDate` |  | Returns the Date from the builder. |
+| `toZdt` |  | Returns the ZonedDateTime with UTC as ZoneId from the builder. |
+| `toZdt` | ZoneId | Returns the ZonedDateTime with the given ZoneId from the builder. |
+| `toLong` |  | Returns the milliseconds since epoch from the builder. |
+| `toString` |  | Return a String representation from the builder in the form "yyyy-MM-dd HH:mm:ss.SSS". |
+| `toString` | String | Return a String representation from the builder in the given format. |
+| `toStringIsoUtc` |  | Returns a String representation from the builder in the form "yyyy-MM-dd'T'HH:mm:ss.SSS'Z", set to UTC timezone. |
 
 ## Units
 
