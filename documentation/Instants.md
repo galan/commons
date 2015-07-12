@@ -1,6 +1,6 @@
 # Abstract
 
-Times helps creating time comparisions with Date or long (timestamp) types. It offers a fluent interface that is described in the next section. Instants can of course be used to complement [TimeDsl](https://github.com/d8bitr/commons/wiki/DateDsl).
+Times helps creating time comparisions with Date or long (timestamp) types. It offers a fluent interface that is described in the next section. Instants can of course be used to complement [Times](https://github.com/galan/commons/blob/master/documentation/Times.md).
 
 # Notation
 | Method | Parameter | Result | Description |
