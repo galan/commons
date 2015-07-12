@@ -24,12 +24,13 @@ public class MessageBox {
 	private final static Pattern LINEBREAK = Pattern.compile("\\r?\\n");
 
 
-	/** The overview of the properties will be logged */
+	/** Prints a box with the given title and message to the logger, the title can be omitted. */
 	public static void printBox(String title, String message) {
 		printBox(title, Splitter.on(LINEBREAK).splitToList(message));
 	}
 
 
+	/** Prints a box with the given title and message lines to the logger, the title can be omitted. */
 	public static void printBox(String title, List<String> messageLines) {
 		Say.info("{message}", generateBox(title, messageLines));
 	}

@@ -15,7 +15,7 @@ import de.galan.commons.logging.Say;
  *
  * @author galan
  */
-public class MBeanUtil {
+public class JmxUtil {
 
 	/**
 	 * Will register the given mbean using the given packageName, type and name. If no packageName has been given, the

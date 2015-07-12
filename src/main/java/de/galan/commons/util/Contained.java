@@ -8,7 +8,7 @@ import java.util.Collection;
  *
  * @author galan
  */
-public class Enclosed {
+public class Contained {
 
 	// Note, overloading not possible due to bug in JVM/Spec:
 	// http://stackoverflow.com/questions/2521293/bug-with-varargs-and-overloading

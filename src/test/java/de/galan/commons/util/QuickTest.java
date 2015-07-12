@@ -19,7 +19,7 @@ public class QuickTest extends AbstractTestParent {
 	@Ignore
 	public void terminate() throws Exception {
 		//JvmUtils.terminate().message("kaboom").threaded(false).in("5s");
-		JvmUtils.terminate().message("BAM").threaded(true).now();
+		JvmUtil.terminate().message("BAM").threaded(true).now();
 		for (;;) {
 			Sleeper.sleep("1s");
 			Logr.get().info("running");

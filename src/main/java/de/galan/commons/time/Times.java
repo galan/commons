@@ -10,7 +10,7 @@ import de.galan.commons.time.Instants.WeekdayUnit;
 
 /**
  * Comparison of Dates and time with a fluent interface.<br/>
- * See also https://github.com/galan/commons/wiki/TimeDsl
+ * See also https://github.com/galan/commons/blob/master/documentation/Times.md
  *
  * @author galan
  */

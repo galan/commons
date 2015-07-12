@@ -1,7 +1,5 @@
 package de.galan.commons.test;
 
-import java.io.File;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -35,6 +33,7 @@ public class AbstractTestParent {
 	}
 
 
+	/*
 	public void setupSnake() {
 		// Get the working directory, which is in eclipse/maven the project folder
 		String baseDirectory = new File("").getAbsolutePath();
@@ -42,11 +41,11 @@ public class AbstractTestParent {
 		System.setProperty("snake.base", baseDirectory);
 		//TODO externalize new SnakeBootstrap().initialize();
 	}
-
+	 */
 
 	@Before
 	public void setupParent() {
-		setupSnake();
+		//setupSnake();
 		String method = "" + getClass().getSimpleName() + "." + name.getMethodName() + "()";
 		Logr.get().info("Executing test {}", method);
 	}

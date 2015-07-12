@@ -16,7 +16,7 @@ import de.galan.commons.time.Sleeper;
  *
  * @author galan
  */
-public class JvmUtils {
+public class JvmUtil {
 
 	public static String getPid() {
 		RuntimeMXBean rmxb = ManagementFactory.getRuntimeMXBean();
