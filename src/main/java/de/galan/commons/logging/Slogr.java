@@ -17,6 +17,10 @@ public class Slogr {
 	private static final int THREAD_TYPE_DEEP = 2;
 
 
+	/**
+	 * To be used to get the Slf4J Logger in a class, eg. <code>private final static Logger LOG = Slogr.get();</code>.
+	 * To avoid the Logger declaration completely, use the class <code>Say</code>.
+	 */
 	public static Logger get() {
 		return LoggerFactory.getLogger(ReflectionUtil.getCallerClass(THREAD_TYPE_DEEP));
 	}
