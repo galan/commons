@@ -34,7 +34,7 @@ Different `Supplier` for eg. Long-sequences and random alphanumeric strings.
 ## de.galan.commons.time
 * ApplicationClock - Clock that acts as time emitter for an application. Uses a java.time.clock.SystemClock (UTC) by default.
 * Durations - Utility class to handle and calculate human readable time durations, such as "2h 30m"
-* [Instants](https://github.com/galan/commons/blob/master/documentation/Instants.md) - FLuent simplified time creation and modification.
+* [Instants](https://github.com/galan/commons/blob/master/documentation/Instants.md) - Fluent simplified time creation and modification.
 * [Times](https://github.com/galan/commons/blob/master/documentation/Times.md) - Fluent time comparision
 * Sleeper - Sleeps a `Duration` wihtout throwing an InterruptedException
 
