@@ -1,68 +1,93 @@
 # Abstract
-
-Times helps creating time comparisions with Date or long (timestamp) types. It offers a fluent interface that is described in the next section. Instants can of course be used to complement [Times](https://github.com/galan/commons/blob/master/documentation/Times.md).
+Instants provides a fluent interface to create Instant (and Date) objects with ease, and typical pitfalls when dealing with Instant and Date can be avoided. It is best used with static imports and IDE support, so you have to make sure that you have the `de.galan.commons.time.Instants` class in eg. for eclipse in your [Java Content Assist Favorites Preferences](http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Feditor%2Fref-preferences-content-assist-favorites.htm). 
 
 # Notation
-| Method | Parameter | Result | Description |
-|---|---|---|---|
-| `when` | Date | TimeBuilder | Creates a builder, so the following methods can be chained to create a boolean relative to the given date. There are several builder that might be created for different comparisions. The Date used here is refered as the "reference Date". |
-| `equalsExactly` | Date | boolean | Compares two Dates including ms. |
-| `equals` | Date | boolean | Compares two Dates ignoring ms. |
-| `after` | Date | boolean | Determines that the reference Date is after the given Date. |
-| `between` | Date | BetweenTimeBuilder | Starts a between-comparison, that the reference Date is between the given and the following Date. |
-| `isAtLeast` | String | IsTimeBuilder | Lets check that the reference Date is at least after or before another Date. |
-| `isAtLeast` | long | IsTimeBuilder | Lets check that the reference Date is at least after or before another Date. |
-| `isAtMost` | String | IsTimeBuilder | Lets check that the reference Date is at most after or before another Date. |
-| `isAtMost` | long | IsTimeBuilder | Lets check that the reference Date is at most after or before another Date. |
-| `isWeekday` | WeekdayUnit | boolean | Checks that the given date equals to a day of the week (monday-sunday). |
 
-# Visualized
+## Instant creation methods
 
-`when(ref).isAtLeast(n).before(date)`
+| method | parameter | description |
+|---|---|---|
+| `now` | | Instant now |
+| `tomorrow` | | Instant in one day from now |
+| `yesterday` | | Instant before one day from now |
+| `dateLocal` | String | Date in the form "yyyy-MM-dd HH:mm:ss", using the local timezone |
+| `date` | long | Date using the milliseconds since the epoch |
+| `dateUtc` | String | Date in the form ""yyyy-MM-dd'T'HH:mm:ss[.SSS]'Z'", using UTC as timezone |
+| `instantLocal` | String | Instant in the form "yyyy-MM-dd HH:mm:ss[.SSS]", using the local timezone |
+| `instant` | String, ZoneId | Instant in the form "yyyy-MM-dd HH:mm:ss[.SSS]", using the given timezone |
+| `instantUtc` | String | Instant in the form "yyyy-MM-dd HH:mm:ss[.SSS]", using UTC as timezone |
+| `instant` | long | Instant using the milliseconds since the epoch |
 
-              ref                                    date
-    ----------|-----------------|--------------------|-----------------------> time
-                                |<---------n-------->|
-    \\\\\\\\\\\\\\\\\\ true \\\\|//// false //////////////////////////////////
+The methods can be used by `from(Instant)` or `from(Date)`, but also independently of Instants, which makes the methods even more helpful.
 
-`when(ref).isAtMost(n).before(date)`
-
-                                      ref            date
-    ----------------------------|-----|--------------|-----------------------> time
-                                |<----+------n------>|
-    ///////////////// false ////|\\\\\\\ true \\\\\\\|//// false /////////////
+An Instant created with Instants will be using ApplicationClock, so testing time-affected code become quite simple.
 
 
-`when(ref).isAtLeast(n).after(date)`
+## Builder methods
 
-                                                     date         ref
-    ----------|-----------------|--------------------|------------|----------> time
-                                |<---------n-------->|
-    ////////////////////////////////////// false ////|\\\\ true \\\\\\\\\\\\\\
+| method | parameter | description |
+|---|---|---|
+| `from` | Instant/Date | Creates a builder, so the following methods can be chained to create a instant or date relative to the given value. |
+| `in` | int, DatetimeUnit | Shifts the value the given amount of the given unit to the future. |
+| `before` | int, DatetimeUnit | Shifts the value the given amount of the given units to the past. |
+| `next` | DatetimeUnit | Shifts the value one unit to the future and resets all smaller units. |
+| `previous` | WeekdayUnit | Shifts the value one unit to the past. |
+| `truncate` | DatetimeUnit | Resets all values from the given unit downwards |
+| `next` | WeekdayUnit | Shifts the value one unit to the future. |
+| `previous` | DatetimeUnit | Shifts the value one unit to the past and resets all smaller units. |
+| `at` | int hour, int minute, int second | Sets the time to the given amount of hours, minutes and seconds. |
+| `at` | String | Sets the time to the given time in the format "HH:mm:ss". |
+| `atMidnight` |  | Sets the time to "00:00:00". |
+| `atNoon` |  | Sets the time to "12:00:00". |
+| `till` | Instant/Date | Returns the time in millis till the given second value. |
+| `with` | TemporalAdjuster | Applies the adjuster to the current value |
+| `zone` | ZoneId | Uses the given zone |
+| `toInstant` |  | Returns the Instant from the builder. |
+| `toDate` |  | Returns the Date from the builder. |
+| `toZdt` |  | Returns the ZonedDateTime with UTC as ZoneId from the builder. |
+| `toZdt` | ZoneId | Returns the ZonedDateTime with the given ZoneId from the builder. |
+| `toLong` |  | Returns the milliseconds since epoch from the builder. |
+| `toString` |  | Return a String representation from the builder in the form "yyyy-MM-dd HH:mm:ss.SSS". |
+| `toString` | String | Return a String representation from the builder in the given format. |
+| `toStringIsoUtc` |  | Returns a String representation from the builder in the form "yyyy-MM-dd'T'HH:mm:ss.SSS'Z", set to UTC timezone. |
 
+## Units
 
-`when(ref).isAtMost(n).after(date)`
+### DatetimeUnit
+* second(), seconds()
+* minute(), minutes()
+* hour(), hours()
+* day(), days()
+* week(), weeks()
+* month(), months()
+* year(), years()
 
-                                date     ref
-    ----------------------------|--------|-----------|-----------------------> time
-                                |<-------+-----n---->|
-    ///////////////// false ////|\\\\\\\ true \\\\\\\|//// false /////////////
-
-
+### WeekdayUnit
+* monday()
+* tuesday()
+* wednesday()
+* thursday()
+* friday()
+* saturday()
+* sunday()
 
 # Examples
-Check that now is between a certain range:
+Next Monday at 12:00:00:
 
-    when(now()).between(datePast).and(dateFuture)
+    from(now()).next(monday()).atNoon()
 
-Checks that a date is in the future:
+The month before:
 
-    when(date).after(now())
+    from(now()).previous(month())
 
-Checks that a date is in the past:
+Three days and one month later at 17:10:
 
-    when(date).before(now())
+    from(now()).in(3, days()).in(1, month()).at("17:10:00")
 
-Checks that a date is at least 10 seconds in the future:
+Methods are additive:
 
-    when(date).isAtLeast("10s").after(now())
+    from(date("2012-01-01 12:00:00")).in(2, month()).in(1, hour()).toString() // 2012-03-01 13:00:00
+
+The order can be important:
+
+    from(now()).next(day()).in(2, hours()).toDate() != from(now()).in(2, hours()).next(day()).toDate()
