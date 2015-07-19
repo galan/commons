@@ -97,12 +97,12 @@ public class InstantsTest extends AbstractTestParent {
 	@Test
 	public void testIn() {
 		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(2, days()).toString()).isEqualTo("2012-06-02 17:51:01.000");
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(3, months()).toString()).isEqualTo("2012-08-31 17:51:01.000");
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(1, year()).toString()).isEqualTo("2013-05-31 17:51:01.000");
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(1, year()).toStringIsoUtc()).isEqualTo("2013-05-31T15:51:01.000Z");
+		assertThat(from(instantLocal("2012-05-31 17:52:01")).in(3, months()).toString()).isEqualTo("2012-08-31 17:52:01.000");
+		assertThat(from(instantLocal("2012-05-31 17:53:01")).in(1, year()).toString()).isEqualTo("2013-05-31 17:51:03.000");
+		assertThat(from(instantLocal("2012-05-31 17:54:01")).in(1, year()).toStringIsoUtc()).isEqualTo("2013-05-31T15:51:04.000Z");
 
-		String date = from(instantLocal("2012-05-31 17:51:01")).in(2, years()).in(3, months()).in(1, hour()).in(10, minutes()).in(20, seconds()).toString();
-		assertThat(date).isEqualTo("2014-08-31 19:01:21.000");
+		String date = from(instantLocal("2012-05-31 17:55:01")).in(2, years()).in(3, months()).in(1, hour()).in(10, minutes()).in(20, seconds()).toString();
+		assertThat(date).isEqualTo("2014-08-31 19:01:25.000");
 	}
 
 
