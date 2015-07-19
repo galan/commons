@@ -2,8 +2,8 @@ package de.galan.commons.time;
 
 import static de.galan.commons.test.Tests.*;
 import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.StrictAssertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
@@ -99,7 +99,7 @@ public class InstantsTest extends AbstractTestParent {
 		assertThat(from(instantLocal("2012-05-31 17:51:01")).in(2, days()).toString()).isEqualTo("2012-06-02 17:51:01.000");
 		assertThat(from(instantLocal("2012-05-31 17:52:01")).in(3, months()).toString()).isEqualTo("2012-08-31 17:52:01.000");
 		assertThat(from(instantLocal("2012-05-31 17:53:01")).in(1, year()).toString()).isEqualTo("2013-05-31 17:53:01.000");
-		assertThat(from(instantLocal("2012-05-31 17:54:01")).in(1, year()).toStringIsoUtc()).isEqualTo("2013-05-31T15:54:01.000Z");
+		assertThat(from(instantLocal("2012-05-31 17:54:01")).in(1, year()).toString()).isEqualTo("2013-05-31 17:54:01.000");
 
 		String date = from(instantLocal("2012-05-31 17:55:01")).in(2, years()).in(3, months()).in(1, hour()).in(10, minutes()).in(20, seconds()).toString();
 		assertThat(date).isEqualTo("2014-08-31 19:05:21.000");
@@ -153,7 +153,7 @@ public class InstantsTest extends AbstractTestParent {
 
 	@Test
 	public void truncate() throws Exception {
-		Instant baseline = instantLocal("2014-09-17 14:15:16").plusMillis(123L).plusNanos(321L);
+		Instant baseline = instantUtc("2014-09-17T12:15:16Z").plusMillis(123L).plusNanos(321L);
 		assertThat(from(baseline).truncate(millis()).toInstant()).isEqualTo(instantLocal("2014-09-17 14:15:16").plusMillis(123L));
 		assertThat(from(baseline).truncate(seconds()).toInstant()).isEqualTo(instantLocal("2014-09-17 14:15:16"));
 		assertThat(from(baseline).truncate(minutes()).toInstant()).isEqualTo(instantLocal("2014-09-17 14:15:00"));
@@ -219,17 +219,19 @@ public class InstantsTest extends AbstractTestParent {
 
 	@Test
 	public void toIso8601Utc() throws Exception {
-		Date dateLocal = dateLocal("2013-07-04 09:36:11");
-		assertEquals("2013-07-04T07:36:11.000Z", from(dateLocal).toStringIsoUtc());
-		Date dateLocalMs = dateLocal("2013-07-04 09:36:11.123");
-		assertEquals("2013-07-04T07:36:11.123Z", from(dateLocalMs).toStringIsoUtc());
+		Date dateUtc = dateUtc("2013-07-04T07:36:11Z");
+		assertEquals("2013-07-04T07:36:11.000Z", from(dateUtc).toStringIsoUtc());
+		Date dateUtcMs = dateUtc("2013-07-04T07:36:11.123Z");
+		assertEquals("2013-07-04T07:36:11.123Z", from(dateUtcMs).toStringIsoUtc());
 	}
 
 
 	@Test
 	public void testLocalUtc() throws Exception {
-		assertEquals(dateUtc("2013-07-04T07:36:11Z"), dateLocal("2013-07-04 09:36:11"));
-		assertEquals(instantUtc("2013-07-04T07:36:11Z"), instantLocal("2013-07-04 09:36:11"));
+		assertThat(dateLocal("2013-07-04 09:36:11")).isEqualTo(Date.from(ZonedDateTime.of(2013, 7, 4, 9, 36, 11, 0, ZONE_LOCAL).toInstant()));
+		assertThat(dateUtc("2013-07-04T07:36:11Z")).isEqualTo(Date.from(ZonedDateTime.of(2013, 7, 4, 7, 36, 11, 0, ZONE_UTC).toInstant()));
+		assertThat(instantLocal("2013-07-04 09:36:11")).isEqualTo(ZonedDateTime.of(2013, 7, 4, 9, 36, 11, 0, ZONE_LOCAL).toInstant());
+		assertThat(instantUtc("2013-07-04T07:36:11Z")).isEqualTo(ZonedDateTime.of(2013, 7, 4, 7, 36, 11, 0, ZONE_UTC).toInstant());
 	}
 
 
