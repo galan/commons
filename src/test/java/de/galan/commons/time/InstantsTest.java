@@ -73,11 +73,11 @@ public class InstantsTest extends AbstractTestParent {
 
 	@Test
 	public void toStringFormat() throws Exception {
-		assertThat("2012-05-31 17:51:01.000").isEqualTo(from(instantLocal("2012-05-31 17:51:01")).toString());
-		assertThat("2014-08-10 20:45:15.000").isEqualTo(from(instantLocal("2014-08-10 20:45:15")).toString());
-		assertThat("2014-08-10 20:45:15.000").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toString());
-		assertThat("2014-12-10 19:45:15.000").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toString());
-		assertThat("2014-12-10 19:45:15.000").isEqualTo(from(instantLocal("2014-12-10 19:45:15")).toString());
+		assertThat("2012-05-31T17:51:01.000Z").isEqualTo(from(instantUtc("2012-05-31T17:51:01Z")).toStringUtc());
+		assertThat("2014-08-10T20:45:15.000Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15Z")).toStringUtc());
+		assertThat("2014-08-10T18:45:15.000Z").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toStringUtc());
+		assertThat("2014-12-10T18:45:15.000Z").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toStringUtc());
+		assertThat("2014-12-10T19:45:15.000Z").isEqualTo(from(instantUtc("2014-12-10T19:45:15Z")).toStringUtc());
 	}
 
 
