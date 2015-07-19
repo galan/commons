@@ -1,7 +1,7 @@
 package de.galan.commons.time;
 
 import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.junit.Assert.*;
 
 import java.util.Date;
@@ -22,7 +22,7 @@ public class DurationsTest extends AbstractTestParent {
 	public void timeAgo() {
 		assertEquals("2d 7h 26m 48s", Durations.timeAgo(instantLocal("2012-01-22 02:33:12"), instantLocal("2012-01-24 10:00:00")));
 		assertEquals("65d 16h 46m 8s", Durations.timeAgo(instantLocal("2011-11-19 17:14:12"), instantLocal("2012-01-24 10:00:20")));
-		assertEquals("15363d 9h 20s", Durations.timeAgo(instant(0L), instantLocal("2012-01-24 10:00:20")));
+		assertEquals("15363d 10h 20s", Durations.timeAgo(instant(0L), instantUtc("2012-01-24T10:00:20Z")));
 		assertEquals("", Durations.timeAgo(null, instantLocal("2012-01-24 10:00:20")));
 		assertEquals("", Durations.timeAgo(new Date(System.currentTimeMillis() + 1000L))); // in the future
 	}

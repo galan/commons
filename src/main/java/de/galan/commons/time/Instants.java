@@ -6,7 +6,6 @@ import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -116,8 +115,9 @@ public class Instants {
 	public static Instant instantUtc(String text) {
 		Instant result = null;
 		try {
-			LocalDateTime ldt = LocalDateTime.parse(text, getFormater(DATE_FORMAT_UTC, "UTC"));
-			result = ldt.toInstant(ZoneOffset.UTC);
+			ZonedDateTime zdt = ZonedDateTime.parse(text, getFormater(DATE_FORMAT_UTC, "UTC"));
+			//LocalDateTime ldt = LocalDateTime.parse(text, getFormater(DATE_FORMAT_UTC, "UTC"));
+			result = zdt.toInstant();
 		}
 		catch (DateTimeParseException ex) {
 			Say.warn("Instant not constructable {}", ex, text);
@@ -260,7 +260,7 @@ public class Instants {
 	public static class InstantBuilder {
 
 		private Instant current;
-		private ZoneId zone = ZONE_LOCAL;
+		private ZoneId zone = ZONE_UTC;
 
 
 		public InstantBuilder(Instant instant) {
@@ -269,7 +269,7 @@ public class Instants {
 
 
 		public InstantBuilder zone(ZoneId zoneId) {
-			zone = zoneId == null ? ZONE_LOCAL : zoneId;
+			zone = zoneId == null ? ZONE_UTC : zoneId;
 			return this;
 		}
 
@@ -407,6 +407,11 @@ public class Instants {
 
 		@Override
 		public String toString() {
+			return toStringLocal();
+		}
+
+
+		public String toStringLocal() {
 			return toString(DATE_FORMAT_LOCAL);
 		}
 
@@ -417,7 +422,7 @@ public class Instants {
 		}
 
 
-		public String toStringIsoUtc() {
+		public String toStringUtc() {
 			return getFormater(DATE_FORMAT_UTC, "UTC").format(current);
 		}
 

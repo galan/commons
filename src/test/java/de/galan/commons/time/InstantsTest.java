@@ -2,8 +2,8 @@ package de.galan.commons.time;
 
 import static de.galan.commons.test.Tests.*;
 import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.StrictAssertions.*;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
@@ -108,59 +108,59 @@ public class InstantsTest extends AbstractTestParent {
 
 	@Test
 	public void testBefore() {
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).before(2, days()).toString()).isEqualTo("2012-05-29 17:51:01.000");
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).before(3, months()).toString()).isEqualTo("2012-02-29 17:51:01.000"); // -ST>WT -1-
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).before(1, year()).toString()).isEqualTo("2011-05-31 17:51:01.000");
+		assertThat(from(instantUtc("2012-05-31T17:51:01Z")).before(2, days()).toStringUtc()).isEqualTo("2012-05-29T17:51:01.000Z");
+		assertThat(from(instantUtc("2012-05-31T17:51:01Z")).before(3, months()).toStringUtc()).isEqualTo("2012-02-29T17:51:01.000Z"); // -ST>WT -1-
+		assertThat(from(instantUtc("2012-05-31T17:51:01Z")).before(1, year()).toStringUtc()).isEqualTo("2011-05-31T17:51:01.000Z");
 
-		String date = from(instantLocal("2012-05-31 17:51:01")).before(2, years()).before(3, months()).before(1, hour()).before(10, minutes()).before(20,
-			seconds()).toString();
-		assertThat(date).isEqualTo("2010-02-28 16:40:41.000"); // -ST>WT -1-
+		String date = from(instantUtc("2012-05-31T17:51:01Z")).before(2, years()).before(3, months()).before(1, hour()).before(10, minutes()).before(20,
+			seconds()).toStringUtc();
+		assertThat(date).isEqualTo("2010-02-28T16:40:41.000Z"); // -ST>WT -1-
 	}
 
 
 	@Test
 	public void testNext() {
-		assertEquals("2013-01-01 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).next(year()).toString());
-		assertEquals("2012-06-01 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).next(month()).toString());
-		assertEquals("2012-06-07 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).next(week()).toString());
-		assertEquals("2012-06-01 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).next(day()).toString());
-		assertEquals("2012-05-31 18:00:00.000", from(instantLocal("2012-05-31 17:51:01")).next(hour()).toString());
-		assertEquals("2012-05-31 17:52:00.000", from(instantLocal("2012-05-31 17:51:01")).next(minute()).toString());
-		assertEquals("2012-05-31 17:51:02.000", from(instantLocal("2012-05-31 17:51:01")).next(second()).toString());
+		assertEquals("2013-01-01T00:00:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).next(year()).toStringUtc());
+		assertEquals("2012-06-01T00:00:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).next(month()).toStringUtc());
+		assertEquals("2012-06-07T17:51:01.000Z", from(instantUtc("2012-05-31T17:51:01Z")).next(week()).toStringUtc());
+		assertEquals("2012-06-01T00:00:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).next(day()).toStringUtc());
+		assertEquals("2012-05-31T18:00:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).next(hour()).toStringUtc());
+		assertEquals("2012-05-31T17:52:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).next(minute()).toStringUtc());
+		assertEquals("2012-05-31T17:51:02.000Z", from(instantUtc("2012-05-31T17:51:01Z")).next(second()).toStringUtc());
 	}
 
 
 	@Test
 	public void testPrevious() {
-		assertEquals("2011-01-01 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(year()).toString());
-		assertEquals("2012-04-01 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(month()).toString());
-		assertEquals("2012-05-24 17:51:01.000", from(instantLocal("2012-05-31 17:51:01")).previous(week()).toString());
-		assertEquals("2012-05-30 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(day()).toString());
-		assertEquals("2012-05-31 16:00:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(hour()).toString());
-		assertEquals("2012-05-31 17:50:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(minute()).toString());
-		assertEquals("2012-05-31 17:51:00.000", from(instantLocal("2012-05-31 17:51:01")).previous(second()).toString());
+		assertEquals("2011-01-01T00:00:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).previous(year()).toStringUtc());
+		assertEquals("2012-04-01T00:00:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).previous(month()).toStringUtc());
+		assertEquals("2012-05-24T17:51:01.000Z", from(instantUtc("2012-05-31T17:51:01Z")).previous(week()).toStringUtc());
+		assertEquals("2012-05-30T00:00:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).previous(day()).toStringUtc());
+		assertEquals("2012-05-31T16:00:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).previous(hour()).toStringUtc());
+		assertEquals("2012-05-31T17:50:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).previous(minute()).toStringUtc());
+		assertEquals("2012-05-31T17:51:00.000Z", from(instantUtc("2012-05-31T17:51:01Z")).previous(second()).toStringUtc());
 	}
 
 
 	@Test
 	public void testAt() {
-		assertEquals("2012-05-31 12:00:00.000", from(instantLocal("2012-05-31 17:51:01")).atNoon().toString());
-		assertEquals("2012-05-31 00:00:00.000", from(instantLocal("2012-05-31 17:51:01")).atMidnight().toString());
-		assertEquals("2012-05-31 22:13:09.000", from(instantLocal("2012-05-31 17:51:01")).at("22:13:09").toString());
-		assertEquals("2012-05-31 22:13:09.000", from(instantLocal("2012-05-31 17:51:01")).at(22, 13, 9).toString());
+		assertEquals("2012-05-31T12:00:00.000Z", from(instantLocal("2012-05-31 17:51:01")).atNoon().toStringUtc());
+		assertEquals("2012-05-31T00:00:00.000Z", from(instantLocal("2012-05-31 17:51:01")).atMidnight().toStringUtc());
+		assertEquals("2012-05-31T22:13:09.000Z", from(instantLocal("2012-05-31 17:51:01")).at("22:13:09").toStringUtc());
+		assertEquals("2012-05-31T22:13:09.000Z", from(instantLocal("2012-05-31 17:51:01")).at(22, 13, 9).toStringUtc());
 	}
 
 
 	@Test
 	public void truncate() throws Exception {
 		Instant baseline = instantUtc("2014-09-17T12:15:16Z").plusMillis(123L).plusNanos(321L);
-		assertThat(from(baseline).truncate(millis()).toInstant()).isEqualTo(instantLocal("2014-09-17 14:15:16").plusMillis(123L));
-		assertThat(from(baseline).truncate(seconds()).toInstant()).isEqualTo(instantLocal("2014-09-17 14:15:16"));
-		assertThat(from(baseline).truncate(minutes()).toInstant()).isEqualTo(instantLocal("2014-09-17 14:15:00"));
-		assertThat(from(baseline).truncate(hours()).toInstant()).isEqualTo(instantLocal("2014-09-17 14:00:00"));
-		assertThat(from(baseline).truncate(days()).toInstant()).isEqualTo(instantLocal("2014-09-17 00:00:00"));
-		assertThat(from(baseline).truncate(months()).toInstant()).isEqualTo(instantLocal("2014-09-01 00:00:00"));
-		assertThat(from(baseline).truncate(years()).toInstant()).isEqualTo(instantLocal("2014-01-01 00:00:00"));
+		assertThat(from(baseline).truncate(millis()).toInstant()).isEqualTo(instantUtc("2014-09-17T12:15:16Z").plusMillis(123L));
+		assertThat(from(baseline).truncate(seconds()).toInstant()).isEqualTo(instantUtc("2014-09-17T12:15:16Z"));
+		assertThat(from(baseline).truncate(minutes()).toInstant()).isEqualTo(instantUtc("2014-09-17T12:15:00Z"));
+		assertThat(from(baseline).truncate(hours()).toInstant()).isEqualTo(instantUtc("2014-09-17T12:00:00Z"));
+		assertThat(from(baseline).truncate(days()).toInstant()).isEqualTo(instantUtc("2014-09-17T00:00:00Z"));
+		assertThat(from(baseline).truncate(months()).toInstant()).isEqualTo(instantUtc("2014-09-01T00:00:00Z"));
+		assertThat(from(baseline).truncate(years()).toInstant()).isEqualTo(instantUtc("2014-01-01T00:00:00Z"));
 
 		assertThat(from(baseline).zone(ZONE_UTC).truncate(millis()).toInstant()).isEqualTo(instantUtc("2014-09-17T12:15:16Z").plusMillis(123L));
 		assertThat(from(baseline).zone(ZONE_UTC).truncate(seconds()).toInstant()).isEqualTo(instantUtc("2014-09-17T12:15:16Z"));
@@ -220,9 +220,9 @@ public class InstantsTest extends AbstractTestParent {
 	@Test
 	public void toIso8601Utc() throws Exception {
 		Date dateUtc = dateUtc("2013-07-04T07:36:11Z");
-		assertEquals("2013-07-04T07:36:11.000Z", from(dateUtc).toStringIsoUtc());
+		assertEquals("2013-07-04T07:36:11.000Z", from(dateUtc).toStringUtc());
 		Date dateUtcMs = dateUtc("2013-07-04T07:36:11.123Z");
-		assertEquals("2013-07-04T07:36:11.123Z", from(dateUtcMs).toStringIsoUtc());
+		assertEquals("2013-07-04T07:36:11.123Z", from(dateUtcMs).toStringUtc());
 	}
 
 

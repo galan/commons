@@ -2,10 +2,12 @@ package de.galan.commons.time;
 
 import static de.galan.commons.test.Tests.*;
 import static de.galan.commons.time.Dates.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -103,7 +105,8 @@ public class DatesTest extends AbstractTestParent {
 		assertEquals("2012-02-29 17:51:01", from(date("2012-05-31 17:51:01")).before(3, months()).toString());
 		assertEquals("2011-05-31 17:51:01", from(date("2012-05-31 17:51:01")).before(1, year()).toString());
 
-		String date = from(date("2012-05-31 17:51:01")).before(2, years()).before(3, months()).before(1, hour()).before(10, minutes()).before(20, seconds()).toString();
+		String date = from(date("2012-05-31 17:51:01")).before(2, years()).before(3, months()).before(1, hour()).before(10, minutes()).before(20,
+			seconds()).toString();
 		assertEquals("2010-02-28 16:40:41", date);
 	}
 
@@ -174,14 +177,14 @@ public class DatesTest extends AbstractTestParent {
 
 	@Test
 	public void toIso8601Utc() throws Exception {
-		Date dateLocal = date("2013-07-04 09:36:11");
-		assertEquals("2013-07-04T07:36:11Z", from(dateLocal).toIso8601Utc());
+		Date dateIso = dateIso("2013-07-04T07:36:11Z");
+		assertEquals("2013-07-04T07:36:11Z", from(dateIso).toIso8601Utc());
 	}
 
 
 	@Test
 	public void testDateIso() throws Exception {
-		assertEquals(dateIso("2013-07-04T07:36:11Z"), date("2013-07-04 09:36:11"));
+		assertEquals(dateIso("2013-07-04T07:36:11Z"), Date.from(ZonedDateTime.of(2013, 7, 4, 7, 36, 11, 0, Instants.ZONE_UTC).toInstant()));
 	}
 
 
