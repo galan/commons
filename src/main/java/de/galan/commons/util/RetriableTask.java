@@ -65,7 +65,7 @@ public class RetriableTask<T> implements Callable<T> {
 				numberOfTriesLeft--;
 				if (numberOfRetries != -1) {
 					if (numberOfTriesLeft == 0) {
-						throw new RetryException(numberOfRetries + " attempts to retry failed at " + timeToWait + "ms interval", e, numberOfRetries, timeToWait);
+						throw new RetryException(numberOfRetries + " attempts to retry failed at " + timeToWait + " interval", e, numberOfRetries, timeToWait);
 					}
 					LOG.info("Retrying {}/{} in {}", numberOfRetries - numberOfTriesLeft + 1, numberOfRetries, timeToWait);
 				}
