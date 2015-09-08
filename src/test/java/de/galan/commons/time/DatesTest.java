@@ -28,8 +28,8 @@ public class DatesTest extends AbstractTestParent {
 
 	@Test
 	public void testNow() {
-		assertDateNear("1s", now());
-		assertDateNear("1s", from(now()).toDate());
+		assertDateNear("10s", now());
+		assertDateNear("10s", from(now()).toDate());
 	}
 
 
