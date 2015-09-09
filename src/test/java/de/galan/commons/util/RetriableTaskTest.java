@@ -55,7 +55,7 @@ public class RetriableTaskTest extends AbstractTestParent {
 				return "returned";
 			}
 
-		});
+		}).message("complete");
 		assertEquals("returned", rs.call());
 	}
 

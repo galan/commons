@@ -1,5 +1,7 @@
 package de.galan.commons.util;
 
+import static org.apache.commons.lang3.StringUtils.*;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 
@@ -29,6 +31,7 @@ public class RetriableTask<T> implements Callable<T> {
 	private long numberOfRetries; // total number of tries
 	private long numberOfTriesLeft; // number left
 	private String timeToWait; // wait interval
+	private String message; // message to identify retry
 
 
 	public RetriableTask(Callable<T> task) {
@@ -41,11 +44,29 @@ public class RetriableTask<T> implements Callable<T> {
 	}
 
 
-	public RetriableTask(long numberOfRetries, String timeToWait, Callable<T> task) {
-		this.numberOfRetries = numberOfRetries;
-		numberOfTriesLeft = numberOfRetries + 1;
-		this.timeToWait = ObjectUtils.defaultIfNull(timeToWait, DEFAULT_WAIT_TIME);
+	public RetriableTask(long numberOfRetries, String timeToWaitBetween, Callable<T> task) {
 		this.task = task;
+		retries(numberOfRetries);
+		timeToWait(timeToWaitBetween);
+	}
+
+
+	public RetriableTask<T> retries(long retries) {
+		this.numberOfRetries = retries;
+		numberOfTriesLeft = numberOfRetries + 1;
+		return this;
+	}
+
+
+	public RetriableTask<T> timeToWait(String timeToWaitBetween) {
+		this.timeToWait = ObjectUtils.defaultIfNull(timeToWaitBetween, DEFAULT_WAIT_TIME);
+		return this;
+	}
+
+
+	public RetriableTask<T> message(String msg) {
+		this.message = msg;
+		return this;
 	}
 
 
@@ -65,12 +86,23 @@ public class RetriableTask<T> implements Callable<T> {
 				numberOfTriesLeft--;
 				if (numberOfRetries != -1) {
 					if (numberOfTriesLeft == 0) {
-						throw new RetryException(numberOfRetries + " attempts to retry failed at " + timeToWait + " interval", e, numberOfRetries, timeToWait);
+						throw new RetryException(numberOfRetries + " attempts to retry, failed at " + timeToWait + " interval for " + message, e,
+								numberOfRetries, timeToWait, message);
 					}
-					LOG.info("Retrying {}/{} in {}", numberOfRetries - numberOfTriesLeft + 1, numberOfRetries, timeToWait);
+					if (isBlank(message)) {
+						LOG.info("Retrying {}/{} in {}", numberOfRetries - numberOfTriesLeft + 1, numberOfRetries, timeToWait);
+					}
+					else {
+						LOG.info("Retrying {}/{} in {} for {}", numberOfRetries - numberOfTriesLeft + 1, numberOfRetries, timeToWait, message);
+					}
 				}
 				else {
-					LOG.info("Retrying {} in {}", Math.abs(numberOfTriesLeft + 1), timeToWait);
+					if (isBlank(message)) {
+						LOG.info("Retrying {} in {}", Math.abs(numberOfTriesLeft + 1), timeToWait);
+					}
+					else {
+						LOG.info("Retrying {} in {} for {}", Math.abs(numberOfTriesLeft + 1), timeToWait, message);
+					}
 				}
 				Sleeper.sleep(timeToWait);
 			}
