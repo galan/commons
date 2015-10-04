@@ -8,6 +8,8 @@ package de.galan.commons.bootstrap;
 public class Launcher {
 
 	public void launch() {
+		//new Loader().initializeWithOwnObserver();
+		//new BootstrapLogger().initializeLogger(log4jConfigurationPath);
 		// info: most will be moved to snake
 		// TODO create directory
 		//new SnakeBootstrap().initialize();
