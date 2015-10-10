@@ -64,7 +64,9 @@ public class FilesystemObserver {
 
 
 	protected Thread createWatcherThread() {
-		return new Thread(() -> processEvents(), "FilesystemObserver-" + THREAD_COUNTER.getAndIncrement());
+		Thread thread = new Thread(() -> processEvents(), "FilesystemObserver-" + THREAD_COUNTER.getAndIncrement());
+		thread.setDaemon(true);
+		return thread;
 	}
 
 
@@ -149,7 +151,7 @@ public class FilesystemObserver {
 						registerDirectoryListener(proxyDirectoryListener, Paths.get(file.toURI()), proxyDirectoryListener.isRecursive());
 					}
 					catch (IOException ex) {
-						LOG.info("Unable to register new subdirectory '" + proxyDirectoryListener.getDirectory().getAbsolutePath() + "/" + file.getName() + "'");
+						LOG.info("Unable to register new subdirectory {}/{}", proxyDirectoryListener.getDirectory().getAbsolutePath(), file.getName());
 					}
 				}
 			}
