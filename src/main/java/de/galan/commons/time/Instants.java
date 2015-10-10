@@ -405,25 +405,37 @@ public class Instants {
 		}
 
 
+		/** Returns same as toStringLocal() */
 		@Override
 		public String toString() {
 			return toStringLocal();
 		}
 
 
+		/** Returns the time in local timezone and format */
 		public String toStringLocal() {
-			return toString(DATE_FORMAT_LOCAL);
-		}
-
-
-		public String toString(String format) {
-			ZonedDateTime zdt = ZonedDateTime.ofInstant(current, ZONE_UTC);
-			return getFormater(format, ZONE_LOCAL.getId()).format(zdt);
+			return toStringLocal(DATE_FORMAT_LOCAL);
 		}
 
 
 		public String toStringUtc() {
 			return getFormater(DATE_FORMAT_UTC, "UTC").format(current);
+		}
+
+
+		public String toStringLocal(String format) {
+			return toString(ZONE_LOCAL, format);
+		}
+
+
+		public String toStringUtc(String format) {
+			return toString(ZONE_UTC, format);
+		}
+
+
+		protected String toString(ZoneId zoneId, String format) {
+			ZonedDateTime zdt = ZonedDateTime.ofInstant(current, ZONE_UTC);
+			return getFormater(format, zoneId.getId()).format(zdt);
 		}
 
 

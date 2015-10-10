@@ -2,8 +2,8 @@ package de.galan.commons.time;
 
 import static de.galan.commons.test.Tests.*;
 import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.StrictAssertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
@@ -82,8 +82,16 @@ public class InstantsTest extends AbstractTestParent {
 
 
 	@Test
-	public void toStringCustomFormat() {
-		assertThat(from(instantLocal("2012-05-31 17:51:01")).toString("MM/dd/yyyy")).isEqualTo("05/31/2012");
+	public void toStringLocalCustomFormat() {
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).toStringLocal("MM/dd/yyyy HH:mm:ss")).isEqualTo("05/31/2012 17:51:01");
+		assertThat(from(instantUtc("2012-05-31T17:10:20Z")).toStringLocal("MM/dd/yyyy HH:mm:ss")).isEqualTo("05/31/2012 19:10:20");
+	}
+
+
+	@Test
+	public void toStringUtcCustomFormat() {
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).toStringUtc("MM/dd/yyyy HH:mm:ss")).isEqualTo("05/31/2012 15:51:01");
+		assertThat(from(instantUtc("2012-05-31T17:10:20Z")).toStringUtc("MM/dd/yyyy HH:mm:ss")).isEqualTo("05/31/2012 17:10:20");
 	}
 
 
