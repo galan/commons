@@ -12,6 +12,7 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
@@ -83,15 +84,21 @@ public class InstantsTest extends AbstractTestParent {
 
 	@Test
 	public void toStringLocalCustomFormat() {
+		Locale defaultLocale = Locale.getDefault();
+		Locale.setDefault(Locale.GERMAN);
 		assertThat(from(instantLocal("2012-05-31 17:51:01")).toStringLocal("MM/dd/yyyy HH:mm:ss")).isEqualTo("05/31/2012 17:51:01");
 		assertThat(from(instantUtc("2012-05-31T17:10:20Z")).toStringLocal("MM/dd/yyyy HH:mm:ss")).isEqualTo("05/31/2012 19:10:20");
+		Locale.setDefault(defaultLocale);
 	}
 
 
 	@Test
 	public void toStringUtcCustomFormat() {
+		Locale defaultLocale = Locale.getDefault();
+		Locale.setDefault(Locale.GERMAN);
 		assertThat(from(instantLocal("2012-05-31 17:51:01")).toStringUtc("MM/dd/yyyy HH:mm:ss")).isEqualTo("05/31/2012 15:51:01");
 		assertThat(from(instantUtc("2012-05-31T17:10:20Z")).toStringUtc("MM/dd/yyyy HH:mm:ss")).isEqualTo("05/31/2012 17:10:20");
+		Locale.setDefault(defaultLocale);
 	}
 
 
