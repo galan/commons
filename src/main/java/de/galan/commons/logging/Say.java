@@ -3,6 +3,7 @@ package de.galan.commons.logging;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.util.ReflectionUtil;
 
 
@@ -13,8 +14,8 @@ import org.apache.logging.log4j.util.ReflectionUtil;
  */
 public class Say {
 
-	// Using ReflectionUtil directly, "2" is taken from log4j2 LogManager.getLogger(), adding 1 for determineLogger()
-	private static final int THREAD_TYPE_DEEP = 2 + 1;
+	// Using ReflectionUtil directly, "2" is taken from log4j2 LogManager.getLogger(), adding 1 for determineLogger() and adding 1 for log(..)
+	private static final int THREAD_TYPE_DEEP = 2 + 1 + 1;
 
 	private static boolean includeIdentifier = false;
 
@@ -25,6 +26,8 @@ public class Say {
 
 	/**
 	 * Determines the class and the appropiate logger of the calling class.
+	 *
+	 * @param extraDepth TODO
 	 *
 	 * @return The logger for the caller
 	 */
@@ -37,179 +40,199 @@ public class Say {
 		return new PayloadMessage(message == null ? null : message.toString(), arguments, includeIdentifier, throwable);
 	}
 
+	/** Using fluent interface to construct ThreadContext informations (formerly known as MDC /NDC) */
+	public static class LogBuilder {
+
+		public LogBuilder f(String key, Object value) {
+			return field(key, value);
+		}
+
+
+		public LogBuilder field(String key, Object value) {
+			if (value != null) {
+				ThreadContext.put(key, value.toString());
+			}
+			return this;
+		}
+
+
+		public void info(Object message) {
+			log(Level.INFO, message, null, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+	}
+
+	private static LogBuilder builder = new LogBuilder();
+
+
+	public static LogBuilder f(String key, Object value) {
+		return builder.f(key, value);
+	}
+
+
+	public static LogBuilder field(String key, Object value) {
+		return builder.f(key, value);
+	}
+
+
+	protected static void log(Level level, Object message, Throwable throwable, Object... args) {
+		PayloadMessage payload = payload(message, args, throwable);
+		determineLogger().log(level, payload, payload.getThrowable());
+	}
+
 
 	// -------------------------------- TRACE --------------------------------
 
 	public static void trace(Object message) {
-		PayloadMessage payload = payload(message, null, null);
-		determineLogger().trace(payload, payload.getThrowable());
+		log(Level.TRACE, message, null, (Object[])null);
 	}
 
 
 	public static void trace(Object message, Object... args) {
-		PayloadMessage payload = payload(message, args, null);
-		determineLogger().trace(payload, payload.getThrowable());
+		log(Level.TRACE, message, null, args);
 	}
 
 
 	public static void trace(Object message, Throwable throwable) {
-		PayloadMessage payload = payload(message, null, throwable);
-		determineLogger().trace(payload, payload.getThrowable());
+		log(Level.TRACE, message, throwable, (Object[])null);
 	}
 
 
 	public static void trace(Object message, Throwable throwable, Object... args) {
-		PayloadMessage payload = payload(message, args, throwable);
-		determineLogger().trace(payload, payload.getThrowable());
+		log(Level.TRACE, message, throwable, args);
 	}
 
-
+	/* TODO rethrow
 	public static <T extends Throwable> T traceThrows(T throwable) throws T {
 		//PayloadMessage payload = payload(message, null, throwable);
-		throw determineLogger().throwing(Level.ERROR, throwable);
+		throw determineLogger(0).throwing(Level.ERROR, throwable);
 	}
+	*/
 
 
 	// -------------------------------- DEBUG --------------------------------
 
 	public static void debug(Object message) {
-		PayloadMessage payload = payload(message, null, null);
-		determineLogger().debug(payload, payload.getThrowable());
+		log(Level.DEBUG, message, null, (Object[])null);
 	}
 
 
 	public static void debug(Object message, Object... args) {
-		PayloadMessage payload = payload(message, args, null);
-		determineLogger().debug(payload, payload.getThrowable());
+		log(Level.DEBUG, message, null, args);
 	}
 
 
 	public static void debug(Object message, Throwable throwable) {
-		PayloadMessage payload = payload(message, null, throwable);
-		determineLogger().debug(payload, payload.getThrowable());
+		log(Level.DEBUG, message, throwable, (Object[])null);
 	}
 
 
 	public static void debug(Object message, Throwable throwable, Object... args) {
-		PayloadMessage payload = payload(message, args, throwable);
-		determineLogger().debug(payload, payload.getThrowable());
+		log(Level.DEBUG, message, throwable, args);
 	}
 
 
 	// -------------------------------- INFO --------------------------------
 
 	public static void info(Object message) {
-		PayloadMessage payload = payload(message, null, null);
-		determineLogger().info(payload, payload.getThrowable());
+		log(Level.INFO, message, null, (Object[])null);
 	}
 
 
 	public static void info(Object message, Object... args) {
-		PayloadMessage payload = payload(message, args, null);
-		determineLogger().info(payload, payload.getThrowable());
+		log(Level.INFO, message, null, args);
 	}
 
 
 	public static void info(Object message, Throwable throwable) {
-		PayloadMessage payload = payload(message, null, throwable);
-		determineLogger().info(payload, payload.getThrowable());
+		log(Level.INFO, message, throwable, (Object[])null);
 	}
 
 
 	public static void info(Object message, Throwable throwable, Object... args) {
-		PayloadMessage payload = payload(message, args, throwable);
-		determineLogger().info(payload, payload.getThrowable());
+		log(Level.INFO, message, throwable, args);
 	}
 
 
 	// -------------------------------- WARN --------------------------------
 
 	public static void warn(Object message) {
-		PayloadMessage payload = payload(message, null, null);
-		determineLogger().warn(payload, payload.getThrowable());
+		log(Level.WARN, message, null, (Object[])null);
 	}
 
 
 	public static void warn(Object message, Object... args) {
-		PayloadMessage payload = payload(message, args, null);
-		determineLogger().warn(payload, payload.getThrowable());
+		log(Level.WARN, message, null, args);
 	}
 
 
 	public static void warn(Object message, Throwable throwable) {
-		PayloadMessage payload = payload(message, null, throwable);
-		determineLogger().warn(payload, payload.getThrowable());
+		log(Level.WARN, message, throwable, (Object[])null);
 	}
 
 
 	public static void warn(Object message, Throwable throwable, Object... args) {
-		PayloadMessage payload = payload(message, args, throwable);
-		determineLogger().warn(payload, payload.getThrowable());
+		log(Level.WARN, message, throwable, args);
 	}
 
 
 	// -------------------------------- ERROR --------------------------------
 
 	public static void error(Object message) {
-		PayloadMessage payload = payload(message, null, null);
-		determineLogger().error(payload, payload.getThrowable());
+		log(Level.ERROR, message, null, (Object[])null);
 	}
 
 
 	public static void error(Object message, Object... args) {
-		PayloadMessage payload = payload(message, args, null);
-		determineLogger().error(payload, payload.getThrowable());
+		log(Level.ERROR, message, null, args);
 	}
 
 
 	public static void error(Object message, Throwable throwable) {
-		PayloadMessage payload = payload(message, null, throwable);
-		determineLogger().error(payload, payload.getThrowable());
+		log(Level.ERROR, message, throwable, (Object[])null);
 	}
 
 
 	public static void error(Object message, Throwable throwable, Object... args) {
-		PayloadMessage payload = payload(message, args, throwable);
-		determineLogger().error(payload, payload.getThrowable());
+		log(Level.ERROR, message, throwable, args);
 	}
 
 
 	// -------------------------------- FATAL --------------------------------
 
 	public static void fatal(Object message) {
-		PayloadMessage payload = payload(message, null, null);
-		determineLogger().fatal(payload, payload.getThrowable());
+		log(Level.FATAL, message, null, (Object[])null);
 	}
 
 
 	public static void fatal(Object message, Object... args) {
-		PayloadMessage payload = payload(message, args, null);
-		determineLogger().fatal(payload, payload.getThrowable());
+		log(Level.FATAL, message, null, args);
 	}
 
 
 	public static void fatal(Object message, Throwable throwable) {
-		PayloadMessage payload = payload(message, null, throwable);
-		determineLogger().fatal(payload, payload.getThrowable());
+		log(Level.FATAL, message, throwable, (Object[])null);
 	}
 
 
 	public static void fatal(Object message, Throwable throwable, Object... args) {
-		PayloadMessage payload = payload(message, args, throwable);
-		determineLogger().fatal(payload, payload.getThrowable());
+		log(Level.FATAL, message, throwable, args);
 	}
-
 
 	// -------------------------------- MISC --------------------------------
 
-	public static Logger/*checkstyle*/ getLogger() {
+	/*
+	public static Logger/checkstyle/ getLogger() {
 		return determineLogger();
 	}
+	*/
 
 
 	public static void please() {
-		determineLogger().info(
-			"\u0059\u006F\u0075\u0027\u0072\u0065\u0020\u0077\u0065\u006C\u0063\u006F\u006D\u0065\u0020" + System.getProperty("user.name") + "\u0021");
+		log(Level.INFO,
+			"\u0059\u006F\u0075\u0027\u0072\u0065\u0020\u0077\u0065\u006C\u0063\u006F\u006D\u0065\u0020" + System.getProperty("user.name") + "\u0021", null,
+			(Object[])null);
 	}
 
 	// Old stuff
@@ -217,7 +240,7 @@ public class Say {
 	/* A custom security manager that exposes the getClassContext() information */
 	/*
 	static class CallerSecurityManager extends SecurityManager {
-
+	
 		public String getCallerClassName(int callStackDepth) {
 			return getClassContext()[callStackDepth].getName();
 		}
