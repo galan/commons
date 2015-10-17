@@ -1,5 +1,9 @@
 package de.galan.commons.logging;
 
+import java.util.Date;
+import java.util.TimeZone;
+
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,37 +45,201 @@ public class Say {
 	}
 
 	/** Using fluent interface to construct ThreadContext informations (formerly known as MDC /NDC) */
-	public static class LogBuilder {
+	public static class ContextBuilder {
 
-		public LogBuilder f(String key, Object value) {
+		static final String DATE_FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+		static final TimeZone TIMEZONE_UTC = TimeZone.getTimeZone("UTC");
+
+		static final FastDateFormat FDF = FastDateFormat.getInstance(DATE_FORMAT_UTC, TIMEZONE_UTC);
+
+
+		public ContextBuilder f(String key, Object value) {
 			return field(key, value);
 		}
 
 
-		public LogBuilder field(String key, Object value) {
+		public ContextBuilder field(String key, Object value) {
 			if (value != null) {
-				ThreadContext.put(key, value.toString());
+				if (value instanceof String) {
+					ThreadContext.put(key, (String)value);
+				}
+				else if (value instanceof Date) {
+					ThreadContext.put(key, FDF.format((Date)value));
+				}
+				else {
+					ThreadContext.put(key, value.toString());
+				}
 			}
 			return this;
 		}
 
 
-		public void info(Object message) {
+		// -------------------------------- TRACE Builder --------------------------------
+
+		public static void trace(Object message) {
+			log(Level.TRACE, message, null, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void trace(Object message, Object... args) {
+			log(Level.TRACE, message, null, args);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void trace(Object message, Throwable throwable) {
+			log(Level.TRACE, message, throwable, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void trace(Object message, Throwable throwable, Object... args) {
+			log(Level.TRACE, message, throwable, args);
+			ThreadContext.clearMap();
+		}
+
+
+		// -------------------------------- DEBUG Builder --------------------------------
+
+		public static void debug(Object message) {
+			log(Level.DEBUG, message, null, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void debug(Object message, Object... args) {
+			log(Level.DEBUG, message, null, args);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void debug(Object message, Throwable throwable) {
+			log(Level.DEBUG, message, throwable, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void debug(Object message, Throwable throwable, Object... args) {
+			log(Level.DEBUG, message, throwable, args);
+			ThreadContext.clearMap();
+		}
+
+
+		// -------------------------------- INFO Builder --------------------------------
+
+		public static void info(Object message) {
 			log(Level.INFO, message, null, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void info(Object message, Object... args) {
+			log(Level.INFO, message, null, args);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void info(Object message, Throwable throwable) {
+			log(Level.INFO, message, throwable, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void info(Object message, Throwable throwable, Object... args) {
+			log(Level.INFO, message, throwable, args);
+			ThreadContext.clearMap();
+		}
+
+
+		// -------------------------------- WARN Builder --------------------------------
+
+		public static void warn(Object message) {
+			log(Level.WARN, message, null, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void warn(Object message, Object... args) {
+			log(Level.WARN, message, null, args);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void warn(Object message, Throwable throwable) {
+			log(Level.WARN, message, throwable, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void warn(Object message, Throwable throwable, Object... args) {
+			log(Level.WARN, message, throwable, args);
+			ThreadContext.clearMap();
+		}
+
+
+		// -------------------------------- ERROR Builder --------------------------------
+
+		public static void error(Object message) {
+			log(Level.ERROR, message, null, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void error(Object message, Object... args) {
+			log(Level.ERROR, message, null, args);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void error(Object message, Throwable throwable) {
+			log(Level.ERROR, message, throwable, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void error(Object message, Throwable throwable, Object... args) {
+			log(Level.ERROR, message, throwable, args);
+			ThreadContext.clearMap();
+		}
+
+
+		// -------------------------------- FATAL Builder --------------------------------
+
+		public static void fatal(Object message) {
+			log(Level.FATAL, message, null, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void fatal(Object message, Object... args) {
+			log(Level.FATAL, message, null, args);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void fatal(Object message, Throwable throwable) {
+			log(Level.FATAL, message, throwable, (Object[])null);
+			ThreadContext.clearMap();
+		}
+
+
+		public static void fatal(Object message, Throwable throwable, Object... args) {
+			log(Level.FATAL, message, throwable, args);
 			ThreadContext.clearMap();
 		}
 
 	}
 
-	private static LogBuilder builder = new LogBuilder();
+	private static ContextBuilder builder = new ContextBuilder();
 
 
-	public static LogBuilder f(String key, Object value) {
+	public static ContextBuilder f(String key, Object value) {
 		return builder.f(key, value);
 	}
 
 
-	public static LogBuilder field(String key, Object value) {
+	public static ContextBuilder field(String key, Object value) {
 		return builder.f(key, value);
 	}
 
@@ -240,7 +408,7 @@ public class Say {
 	/* A custom security manager that exposes the getClassContext() information */
 	/*
 	static class CallerSecurityManager extends SecurityManager {
-	
+
 		public String getCallerClassName(int callStackDepth) {
 			return getClassContext()[callStackDepth].getName();
 		}
