@@ -44,6 +44,9 @@ public class Say {
 		return new PayloadMessage(message == null ? null : message.toString(), arguments, includeIdentifier, throwable);
 	}
 
+	// -------------------------------- ContextBuilder --------------------------------
+	private static ContextBuilder builder = new ContextBuilder();
+
 	/** Using fluent interface to construct ThreadContext informations (formerly known as MDC /NDC) */
 	public static class ContextBuilder {
 
@@ -75,104 +78,100 @@ public class Say {
 
 
 		// -------------------------------- TRACE Builder --------------------------------
-
-		public static void trace(Object message) {
+		public void trace(Object message) {
 			log(Level.TRACE, message, null, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void trace(Object message, Object... args) {
+		public void trace(Object message, Object... args) {
 			log(Level.TRACE, message, null, args);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void trace(Object message, Throwable throwable) {
+		public void trace(Object message, Throwable throwable) {
 			log(Level.TRACE, message, throwable, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void trace(Object message, Throwable throwable, Object... args) {
+		public void trace(Object message, Throwable throwable, Object... args) {
 			log(Level.TRACE, message, throwable, args);
 			ThreadContext.clearMap();
 		}
 
 
 		// -------------------------------- DEBUG Builder --------------------------------
-
-		public static void debug(Object message) {
+		public void debug(Object message) {
 			log(Level.DEBUG, message, null, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void debug(Object message, Object... args) {
+		public void debug(Object message, Object... args) {
 			log(Level.DEBUG, message, null, args);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void debug(Object message, Throwable throwable) {
+		public void debug(Object message, Throwable throwable) {
 			log(Level.DEBUG, message, throwable, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void debug(Object message, Throwable throwable, Object... args) {
+		public void debug(Object message, Throwable throwable, Object... args) {
 			log(Level.DEBUG, message, throwable, args);
 			ThreadContext.clearMap();
 		}
 
 
 		// -------------------------------- INFO Builder --------------------------------
-
-		public static void info(Object message) {
+		public void info(Object message) {
 			log(Level.INFO, message, null, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void info(Object message, Object... args) {
+		public void info(Object message, Object... args) {
 			log(Level.INFO, message, null, args);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void info(Object message, Throwable throwable) {
+		public void info(Object message, Throwable throwable) {
 			log(Level.INFO, message, throwable, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void info(Object message, Throwable throwable, Object... args) {
+		public void info(Object message, Throwable throwable, Object... args) {
 			log(Level.INFO, message, throwable, args);
 			ThreadContext.clearMap();
 		}
 
 
 		// -------------------------------- WARN Builder --------------------------------
-
-		public static void warn(Object message) {
+		public void warn(Object message) {
 			log(Level.WARN, message, null, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void warn(Object message, Object... args) {
+		public void warn(Object message, Object... args) {
 			log(Level.WARN, message, null, args);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void warn(Object message, Throwable throwable) {
+		public void warn(Object message, Throwable throwable) {
 			log(Level.WARN, message, throwable, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void warn(Object message, Throwable throwable, Object... args) {
+		public void warn(Object message, Throwable throwable, Object... args) {
 			log(Level.WARN, message, throwable, args);
 			ThreadContext.clearMap();
 		}
@@ -180,25 +179,25 @@ public class Say {
 
 		// -------------------------------- ERROR Builder --------------------------------
 
-		public static void error(Object message) {
+		public void error(Object message) {
 			log(Level.ERROR, message, null, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void error(Object message, Object... args) {
+		public void error(Object message, Object... args) {
 			log(Level.ERROR, message, null, args);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void error(Object message, Throwable throwable) {
+		public void error(Object message, Throwable throwable) {
 			log(Level.ERROR, message, throwable, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void error(Object message, Throwable throwable, Object... args) {
+		public void error(Object message, Throwable throwable, Object... args) {
 			log(Level.ERROR, message, throwable, args);
 			ThreadContext.clearMap();
 		}
@@ -206,32 +205,30 @@ public class Say {
 
 		// -------------------------------- FATAL Builder --------------------------------
 
-		public static void fatal(Object message) {
+		public void fatal(Object message) {
 			log(Level.FATAL, message, null, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void fatal(Object message, Object... args) {
+		public void fatal(Object message, Object... args) {
 			log(Level.FATAL, message, null, args);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void fatal(Object message, Throwable throwable) {
+		public void fatal(Object message, Throwable throwable) {
 			log(Level.FATAL, message, throwable, (Object[])null);
 			ThreadContext.clearMap();
 		}
 
 
-		public static void fatal(Object message, Throwable throwable, Object... args) {
+		public void fatal(Object message, Throwable throwable, Object... args) {
 			log(Level.FATAL, message, throwable, args);
 			ThreadContext.clearMap();
 		}
 
 	}
-
-	private static ContextBuilder builder = new ContextBuilder();
 
 
 	public static ContextBuilder f(String key, Object value) {
