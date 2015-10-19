@@ -1,13 +1,12 @@
 package de.galan.commons.logging;
 
 import java.util.Date;
-import java.util.TimeZone;
 
-import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
+import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.util.ReflectionUtil;
 
 
@@ -21,11 +20,9 @@ public class Say {
 	// Using ReflectionUtil directly, "2" is taken from log4j2 LogManager.getLogger(), adding 1 for determineLogger() and adding 1 for log(..)
 	private static final int THREAD_TYPE_DEEP = 2 + 1 + 1;
 
-	private static boolean includeIdentifier = false;
-
 
 	// potential improvements:
-	// - Integrate Rethrow into Say
+	// - Integrate Rethrow into Say (see snippet at end)
 	// - Say returns generated message
 
 	/**
@@ -40,8 +37,8 @@ public class Say {
 	}
 
 
-	protected static PayloadMessage payload(final Object message, final Object[] arguments, Throwable throwable) {
-		return new PayloadMessage(message == null ? null : message.toString(), arguments, includeIdentifier, throwable);
+	protected static Message payload(final Object message, final Object[] arguments, Throwable throwable) {
+		return new PayloadContextMessage(message == null ? null : message.toString(), arguments, throwable);
 	}
 
 	// -------------------------------- ContextBuilder --------------------------------
@@ -49,12 +46,6 @@ public class Say {
 
 	/** Using fluent interface to construct ThreadContext informations (formerly known as MDC /NDC) */
 	public static class ContextBuilder {
-
-		static final String DATE_FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-		static final TimeZone TIMEZONE_UTC = TimeZone.getTimeZone("UTC");
-
-		static final FastDateFormat FDF = FastDateFormat.getInstance(DATE_FORMAT_UTC, TIMEZONE_UTC);
-
 
 		public ContextBuilder f(String key, Object value) {
 			return field(key, value);
@@ -67,7 +58,7 @@ public class Say {
 					ThreadContext.put(key, (String)value);
 				}
 				else if (value instanceof Date) {
-					ThreadContext.put(key, FDF.format((Date)value));
+					ThreadContext.put(key, PayloadContextMessage.FDF.format((Date)value));
 				}
 				else {
 					ThreadContext.put(key, value.toString());
@@ -80,100 +71,84 @@ public class Say {
 		// -------------------------------- TRACE Builder --------------------------------
 		public void trace(Object message) {
 			log(Level.TRACE, message, null, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void trace(Object message, Object... args) {
 			log(Level.TRACE, message, null, args);
-			ThreadContext.clearMap();
 		}
 
 
 		public void trace(Object message, Throwable throwable) {
 			log(Level.TRACE, message, throwable, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void trace(Object message, Throwable throwable, Object... args) {
 			log(Level.TRACE, message, throwable, args);
-			ThreadContext.clearMap();
 		}
 
 
 		// -------------------------------- DEBUG Builder --------------------------------
 		public void debug(Object message) {
 			log(Level.DEBUG, message, null, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void debug(Object message, Object... args) {
 			log(Level.DEBUG, message, null, args);
-			ThreadContext.clearMap();
 		}
 
 
 		public void debug(Object message, Throwable throwable) {
 			log(Level.DEBUG, message, throwable, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void debug(Object message, Throwable throwable, Object... args) {
 			log(Level.DEBUG, message, throwable, args);
-			ThreadContext.clearMap();
 		}
 
 
 		// -------------------------------- INFO Builder --------------------------------
 		public void info(Object message) {
 			log(Level.INFO, message, null, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void info(Object message, Object... args) {
 			log(Level.INFO, message, null, args);
-			ThreadContext.clearMap();
 		}
 
 
 		public void info(Object message, Throwable throwable) {
 			log(Level.INFO, message, throwable, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void info(Object message, Throwable throwable, Object... args) {
 			log(Level.INFO, message, throwable, args);
-			ThreadContext.clearMap();
 		}
 
 
 		// -------------------------------- WARN Builder --------------------------------
 		public void warn(Object message) {
 			log(Level.WARN, message, null, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void warn(Object message, Object... args) {
 			log(Level.WARN, message, null, args);
-			ThreadContext.clearMap();
 		}
 
 
 		public void warn(Object message, Throwable throwable) {
 			log(Level.WARN, message, throwable, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void warn(Object message, Throwable throwable, Object... args) {
 			log(Level.WARN, message, throwable, args);
-			ThreadContext.clearMap();
 		}
 
 
@@ -181,25 +156,21 @@ public class Say {
 
 		public void error(Object message) {
 			log(Level.ERROR, message, null, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void error(Object message, Object... args) {
 			log(Level.ERROR, message, null, args);
-			ThreadContext.clearMap();
 		}
 
 
 		public void error(Object message, Throwable throwable) {
 			log(Level.ERROR, message, throwable, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void error(Object message, Throwable throwable, Object... args) {
 			log(Level.ERROR, message, throwable, args);
-			ThreadContext.clearMap();
 		}
 
 
@@ -207,25 +178,21 @@ public class Say {
 
 		public void fatal(Object message) {
 			log(Level.FATAL, message, null, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void fatal(Object message, Object... args) {
 			log(Level.FATAL, message, null, args);
-			ThreadContext.clearMap();
 		}
 
 
 		public void fatal(Object message, Throwable throwable) {
 			log(Level.FATAL, message, throwable, (Object[])null);
-			ThreadContext.clearMap();
 		}
 
 
 		public void fatal(Object message, Throwable throwable, Object... args) {
 			log(Level.FATAL, message, throwable, args);
-			ThreadContext.clearMap();
 		}
 
 	}
@@ -242,8 +209,11 @@ public class Say {
 
 
 	protected static void log(Level level, Object message, Throwable throwable, Object... args) {
-		PayloadMessage payload = payload(message, args, throwable);
+		Message payload = payload(message, args, throwable);
 		determineLogger().log(level, payload, payload.getThrowable());
+		if (!ThreadContext.getContext().isEmpty()) {
+			ThreadContext.clearMap();
+		}
 	}
 
 
@@ -267,13 +237,6 @@ public class Say {
 	public static void trace(Object message, Throwable throwable, Object... args) {
 		log(Level.TRACE, message, throwable, args);
 	}
-
-	/* TODO rethrow
-	public static <T extends Throwable> T traceThrows(T throwable) throws T {
-		//PayloadMessage payload = payload(message, null, throwable);
-		throw determineLogger(0).throwing(Level.ERROR, throwable);
-	}
-	*/
 
 
 	// -------------------------------- DEBUG --------------------------------
@@ -405,7 +368,7 @@ public class Say {
 	/* A custom security manager that exposes the getClassContext() information */
 	/*
 	static class CallerSecurityManager extends SecurityManager {
-
+	
 		public String getCallerClassName(int callStackDepth) {
 			return getClassContext()[callStackDepth].getName();
 		}
@@ -459,5 +422,12 @@ public class Say {
 		return result;
 	}
 	 */
+
+	/* TODO rethrow
+	public static <T extends Throwable> T traceThrows(T throwable) throws T {
+		//PayloadMessage payload = payload(message, null, throwable);
+		throw determineLogger(0).throwing(Level.ERROR, throwable);
+	}
+	*/
 
 }
