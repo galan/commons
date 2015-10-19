@@ -3,7 +3,7 @@
 
 	<groupId>de.galan</groupId>
 	<artifactId>commons</artifactId>
-	<version>0.10.1-SNAPSHOT</version>
+	<version>0.10.2-SNAPSHOT</version>
 
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Utility library, that is also used accross the ${project.groupId} components</description>
