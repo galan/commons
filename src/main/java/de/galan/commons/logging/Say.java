@@ -21,18 +21,8 @@ public class Say {
 	private static final int THREAD_TYPE_DEEP = 2 + 1 + 1;
 
 
-	// potential improvements:
-	// - Integrate Rethrow into Say (see snippet at end)
-	// - Say returns generated message
-
-	/**
-	 * Determines the class and the appropiate logger of the calling class.
-	 *
-	 * @param extraDepth TODO
-	 *
-	 * @return The logger for the caller
-	 */
-	static Logger determineLogger() { // (String callerClassName)
+	/** Determines the class and the appropiate logger of the calling class. */
+	static Logger determineLogger() {
 		return LogManager.getLogger(ReflectionUtil.getCallerClass(THREAD_TYPE_DEEP), PayloadMessageFactory.INSTANCE);
 	}
 
@@ -210,8 +200,9 @@ public class Say {
 
 	protected static void log(Level level, Object message, Throwable throwable, Object... args) {
 		Message payload = payload(message, args, throwable);
+		//Marker details = Markers.append("mAAA", "field1").and(Markers.append("mBBB", true)).and(Markers.append("mCCC", 123L));
 		determineLogger().log(level, payload, payload.getThrowable());
-		if (!ThreadContext.getContext().isEmpty()) {
+		if (ThreadContext.getContext() != null && !ThreadContext.isEmpty()) {
 			ThreadContext.clearMap();
 		}
 	}
@@ -348,14 +339,8 @@ public class Say {
 		log(Level.FATAL, message, throwable, args);
 	}
 
+
 	// -------------------------------- MISC --------------------------------
-
-	/*
-	public static Logger/checkstyle/ getLogger() {
-		return determineLogger();
-	}
-	*/
-
 
 	public static void please() {
 		log(Level.INFO,
@@ -365,15 +350,25 @@ public class Say {
 
 	// Old stuff
 
+	// potential improvements:
+	// - Integrate Rethrow into Say (see snippet at end)
+	// - Say returns generated message
+
 	/* A custom security manager that exposes the getClassContext() information */
 	/*
 	static class CallerSecurityManager extends SecurityManager {
-	
+
 		public String getCallerClassName(int callStackDepth) {
 			return getClassContext()[callStackDepth].getName();
 		}
 	}
 	 */
+
+	/*
+	public static Logger/checkstyle/ getLogger() {
+		return determineLogger();
+	}
+	*/
 
 	/* Cache of the dynamically created loggers. Multithreading considerations: a simple HashMap is sufficient. */
 	//private static Map<String, Logger> logger = new HashMap<String, Logger>();
