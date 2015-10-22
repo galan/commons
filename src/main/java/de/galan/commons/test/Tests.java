@@ -1,12 +1,15 @@
 package de.galan.commons.test;
 
+import static com.google.common.base.Charsets.*;
 import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -54,18 +57,33 @@ public class Tests {
 
 
 	public static String readFile(String filename) throws IOException {
+		return readFile(filename, UTF_8);
+	}
+
+
+	public static String readFile(String filename, Charset encoding) throws IOException {
 		File file = new File(filename);
-		return readFile(new FileInputStream(file));
+		return readFile(new FileInputStream(file), encoding);
 	}
 
 
 	public static String readFile(Class<?> clazz, String filename) throws IOException {
-		return readFile(clazz.getResourceAsStream(filename));
+		return readFile(clazz, filename, UTF_8);
+	}
+
+
+	public static String readFile(Class<?> clazz, String filename, Charset encoding) throws IOException {
+		return readFile(clazz.getResourceAsStream(filename), encoding);
 	}
 
 
 	public static String readFile(InputStream is) throws IOException {
-		return IOUtils.toString(is);
+		return readFile(is, UTF_8);
+	}
+
+
+	public static String readFile(InputStream is, Charset encoding) throws IOException {
+		return IOUtils.toString(is, encoding);
 	}
 
 
