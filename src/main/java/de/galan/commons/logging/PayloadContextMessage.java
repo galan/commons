@@ -4,24 +4,21 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.message.Message;
 
 
 /**
- * Log4j2 Message for Logger that support parameterized messages, using {} or {name} as placeholder, eg.:<br/>
+ * Log4j2 Message for Logger that support parameterized messages, using {} as placeholder, eg.:<br/>
  * <code>
  * info("Hello {}", "world"); // => "Hello {world}"<br/>
  * info("Hello {} {}", "beautiful", "world"); // => "Hello {beautiful} {world}"<br/>
- * info("The Answer is {answer}", 42L); // => "The Answer is {42}"
+ * error("Something failed: {}", ex, "do'h"); // => "Hello {beautiful} {world}"<br/>
  * </code> <br/>
  * <br/>
- * It is also encouraged to give the parameter names with identifier set to true. This can be useful for later
- * integrations/parsing. If no parameters are given, key will be generated as sequence numbers. Example:<br/>
+ * If the parameters should be available as json-encoded metadata for eg. logstash, you can provide names to the
+ * parameters. Example:<br/>
  * <code>
- * info("Hello {}", "world"); // => "Hello {0:world}"<br/>
- * info("Hello {} {}", "beautiful", "world"); // => "Hello {0:beautiful} {1:world}"<br/>
- * info("The Answer is {answer}", 42L); // => "The Answer is {answer:42}"
+ * info("Hello {location}", "world"); // ThreadContext will provide the json in a field called "payload"<br/>
  * </code> <br/>
  *
  * @author galan
@@ -31,9 +28,9 @@ public class PayloadContextMessage implements Message {
 	private static final String[] EMPTY_ARGUMENTS = new String[] {};
 	private static final char DELIM_START = '{';
 	private static final char DELIM_STOP = '}';
-	static final String DATE_FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-	static final TimeZone TIMEZONE_UTC = TimeZone.getTimeZone("UTC");
-	static final FastDateFormat FDF = FastDateFormat.getInstance(DATE_FORMAT_UTC, TIMEZONE_UTC);
+	private static final String DATE_FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+	private static final TimeZone TIMEZONE_UTC = TimeZone.getTimeZone("UTC");
+	private static final FastDateFormat FDF = FastDateFormat.getInstance(DATE_FORMAT_UTC, TIMEZONE_UTC);
 
 	private transient String formattedMessage;
 	private final String paramMessagePattern;
@@ -187,7 +184,7 @@ public class PayloadContextMessage implements Message {
 			builder.append(paramMessagePattern.substring(indexPosition, indexes[factor]));
 			if ((indexes[factor + 1] > indexes[factor]) && (arguments[i] != null)) {
 				String tcName = paramMessagePattern.substring(indexes[factor], indexes[factor + 1]);
-				ThreadContext.put(tcName, arguments[i]);
+				MetaContext.put(tcName, paramArguments[i]); // ThreadContext.put(tcName, arguments[i]);
 			}
 			builder.append(arguments[i]);
 			indexPosition = indexes[factor + 1];

@@ -20,9 +20,10 @@ public class SayTest { //extends AbstractTestParent {
 	@Test
 	public void testName() throws Exception {
 		Say.info("aa1");
-		Say.f("a", "b").f("a2", "b").f("a3", "b").info("aa2");
-		Say.f("a", "b").f("a2", "b").f("a3", "b").info("aa3");
-		Say.f("a", "b").f("a2", "b").f("a3", "b").info("aa4");
+		Say.f("a1", "b").f("a2", "b").f("a3", "b").info("aa2");
+		Say.f("n", 123L).info("Hello {location}", "world");
+		//Say.f("a", "b").f("a2", "b").f("a3", "b").info("aa3");
+		//Say.f("a", "b").f("a2", "b").f("a3", "b").info("aa4");
 		Say.please();
 	}
 

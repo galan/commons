@@ -4,13 +4,12 @@ import org.apache.logging.log4j.message.Message;
 
 
 /**
- * Log4j2 Message for Logger that support parameterized messages, using {} or {name} as placeholder, eg.:<br/>
+ * Log4j2 Message for Logger that support parameterized messages, using {} as placeholder, eg.:<br/>
  * <code>
  * info("Hello {}", "world"); // => "Hello {world}"<br/>
  * info("Hello {} {}", "beautiful", "world"); // => "Hello {beautiful} {world}"<br/>
- * info("The Answer is {answer}", 42L); // => "The Answer is {42}"
- * </code>
- * <br/>
+ * error("Something failed: {}", ex, "do'h"); // => "Hello {beautiful} {world}"<br/>
+ * </code> <br/>
  * <br/>
  * It is also encouraged to give the parameter names with identifier set to true. This can be useful for later
  * integrations/parsing. If no parameters are given, key will be generated as sequence numbers. Example:<br/>
@@ -18,8 +17,7 @@ import org.apache.logging.log4j.message.Message;
  * info("Hello {}", "world"); // => "Hello {0:world}"<br/>
  * info("Hello {} {}", "beautiful", "world"); // => "Hello {0:beautiful} {1:world}"<br/>
  * info("The Answer is {answer}", 42L); // => "The Answer is {answer:42}"
- * </code>
- * <br/>
+ * </code> <br/>
  *
  * @author galan
  */

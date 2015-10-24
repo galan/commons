@@ -1,7 +1,5 @@
 package de.galan.commons.logging;
 
-import java.util.Date;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,12 +9,29 @@ import org.apache.logging.log4j.util.ReflectionUtil;
 
 
 /**
- * Facade for the logging-framework (currently Log4j2). Uses the PayloadMessage for parameterization of messages.
+ * Facade for the logging-framework (currently Log4j2). Uses the PayloadContextMessage for parameterization of messages.
+ * Supports Parameterized messages, using {} as placeholder, eg.:<br/>
+ * <code>
+ * info("Hello {}", "world"); // => "Hello {world}"<br/>
+ * info("Hello {} {}", "beautiful", "world"); // => "Hello {beautiful} {world}"<br/>
+ * error("Something failed: {}", ex, "do'h"); // => "Hello {beautiful} {world}"<br/>
+ * </code> <br/>
+ * <br/>
+ * If the parameters should be available as json-encoded metadata for eg. logstash, you can provide names to the
+ * parameters. Example:<br/>
+ * <code>
+ * info("Hello {location}", "world"); // ThreadContext will provide the json in a field called "payload"<br/>
+ * </code> <br/>
+ * Additionally you can provide fields using a fluent interface using field(..) or f(..):<br>
+ * <code>
+ * Say.field("key", "value").field("other", someObject).info("Hello {location}", "world");
+ * </code> <br/>
  *
  * @author galan
  */
 public class Say {
 
+	static final String JSON_FIELD = "payload";
 	// Using ReflectionUtil directly, "2" is taken from log4j2 LogManager.getLogger(), adding 1 for determineLogger() and adding 1 for log(..)
 	private static final int THREAD_TYPE_DEEP = 2 + 1 + 1;
 
@@ -31,8 +46,38 @@ public class Say {
 		return new PayloadContextMessage(message == null ? null : message.toString(), arguments, throwable);
 	}
 
+
+	// -------------------------------- logging --------------------------------
+
+	protected static void log(Level level, Object message, Throwable throwable, Object... args) {
+		Message payload = payload(message, args, throwable);
+		if (MetaContext.hasMeta()) {
+			// serialize metacontext map to json, which is put into a designated threadcontext field
+			ThreadContext.put(JSON_FIELD, MetaContext.toJson());
+			MetaContext.clear();
+		}
+		determineLogger().log(level, payload, payload.getThrowable());
+		if (ThreadContext.getContext() != null && ThreadContext.containsKey(JSON_FIELD)) {
+			ThreadContext.remove(JSON_FIELD);
+		}
+	}
+
 	// -------------------------------- ContextBuilder --------------------------------
+	/**
+	 * The builder-class is is designed to be fluent, but state is only put into ThreadLocal, therefore the builder can
+	 * be static, no need to create objects for each log-statement.
+	 */
 	private static ContextBuilder builder = new ContextBuilder();
+
+
+	public static ContextBuilder f(String key, Object value) {
+		return builder.field(key, value);
+	}
+
+
+	public static ContextBuilder field(String key, Object value) {
+		return builder.field(key, value);
+	}
 
 	/** Using fluent interface to construct ThreadContext informations (formerly known as MDC /NDC) */
 	public static class ContextBuilder {
@@ -43,17 +88,7 @@ public class Say {
 
 
 		public ContextBuilder field(String key, Object value) {
-			if (value != null) {
-				if (value instanceof String) {
-					ThreadContext.put(key, (String)value);
-				}
-				else if (value instanceof Date) {
-					ThreadContext.put(key, PayloadContextMessage.FDF.format((Date)value));
-				}
-				else {
-					ThreadContext.put(key, value.toString());
-				}
-			}
+			MetaContext.put(key, value);
 			return this;
 		}
 
@@ -185,26 +220,6 @@ public class Say {
 			log(Level.FATAL, message, throwable, args);
 		}
 
-	}
-
-
-	public static ContextBuilder f(String key, Object value) {
-		return builder.f(key, value);
-	}
-
-
-	public static ContextBuilder field(String key, Object value) {
-		return builder.f(key, value);
-	}
-
-
-	protected static void log(Level level, Object message, Throwable throwable, Object... args) {
-		Message payload = payload(message, args, throwable);
-		//Marker details = Markers.append("mAAA", "field1").and(Markers.append("mBBB", true)).and(Markers.append("mCCC", 123L));
-		determineLogger().log(level, payload, payload.getThrowable());
-		if (ThreadContext.getContext() != null && !ThreadContext.isEmpty()) {
-			ThreadContext.clearMap();
-		}
 	}
 
 
@@ -372,31 +387,6 @@ public class Say {
 
 	/* Cache of the dynamically created loggers. Multithreading considerations: a simple HashMap is sufficient. */
 	//private static Map<String, Logger> logger = new HashMap<String, Logger>();
-
-	/*
-	 * Using a Custom SecurityManager to get the caller classname. Using the old reflection approach had some drawbacks:<br/>
-	 * 1. From Java7u10 to Javau11 the THREAD_TYPE_DEEP differs (+1) due to internal Java changes.<br/>
-	 * 2. From Java7u40 onwards the method is only supported if "-Djdk.reflect.allowGetCallerClass" is set on start<br/>
-	 * 3. From Java8 on the method is removed<br/>
-	 * <br/>
-	 * See also http://www.infoq.com/news/2013/07/Oracle-Removes-getCallerClass
-	 */
-	//private static final CallerSecurityManager CSM = new CallerSecurityManager();
-
-	/*
-	 * Determines the calling class (and method/linenumber too)
-	 *
-	 * @return A StrackTraceElement, which contains the Classname of the caller, and (if allwissend is integrated) the
-	 *         method and linenumber, too.
-	 */
-	/*
-	static String determineCaller() {
-		return CSM.getCallerClassName(THREAD_TYPE_DEEP);
-		//@SuppressWarnings("restriction")
-		//String className = sun.reflect.Reflection.getCallerClass(THREAD_TYPE_DEEP).getName();
-		//return new StackTraceElement(className, "", null, 0);
-	}
-	 */
 
 	/*
 	 * Determines the class and the appropiate logger of the calling class.

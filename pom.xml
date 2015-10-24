@@ -43,6 +43,13 @@
 			<artifactId>log4j-core</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!-- For ThreadContext payload data ('payload' in eg. logstash) -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.6.3</version>
+		</dependency>
+		
 
 		<!-- logging bindings:slf4j -->
 		<dependency>
