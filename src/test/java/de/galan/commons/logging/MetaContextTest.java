@@ -4,6 +4,7 @@ import static de.galan.commons.time.Instants.*;
 import static org.assertj.core.api.StrictAssertions.*;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.galan.commons.util.Pair;
@@ -15,6 +16,12 @@ import de.galan.commons.util.Pair;
  * @author daniel
  */
 public class MetaContextTest {
+
+	@Before
+	public void setup() {
+		MetaContext.clear();
+	}
+
 
 	@After
 	public void teardown() {
