@@ -4,7 +4,7 @@ import org.apache.logging.log4j.message.Message;
 
 
 /**
- * First approach to what is now known as PayloadMessage
+ * First approach to what is known as PayloadMessage now.
  *
  * @author galan
  */
@@ -83,7 +83,7 @@ public class PayloadMessageOld implements Message {
 					}
 					else {
 						builder = new StringBuilder("invalid amount of arguments (only ").append(args == null ? "null" : args.length).append(
-								" available, at least one missing)");
+							" available, at least one missing)");
 						break;
 					}
 					builder.append(DELIM_STOP);

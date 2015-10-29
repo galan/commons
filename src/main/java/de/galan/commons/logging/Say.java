@@ -38,7 +38,7 @@ public class Say {
 
 	/** Determines the class and the appropiate logger of the calling class. */
 	static Logger determineLogger() {
-		return LogManager.getLogger(ReflectionUtil.getCallerClass(THREAD_TYPE_DEEP), PayloadMessageFactory.INSTANCE);
+		return LogManager.getLogger(ReflectionUtil.getCallerClass(THREAD_TYPE_DEEP), PayloadContextMessageFactory.INSTANCE);
 	}
 
 
@@ -51,6 +51,7 @@ public class Say {
 
 	protected static void log(Level level, Object message, Throwable throwable, Object... args) {
 		Message payload = payload(message, args, throwable);
+		payload.getFormattedMessage(); // preformat message (cached), so formating has processed and added fields to MetaContext
 		if (MetaContext.hasMeta()) {
 			// serialize metacontext map to json, which is put into a designated threadcontext field
 			ThreadContext.put(JSON_FIELD, MetaContext.toJson());
@@ -372,7 +373,7 @@ public class Say {
 	/* A custom security manager that exposes the getClassContext() information */
 	/*
 	static class CallerSecurityManager extends SecurityManager {
-
+	
 		public String getCallerClassName(int callStackDepth) {
 			return getClassContext()[callStackDepth].getName();
 		}
