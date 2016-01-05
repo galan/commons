@@ -235,6 +235,14 @@ public class InstantsTest extends AbstractTestParent {
 
 
 	@Test
+	public void testDateNow() throws Exception {
+		assertDateNear("1s", dateNow());
+		ApplicationClock.setUtc("2013-07-04T07:36:11.123Z");
+		assertThat(dateNow()).isEqualTo(dateUtc("2013-07-04T07:36:11.123Z"));
+	}
+
+
+	@Test
 	public void testLocalUtc() throws Exception {
 		assertThat(dateLocal("2013-07-04 09:36:11")).isEqualTo(Date.from(ZonedDateTime.of(2013, 7, 4, 9, 36, 11, 0, ZONE_LOCAL).toInstant()));
 		assertThat(dateUtc("2013-07-04T07:36:11Z")).isEqualTo(Date.from(ZonedDateTime.of(2013, 7, 4, 7, 36, 11, 0, ZONE_UTC).toInstant()));

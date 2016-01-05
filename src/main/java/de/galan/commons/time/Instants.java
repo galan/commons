@@ -73,6 +73,11 @@ public class Instants {
 	}
 
 
+	public static Date dateNow() {
+		return Date.from(now());
+	}
+
+
 	public static Date dateLocal(String text) {
 		Instant instant = instantLocal(text);
 		return instant != null ? Date.from(instant) : null;
