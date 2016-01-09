@@ -1,6 +1,6 @@
 package de.galan.commons.logging;
 
-import static org.assertj.core.api.StrictAssertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 

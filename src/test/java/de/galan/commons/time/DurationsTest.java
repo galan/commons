@@ -1,7 +1,7 @@
 package de.galan.commons.time;
 
 import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 import java.util.Date;

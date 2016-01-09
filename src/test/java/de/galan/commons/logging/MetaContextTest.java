@@ -1,7 +1,7 @@
 package de.galan.commons.logging;
 
 import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.StrictAssertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.After;
 import org.junit.Before;

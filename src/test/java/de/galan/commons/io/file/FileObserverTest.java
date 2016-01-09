@@ -1,6 +1,6 @@
 package de.galan.commons.io.file;
 
-import static org.assertj.core.api.StrictAssertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;

@@ -2,8 +2,7 @@ package de.galan.commons.test;
 
 import static com.google.common.base.Charsets.*;
 import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import java.io.File;
 import java.io.FileInputStream;
