@@ -7,20 +7,21 @@ Instants provides a fluent interface to create Instant (and Date) objects with e
 
 | method | parameter | description |
 |---|---|---|
-| `now` | | Instant now |
+| `now` | | Instant represeting now, using the global ApplicationClock |
 | `tomorrow` | | Instant in one day from now |
 | `yesterday` | | Instant before one day from now |
-| `dateLocal` | String | Date in the form "yyyy-MM-dd HH:mm:ss", using the local timezone |
-| `date` | long | Date using the milliseconds since the epoch |
-| `dateUtc` | String | Date in the form ""yyyy-MM-dd'T'HH:mm:ss[.SSS]'Z'", using UTC as timezone |
 | `instantLocal` | String | Instant in the form "yyyy-MM-dd HH:mm:ss[.SSS]", using the local timezone |
 | `instant` | String, ZoneId | Instant in the form "yyyy-MM-dd HH:mm:ss[.SSS]", using the given timezone |
 | `instantUtc` | String | Instant in the form "yyyy-MM-dd HH:mm:ss[.SSS]", using UTC as timezone |
 | `instant` | long | Instant using the milliseconds since the epoch |
+| `date` | long | Date using the milliseconds since the epoch |
+| `dateNow` | | Date representing now, using the global ApplicationClock |
+| `dateLocal` | String | Date in the form "yyyy-MM-dd HH:mm:ss", using the local timezone |
+| `dateUtc` | String | Date in the form ""yyyy-MM-dd'T'HH:mm:ss[.SSS]'Z'", using UTC as timezone |
 
 The methods can be used by `from(Instant)` or `from(Date)`, but also independently of Instants, which makes the methods even more helpful.
 
-An Instant created with Instants will be using ApplicationClock, so testing time-affected code become quite simple.
+An Instant created with Instants will be using ApplicationClock, so testing time-affected code becomes quite simple, since you don't have to mock the hell out of your code.
 
 
 ## Builder methods
@@ -49,6 +50,8 @@ An Instant created with Instants will be using ApplicationClock, so testing time
 | `toLong` |  | Returns the milliseconds since epoch from the builder. |
 | `toString` |  | Return a String representation from the builder in the form "yyyy-MM-dd HH:mm:ss.SSS". |
 | `toString` | String | Return a String representation from the builder in the given format. |
+| `toStringLocal` | | Return a String representation from the builder in the form "yyy-MM-dd HH:mm:ss.SSS" in the local timezone. |
+| `toStringLocal` | String | Return a String representation from the builder in the given format, set to the local timezone. |
 | `toStringIsoUtc` |  | Returns a String representation from the builder in the form "yyyy-MM-dd'T'HH:mm:ss.SSS'Z", set to UTC timezone. |
 
 ## Units
@@ -86,7 +89,7 @@ Three days and one month later at 17:10:
 
 Methods are additive:
 
-    from(date("2012-01-01 12:00:00")).in(2, month()).in(1, hour()).toString() // 2012-03-01 13:00:00
+    from(date("2012-01-01 12:00:00")).in(2, month()).in(1, hour()).toString() // 2012-03-01 13:00:00.000
 
 The order can be important:
 
