@@ -1,6 +1,8 @@
 # Abstract
 Instants provides a fluent interface to create Instant (and Date) objects with ease, and typical pitfalls when dealing with Instant and Date can be avoided. It is best used with static imports and IDE support, so you have to make sure that you have the `de.galan.commons.time.Instants` class in eg. for eclipse in your [Java Content Assist Favorites Preferences](http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Feditor%2Fref-preferences-content-assist-favorites.htm). 
 
+If you're using the `Instant` creation methods exclusive in your code, testability also improves, since the `Clock` used can be altered. This allows tests that deal with creation of the current time, and is otherwise only possible by extensive mocking of constructors, static methods or dedicated methods within you class, that only create a new Instant/Date. See `ApplicationClock` for the available options.
+
 # Notation
 
 ## Instant creation methods
