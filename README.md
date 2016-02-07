@@ -25,7 +25,7 @@ Different `Supplier` for eg. Long-sequences and random alphanumeric strings.
 * UrlUtil - Decoding/encoding urls with `Charset` 
 
 ## de.galan.commons.net.mail
-* MailMessenger - Sending multiparts mails using a fluent interface.
+* MailMessenger - Sending multipart mails using a fluent interface.
 
 
 ## de.galan.commons.test
@@ -40,7 +40,7 @@ Different `Supplier` for eg. Long-sequences and random alphanumeric strings.
 * Durations - Utility class to handle and calculate human readable time durations, such as "2h 30m"
 * [Instants](https://github.com/galan/commons/blob/master/documentation/Instants.md) - Fluent simplified time creation and modification.
 * [Times](https://github.com/galan/commons/blob/master/documentation/Times.md) - Fluent time comparision
-* Sleeper - Sleeps a `Duration` wihtout throwing an InterruptedException
+* Sleeper - Sleeps a duration (long or human readable String - as in `Durations`) without throwing an InterruptedException
 
 ## de.galan.commons.util
 Various common functionality, eg.
