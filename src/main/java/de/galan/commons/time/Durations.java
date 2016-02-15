@@ -22,7 +22,8 @@ import de.galan.commons.collection.SoftReferenceCache;
  */
 public class Durations {
 
-	private static final Pattern PATTERN_HUMAN_TIME = Pattern.compile("^([0-9]+w)?[ ]*([0-9]+d)?[ ]*([0-9]+h)?[ ]*([0-9]+m[^s]{0})?[ ]*([0-9]+s)?[ ]*([0-9]+ms)?$");
+	private static final Pattern PATTERN_HUMAN_TIME = Pattern
+		.compile("^([0-9]+w)?[ ]*([0-9]+d)?[ ]*([0-9]+h)?[ ]*([0-9]+m[^s]{0})?[ ]*([0-9]+s)?[ ]*([0-9]+ms)?$");
 
 	public static final long MS_MILLISECOND = 1L;
 	public static final long MS_SECOND = 1000L;
@@ -35,25 +36,25 @@ public class Durations {
 	private static SoftReferenceCache<Long> humantimeCache;
 
 
-	/** Prints how long the given date is in the future in the format Xh Xm Xs Xms */
+	/** Prints how long the given date is in the future in the format "Xd Xh Xm Xs Xms" */
 	public static String timeLeft(Date date) {
 		return timeLeft(date.toInstant());
 	}
 
 
-	/** Prints how long the given date is in the future in the format Xh Xm Xs Xms */
+	/** Prints how long the given date is in the future in the format "Xd Xh Xm Xs Xms" */
 	public static String timeLeft(Instant date) {
 		return timeAgo(now(), date);
 	}
 
 
-	/** Prints how long the given date is ago in the format Xh Xm Xs Xms */
+	/** Prints how long the given date is ago in the format "Xd Xh Xm Xs Xms" */
 	public static String timeAgo(Date date) {
 		return timeAgo(date.toInstant());
 	}
 
 
-	/** Prints how long the given date is ago in the format Xh Xm Xs Xms */
+	/** Prints how long the given date is ago in the format "Xd Xh Xm Xs Xms" */
 	public static String timeAgo(Instant date) {
 		return timeAgo(date, now());
 	}
@@ -69,6 +70,7 @@ public class Durations {
 	}
 
 
+	/** Converts a time in miliseconds to human readable duration in the format "Xd Xh Xm Xs Xms" */
 	public static String humanize(long time) {
 		return humanize(time, EMPTY);
 	}
@@ -112,6 +114,7 @@ public class Durations {
 	}
 
 
+	/** Converts a human readable duration in the format "Xd Xh Xm Xs Xms" to miliseconds. */
 	public static Long dehumanize(String time) {
 		Long result = getHumantimeCache().get(time);
 		if (result == null) {
@@ -150,11 +153,23 @@ public class Durations {
 	}
 
 
+	/** Converts a time in human readable format "Xd Xh Xm Xs Xms" to java.util.time.Duration (for interoperability). */
 	public static Duration toDuration(String time) {
 		if (isBlank(time)) {
 			return Duration.ZERO;
 		}
 		return Duration.of(dehumanize(time), ChronoUnit.MILLIS);
+	}
+
+
+	/**
+	 * Converts a time from java.util.time.Duration to human readable format "Xd Xh Xm Xs Xms" (for interoperability).
+	 */
+	public static String fromDuration(Duration duration) {
+		if (duration == null) {
+			return null;
+		}
+		return humanize(duration.get(ChronoUnit.MILLIS));
 	}
 
 }
