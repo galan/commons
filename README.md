@@ -19,12 +19,18 @@ Just add the following dependency (see [releases](https://github.com/galan/commo
 ## de.galan.commons.func.supplier
 Different `Supplier` for eg. Long-sequences and random alphanumeric strings. 
 
+## de.galan.commons.logging
+Logging facades and utilities, based on log4j2-api so they can be used with any logging-framework such as log4j, log4j2, logback, slf4j, etc..
+
+* Say - Facade to log without the need to declare a logger. Messages paramters can be passed as MDC/ThreadContext json-field (useful for logstash). Take a look at the examples.
+* Slogr - Retrieves the Slf4j Logger without passing the actual calling class, which is a typical copy&paste  pitfall. Can be avoided by using Say.
+
 ## de.galan.commons.net
 * CommonProxy - Simple wrapper for a proxy in form [username[:password]]@host[:port]
 * UrlUtil - Decoding/encoding urls with `Charset`
 
 ## de.galan.commons.net.flux
-* [Flux](https://github.com/galan/commons/blob/master/documentation/net.flux.Flux.md) -  Fluent http/rest-client interface for Java (originated from own project)
+* [Flux](https://github.com/galan/commons/blob/master/documentation/net.flux.Flux.md) - A fluent http/rest-client interface for Java (originated from own project)
 
 ## de.galan.commons.net.mail
 * MailMessenger - Sending multipart mails using a fluent interface.
@@ -34,7 +40,6 @@ Different `Supplier` for eg. Long-sequences and random alphanumeric strings.
 * FixedDateSupplier - Sets the `ApplicationClock` to a fixed time (best used with Instants)
 * SimpleWebserverTestParent - Test containing an lightweight http-server ([simpleframework](http://www.simpleframework.org/)).
 * Tests - Helping methods in tests for eg. loading and comparing test resources, some date assertions, test directory handling.
-
 
 ## de.galan.commons.time
 * ApplicationClock - Clock that acts as time emitter for an application. Uses a java.time.clock.SystemClock (UTC) by default.
