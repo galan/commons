@@ -1,12 +1,11 @@
 package de.galan.commons.net.flux;
 
+import static com.google.common.base.Charsets.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.commons.io.Charsets;
 
 import de.galan.commons.net.UrlUtil;
 
@@ -35,7 +34,7 @@ public class UrlConstruction {
 						builder.append(entry.getKey());
 						if (value != null) {
 							builder.append("=");
-							builder.append(UrlUtil.encode(value.toString(), Charsets.UTF_8));
+							builder.append(UrlUtil.encode(value.toString(), UTF_8));
 						}
 					}
 				}

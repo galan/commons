@@ -65,7 +65,7 @@ public class ZonesTest extends AbstractTestParent {
 		}
 
 		String generated = methods.stream().collect(joining("\n"));
-
+		Say.info("Generated can be printed to replace code {}", generated.length());
 		//Enable to generate:
 		//Say.info("Ids: {}", generated);
 	}

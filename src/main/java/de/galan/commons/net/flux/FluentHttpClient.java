@@ -1,5 +1,6 @@
 package de.galan.commons.net.flux;
 
+import static com.google.common.base.Charsets.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
 import java.net.URL;
@@ -13,7 +14,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-import org.apache.commons.io.Charsets;
 import org.apache.commons.lang3.ObjectUtils;
 
 import de.galan.commons.net.CommonProxy;
@@ -207,7 +207,7 @@ public class FluentHttpClient {
 
 
 		public HttpBuilder body(String body) {
-			return body(body, Charsets.UTF_8);
+			return body(body, UTF_8);
 		}
 
 

@@ -1,5 +1,6 @@
 package de.galan.commons.net.flux;
 
+import static com.google.common.base.Charsets.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
 import java.io.IOException;
@@ -21,7 +22,6 @@ import java.util.concurrent.Callable;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 
@@ -200,7 +200,7 @@ public class CommonHttpClient implements HttpClient {
 	protected void putAuthorization(URLConnection connection, String header, String username, String password) {
 		if (isNotBlank(username) && isNotBlank(password)) {
 			String pair = username + ":" + password;
-			String encodedAuthorization = trim(Base64.encodeBase64String(pair.getBytes(Charsets.UTF_8)));
+			String encodedAuthorization = trim(Base64.encodeBase64String(pair.getBytes(UTF_8)));
 			connection.setRequestProperty(header, "Basic " + encodedAuthorization);
 		}
 	}
