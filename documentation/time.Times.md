@@ -55,14 +55,14 @@ Check that now is between a certain range:
 
     when(now()).between(datePast).and(dateFuture)
 
-Checks that a date is in the future:
+Checks that a date/instant is in the future:
 
     when(date).after(now())
 
-Checks that a date is in the past:
+Checks that a date/instant is in the past:
 
     when(date).before(now())
 
-Checks that a date is at least 10 seconds in the future:
+Checks that a date/instant is at least 10 seconds in the future:
 
     when(date).isAtLeast("10s").after(now())
