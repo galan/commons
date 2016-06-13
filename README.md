@@ -30,7 +30,7 @@ Logging facades and utilities, based on log4j2-api so they can be used with any 
 * UrlUtil - Decoding/encoding urls with `Charset`
 
 ## de.galan.commons.net.flux
-* [Flux](https://github.com/galan/commons/blob/master/documentation/net.flux.Flux.md) - A fluent http/rest-client interface for Java (originated from own project)
+* [Flux](https://github.com/galan/commons/blob/master/documentation/net.flux.Flux.md) - A fluent http/rest-client interface for Java
 
 ## de.galan.commons.net.mail
 * MailMessenger - Sending multipart mails using a fluent interface.
