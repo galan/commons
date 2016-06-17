@@ -22,7 +22,7 @@ Different `Supplier` for eg. Long-sequences and random alphanumeric strings.
 ## de.galan.commons.logging
 Logging facades and utilities, based on log4j2-api so they can be used with any logging-framework such as log4j, log4j2, logback, slf4j, etc..
 
-* Say - Facade to log without the need to declare a logger. Messages paramters can be passed as MDC/ThreadContext json-field (useful for logstash). Take a look at the examples.
+* [Say](https://github.com/galan/commons/blob/master/documentation/logging.Say.md) - Facade to log without the need to declare a logger. Messages paramters can be passed as MDC/ThreadContext json-field (useful for logstash). Take a look at the examples.
 * Slogr - Retrieves the Slf4j Logger without passing the actual calling class, which is a typical copy&paste  pitfall. Can be avoided by using Say.
 
 ## de.galan.commons.net
@@ -43,7 +43,7 @@ Logging facades and utilities, based on log4j2-api so they can be used with any 
 
 ## de.galan.commons.time
 * ApplicationClock - Clock that acts as time emitter for an application. Uses a java.time.clock.SystemClock (UTC) by default.
-* Durations - Utility class to handle and calculate human readable time durations, such as "2h 30m"
+* [Durations](https://github.com/galan/commons/blob/master/documentation/time.Durations.md) - Utility class to handle and calculate human readable time durations, such as "2h 30m"
 * [Instants](https://github.com/galan/commons/blob/master/documentation/time.Instants.md) - Fluent simplified time creation and modification.
 * [Times](https://github.com/galan/commons/blob/master/documentation/time.Times.md) - Fluent time comparision
 * Sleeper - Sleeps a duration (long or human readable String - as in `Durations`) without throwing an InterruptedException
