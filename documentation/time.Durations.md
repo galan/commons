@@ -2,6 +2,7 @@
 Durations simplify working with string formatted periods. It is a conversion utility class to deal with a period of milliseconds in a human readable format. Eg. setting in a configuration file the duration of a timeout to `150000` ms is not as obvious as writing `2m 30s`.
 
 Supported units:
+
 | Unit | Parameter | Constant |
 |---|---|---|
 | (none) | milliseconds | MS_MILLISECOND |
