@@ -64,7 +64,7 @@ public class Durations {
 		String result = "";
 		if ((date != null) && (reference != null)) {
 			long time = reference.toEpochMilli() - date.toEpochMilli();
-			result = humanize(time, " ");
+			result = humanize(time, SPACE);
 		}
 		return result;
 	}
@@ -76,7 +76,7 @@ public class Durations {
 	}
 
 
-	private static String humanize(long time, String separator) {
+	public static String humanize(long time, String separator) {
 		StringBuilder result = new StringBuilder();
 		if (time == 0L) {
 			result.append("0ms");
