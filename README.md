@@ -17,7 +17,7 @@ Just add the following dependency (see [releases](https://github.com/galan/commo
 # Overview
 
 ## de.galan.commons.func.supplier
-Different `Supplier` for eg. Long-sequences and random alphanumeric strings. 
+Various `Supplier` for eg. Long-sequences and random alphanumeric strings. 
 
 ## de.galan.commons.logging
 Logging facades and utilities, based on log4j2-api so they can be used with any logging-framework such as log4j, log4j2, logback, slf4j, etc..
