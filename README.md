@@ -26,7 +26,7 @@ Logging facades and utilities, based on log4j2-api so they can be used with any 
 * Slogr - Retrieves the Slf4j Logger without passing the actual calling class, which is a typical copy&paste  pitfall. Can be avoided by using Say.
 
 ## de.galan.commons.net
-* CommonProxy - Simple wrapper for a proxy in form [username[:password]]@host[:port]
+* CommonProxy - Simple wrapper for a proxy in the format [username[:password]@]host[:port]
 * UrlUtil - Decoding/encoding urls with `Charset`
 
 ## de.galan.commons.net.flux
