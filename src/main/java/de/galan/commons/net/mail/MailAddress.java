@@ -1,9 +1,15 @@
 package de.galan.commons.net.mail;
 
+import static org.apache.commons.lang3.StringUtils.*;
+
 import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -13,7 +19,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
  */
 public class MailAddress {
 
+	@NotNull
+	@JsonProperty("address")
 	private String address;
+	@JsonProperty("name")
 	private String name;
 
 
@@ -22,7 +31,8 @@ public class MailAddress {
 	}
 
 
-	public MailAddress(String address, String name) {
+	@JsonCreator
+	public MailAddress(@JsonProperty("address") String address, @JsonProperty("name") String name) {
 		this.address = address;
 		this.name = name;
 	}
@@ -33,14 +43,14 @@ public class MailAddress {
 	}
 
 
-	public String getCanonical() {
+	public String getAddress() {
 		return address;
 	}
 
 
 	public String getCanonical(boolean includeName) {
-		String result = getCanonical();
-		if (includeName && StringUtils.isNotBlank(getName())) {
+		String result = getAddress();
+		if (includeName && isNotBlank(getName())) {
 			result = getName() + "<" + result + ">";
 		}
 		return result;

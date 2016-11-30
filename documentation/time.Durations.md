@@ -20,12 +20,14 @@ From millis to human readable format:
 
     Durations.humanize(150000L); // "2m30s"
     Durations.humanize(9823749237L); // "113d16h49m9s237ms"
+    Durations.humanize(9823749237L, " "); // "113d 16h 49m 9s 237ms"
     Durations.humanize(0L); // "0ms"
 
 From human readable format to millis:
 
     Durations.dehumanize("2m30s"); // 150000L
     Durations.dehumanize("113d16h49m9s237ms"); // 9823749237L
+    Durations.dehumanize("113d 16h 49m 9s 237ms  "); // Spaces can be used
     Durations.dehumanize("0ms"); // 0L
 
 ## Time ago/left

@@ -5,11 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * Represents an E-Mail to send. Bean-style accessors are available, as well as fluent setters.
- *
- * @author galan
  */
 public class Mail {
 
@@ -17,10 +21,14 @@ public class Mail {
 	public final static int PRIORITY_NORMAL = 2;
 	public final static int PRIORITY_HIGH = 3;
 
+	@NotNull
 	private String subject;
-	private String body;
+	@NotNull
+	private String bodyText;
 	private String bodyHtml;
 
+	@Valid
+	@NotNull
 	private MailAddress sender;
 	private MailAddress replyTo;
 	private List<MailAddress> recipientsTo = new ArrayList<MailAddress>();
@@ -29,7 +37,7 @@ public class Mail {
 
 	private List<Attachment> attachments = new ArrayList<Attachment>();
 
-	private int priority = PRIORITY_NORMAL;
+	private MailPriority priority = MailPriority.NORMAL;
 
 	private Map<String, String> header = new HashMap<String, String>();
 
@@ -69,18 +77,18 @@ public class Mail {
 	}
 
 
-	public String getBody() {
-		return body;
+	public String getBodyText() {
+		return bodyText;
 	}
 
 
-	public void setBody(String body) {
-		this.body = body;
+	public void setBodyText(String bodyText) {
+		this.bodyText = bodyText;
 	}
 
 
-	public Mail body(String mailBody) {
-		setBody(mailBody);
+	public Mail bodyText(String mailBodyText) {
+		setBodyText(mailBodyText);
 		return this;
 	}
 
@@ -117,6 +125,12 @@ public class Mail {
 	}
 
 
+	public Mail sender(String mailSender) {
+		setSender(new MailAddress(mailSender));
+		return this;
+	}
+
+
 	public MailAddress getReplyTo() {
 		return replyTo;
 	}
@@ -133,18 +147,24 @@ public class Mail {
 	}
 
 
-	public int getPriority() {
+	public Mail replyTo(String mailReplyTo) {
+		setReplyTo(new MailAddress(mailReplyTo));
+		return this;
+	}
+
+
+	public MailPriority getPriority() {
 		return priority;
 	}
 
 
-	public void setPriority(int priority) {
+	public void setPriority(MailPriority priority) {
 		this.priority = priority;
 	}
 
 
-	public Mail priority(int mailPriority) {
-		setPriority(mailPriority);
+	public Mail priority(MailPriority MailPriority) {
+		setPriority(MailPriority);
 		return this;
 	}
 
@@ -189,6 +209,16 @@ public class Mail {
 	}
 
 
+	public Mail to(String... mailAddress) {
+		if (mailAddress != null) {
+			for (String address: mailAddress) {
+				addRecipientTo(new MailAddress(address));
+			}
+		}
+		return this;
+	}
+
+
 	public Mail cc(MailAddress... mailAddress) {
 		if (mailAddress != null) {
 			for (MailAddress address: mailAddress) {
@@ -199,10 +229,30 @@ public class Mail {
 	}
 
 
+	public Mail cc(String... mailAddress) {
+		if (mailAddress != null) {
+			for (String address: mailAddress) {
+				addRecipientCc(new MailAddress(address));
+			}
+		}
+		return this;
+	}
+
+
 	public Mail bcc(MailAddress... mailAddress) {
 		if (mailAddress != null) {
 			for (MailAddress address: mailAddress) {
 				addRecipientBcc(address);
+			}
+		}
+		return this;
+	}
+
+
+	public Mail bcc(String... mailAddress) {
+		if (mailAddress != null) {
+			for (String address: mailAddress) {
+				addRecipientBcc(new MailAddress(address));
 			}
 		}
 		return this;
@@ -230,11 +280,13 @@ public class Mail {
 	}
 
 
+	@JsonIgnore
 	public int getNumberRecipients() {
 		return getRecipientsTo().size() + getRecipientsCc().size() + getRecipientsBcc().size();
 	}
 
 
+	@AssertTrue
 	public boolean hasRecipients() {
 		return getNumberRecipients() > 0;
 	}

@@ -47,6 +47,8 @@ public enum MimeType {
 	IMAGE_BMP("image/x-ms-bmp", "bmp"),
 	/** image/svg+xml */
 	IMAGE_SVG("image/svg+xml", "svg"),
+	/** application/json */
+	APPLICATION_JSON("application/json", "json"),
 	/** application/x-javascript */
 	APPLICATION_JAVASCRIPT("application/x-javascript", "js"),
 	/** application/atom+xml */

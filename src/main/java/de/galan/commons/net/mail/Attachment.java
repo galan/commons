@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import de.galan.commons.net.MimeType;
 
 
@@ -16,6 +19,7 @@ import de.galan.commons.net.MimeType;
 public class Attachment {
 
 	private String filename;
+	@JsonProperty("data")
 	private byte[] attachmentData;
 	private String contentType;
 
@@ -30,7 +34,8 @@ public class Attachment {
 	}
 
 
-	public Attachment(String filename, byte[] data, String contentType) {
+	@JsonCreator
+	public Attachment(@JsonProperty("filename") String filename, @JsonProperty("data") byte[] data, @JsonProperty("contentType") String contentType) {
 		setFilename(filename);
 		setAttachmentData(data);
 		setContentType(contentType);
@@ -42,6 +47,7 @@ public class Attachment {
 	}
 
 
+	@JsonProperty
 	public void setAttachmentData(byte[] attachmentData) {
 		this.attachmentData = attachmentData;
 	}

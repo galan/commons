@@ -172,7 +172,7 @@ public class MailMessenger {
 		else if (StringUtils.isBlank(mail.getSubject())) {
 			message = "No subject";
 		}
-		else if (StringUtils.isBlank(mail.getBody())) {
+		else if (StringUtils.isBlank(mail.getBodyText())) {
 			message = "No body";
 		}
 		else if (!mail.hasRecipients()) {
@@ -181,6 +181,8 @@ public class MailMessenger {
 		else if (mail.getSender() == null) {
 			message = "No sender";
 		}
+
+		//TODO Validations.validate(mail);
 
 		if (message != null) {
 			throw new MailInvalidException(mail, message);
@@ -201,7 +203,7 @@ public class MailMessenger {
 
 		// Sender
 		InternetAddress sender = null;
-		if (mail.getSender() == null || StringUtils.isBlank(mail.getSender().getCanonical())) {
+		if (mail.getSender() == null || StringUtils.isBlank(mail.getSender().getAddress())) {
 			sender = new InternetAddress(noreply);
 		}
 		else {
@@ -211,8 +213,8 @@ public class MailMessenger {
 
 		// ReplyTo
 		Address[] replyTo = null;
-		if ((mail.getReplyTo() != null) && StringUtils.isNotBlank(mail.getReplyTo().getCanonical())) {
-			replyTo = new Address[] {new InternetAddress(mail.getReplyTo().getCanonical())};
+		if ((mail.getReplyTo() != null) && StringUtils.isNotBlank(mail.getReplyTo().getAddress())) {
+			replyTo = new Address[] {new InternetAddress(mail.getReplyTo().getAddress())};
 			mimeMessage.setReplyTo(replyTo);
 		}
 
@@ -246,7 +248,7 @@ public class MailMessenger {
 
 			// Textbody is required
 			MimeBodyPart text = new MimeBodyPart();
-			text.setText(mail.getBody());
+			text.setText(mail.getBodyText());
 			text.setHeader("MIME-Version", "1.0");
 			text.setHeader("Content-Type", "text/plain");
 
@@ -291,7 +293,7 @@ public class MailMessenger {
 		}
 		else {
 			// Plain text mail without html body and attachments
-			mimeMessage.setContent(mail.getBody(), "text/plain; charset=\"UTF-8\"");
+			mimeMessage.setContent(mail.getBodyText(), "text/plain; charset=\"UTF-8\"");
 		}
 
 		return mimeMessage;
@@ -300,7 +302,7 @@ public class MailMessenger {
 
 	private void setRecipients(MimeMessage mimeMessage, List<MailAddress> recipients, RecipientType type) throws AddressException, MessagingException {
 		for (MailAddress address: recipients) {
-			mimeMessage.addRecipient(type, new InternetAddress(address.getCanonical()));
+			mimeMessage.addRecipient(type, new InternetAddress(address.getAddress()));
 		}
 	}
 
