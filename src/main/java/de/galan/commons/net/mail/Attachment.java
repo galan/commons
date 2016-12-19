@@ -1,9 +1,9 @@
 package de.galan.commons.net.mail;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,15 +13,12 @@ import de.galan.commons.net.MimeType;
 
 /**
  * Represention of a Mail-Attachment
- *
- * @author galan
  */
 public class Attachment {
 
 	private String filename;
-	@JsonProperty("data")
-	private byte[] attachmentData;
-	private String contentType;
+	private byte[] data;
+	private String mimeType;
 
 
 	public Attachment(String filename, byte[] data) {
@@ -29,49 +26,58 @@ public class Attachment {
 	}
 
 
-	public Attachment(String filename, byte[] data, MimeType contentType) {
-		this(filename, data, contentType.getContentType());
+	public Attachment(String filename, byte[] data, MimeType mimeType) {
+		this(filename, data, mimeType.getMimeType());
 	}
 
 
 	@JsonCreator
-	public Attachment(@JsonProperty("filename") String filename, @JsonProperty("data") byte[] data, @JsonProperty("contentType") String contentType) {
+	public Attachment(@JsonProperty("filename") String filename, @JsonProperty("data") byte[] data, @JsonProperty("mimetype") String mimeType) {
 		setFilename(filename);
-		setAttachmentData(data);
-		setContentType(contentType);
+		setData(data);
+		setMimeType(mimeType);
 	}
 
 
-	public byte[] getAttachmentData() {
-		return attachmentData;
+	public Attachment(String filename, InputStream stream) throws IOException {
+		this(filename, stream, MimeType.APPLICATION_OCTETSTREAM);
 	}
 
 
-	@JsonProperty
-	public void setAttachmentData(byte[] attachmentData) {
-		this.attachmentData = attachmentData;
+	public Attachment(String filename, InputStream stream, MimeType mimeType) throws IOException {
+		this(filename, stream, mimeType.getMimeType());
 	}
 
 
-	public void setAttachmentData(InputStream stream) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		BufferedInputStream bis = new BufferedInputStream(stream, 4096);
-		int read = -1;
-		while((read = bis.read()) != -1) {
-			baos.write(read);
-		}
-		bis.close();
-		attachmentData = baos.toByteArray();
+	public Attachment(String filename, InputStream stream, String mimeType) throws IOException {
+		setFilename(filename);
+		setData(stream);
+		setMimeType(mimeType);
 	}
 
 
-	public String getContentType() {
-		return (contentType == null) ? MimeType.APPLICATION_OCTETSTREAM.getContentType() : contentType;
+	public byte[] getData() {
+		return data;
 	}
 
 
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
+	public void setData(byte[] attachmentData) {
+		data = attachmentData;
+	}
+
+
+	public void setData(InputStream stream) throws IOException {
+		data = IOUtils.toByteArray(stream);
+	}
+
+
+	public String getMimeType() {
+		return (mimeType == null) ? MimeType.APPLICATION_OCTETSTREAM.getMimeType() : mimeType;
+	}
+
+
+	public void setMimeType(String mimeType) {
+		this.mimeType = mimeType;
 	}
 
 

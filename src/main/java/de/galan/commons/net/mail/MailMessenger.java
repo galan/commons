@@ -178,7 +178,7 @@ public class MailMessenger {
 		else if (!mail.hasRecipients()) {
 			message = "No recipients";
 		}
-		else if (mail.getSender() == null) {
+		else if (mail.getFrom() == null) {
 			message = "No sender";
 		}
 
@@ -202,14 +202,14 @@ public class MailMessenger {
 		setRecipients(mimeMessage, mail.getRecipientsBcc(), RecipientType.BCC);
 
 		// Sender
-		InternetAddress sender = null;
-		if (mail.getSender() == null || StringUtils.isBlank(mail.getSender().getAddress())) {
-			sender = new InternetAddress(noreply);
+		InternetAddress from = null;
+		if (mail.getFrom() == null || StringUtils.isBlank(mail.getFrom().getAddress())) {
+			from = new InternetAddress(noreply);
 		}
 		else {
-			sender = new InternetAddress(mail.getSender().getCanonical(true));
+			from = new InternetAddress(mail.getFrom().getCanonical(true));
 		}
-		mimeMessage.setFrom(sender);
+		mimeMessage.setFrom(from);
 
 		// ReplyTo
 		Address[] replyTo = null;
@@ -276,7 +276,7 @@ public class MailMessenger {
 			// Add attachments if given
 			if (mail.hasAttachments()) {
 				for (Attachment attachment: mail.getAttachments()) {
-					if (ArrayUtils.isNotEmpty(attachment.getAttachmentData())) {
+					if (ArrayUtils.isNotEmpty(attachment.getData())) {
 						BodyPart attachmentPart = new MimeBodyPart();
 						DataSource datasource = new AttachmentDataSource(attachment);
 						attachmentPart.setDataHandler(new DataHandler(datasource));

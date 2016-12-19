@@ -29,7 +29,7 @@ public class Mail {
 
 	@Valid
 	@NotNull
-	private MailAddress sender;
+	private MailAddress from;
 	private MailAddress replyTo;
 	private List<MailAddress> recipientsTo = new ArrayList<MailAddress>();
 	private List<MailAddress> recipientsCc = new ArrayList<MailAddress>();
@@ -53,7 +53,7 @@ public class Mail {
 
 
 	public Mail(MailAddress sender, String subject, String... recipientsTo) {
-		setSender(sender);
+		setFrom(sender);
 		setSubject(subject);
 		for (String recipient: recipientsTo) {
 			addRecipientTo(new MailAddress(recipient));
@@ -109,24 +109,24 @@ public class Mail {
 	}
 
 
-	public MailAddress getSender() {
-		return sender;
+	public MailAddress getFrom() {
+		return from;
 	}
 
 
-	public void setSender(MailAddress sender) {
-		this.sender = sender;
+	public void setFrom(MailAddress from) {
+		this.from = from;
 	}
 
 
-	public Mail sender(MailAddress mailSender) {
-		setSender(mailSender);
+	public Mail from(MailAddress mailFrom) {
+		setFrom(mailFrom);
 		return this;
 	}
 
 
-	public Mail sender(String mailSender) {
-		setSender(new MailAddress(mailSender));
+	public Mail sender(String mailFrom) {
+		setFrom(new MailAddress(mailFrom));
 		return this;
 	}
 
@@ -330,7 +330,7 @@ public class Mail {
 
 	@Override
 	public String toString() {
-		return getSender() + ": " + getSubject();
+		return getFrom() + ": " + getSubject();
 	}
 
 }

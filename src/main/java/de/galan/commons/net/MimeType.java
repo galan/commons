@@ -138,20 +138,20 @@ public enum MimeType {
 
 	private final static Map<String, MimeType> MIME_TYPES_BY_EXTENSION = new HashMap<String, MimeType>();
 
-	private String contentType;
+	private String mimeType;
 	private final List<String> fileExtensions = new ArrayList<String>();
 
 
-	MimeType(String contentType, String... fileExtension) {
-		this.contentType = contentType;
+	MimeType(String mimeType, String... fileExtension) {
+		this.mimeType = mimeType;
 		for (String extension: fileExtension) {
 			fileExtensions.add(extension);
 		}
 	}
 
 
-	public String getContentType() {
-		return contentType;
+	public String getMimeType() {
+		return mimeType;
 	}
 
 
@@ -163,7 +163,7 @@ public enum MimeType {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(getContentType());
+		builder.append(getMimeType());
 		if (!getFileExtensions().isEmpty()) {
 			builder.append(" (");
 			int count = 0;

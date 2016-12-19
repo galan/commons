@@ -10,8 +10,6 @@ import javax.activation.DataSource;
 
 /**
  * Datasource for mail attachments
- *
- * @author galan
  */
 public class AttachmentDataSource implements DataSource {
 
@@ -30,16 +28,16 @@ public class AttachmentDataSource implements DataSource {
 
 	@Override
 	public String getContentType() {
-		return getAttachment().getContentType();
+		return getAttachment().getMimeType();
 	}
 
 
 	@Override
 	public InputStream getInputStream() throws IOException {
-		if ((attachment.getAttachmentData() == null) || (attachment.getAttachmentData().length == 0)) {
+		if ((attachment.getData() == null) || (attachment.getData().length == 0)) {
 			throw new IOException("No attachmentdata available");
 		}
-		return new ByteArrayInputStream(attachment.getAttachmentData());
+		return new ByteArrayInputStream(attachment.getData());
 	}
 
 

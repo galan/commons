@@ -33,8 +33,8 @@ public class MailAddress {
 
 	@JsonCreator
 	public MailAddress(@JsonProperty("address") String address, @JsonProperty("name") String name) {
-		this.address = address;
-		this.name = name;
+		this.address = trimToNull(address);
+		this.name = trimToNull(name);
 	}
 
 
@@ -51,7 +51,7 @@ public class MailAddress {
 	public String getCanonical(boolean includeName) {
 		String result = getAddress();
 		if (includeName && isNotBlank(getName())) {
-			result = getName() + "<" + result + ">";
+			result = getName() + " <" + result + ">";
 		}
 		return result;
 	}
