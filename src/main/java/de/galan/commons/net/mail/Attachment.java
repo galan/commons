@@ -6,6 +6,7 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.galan.commons.net.MimeType;
@@ -61,11 +62,13 @@ public class Attachment {
 	}
 
 
+	@JsonProperty("data")
 	public void setData(byte[] attachmentData) {
 		data = attachmentData;
 	}
 
 
+	@JsonIgnore
 	public void setData(InputStream stream) throws IOException {
 		data = IOUtils.toByteArray(stream);
 	}
