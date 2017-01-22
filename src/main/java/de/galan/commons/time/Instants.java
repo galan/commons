@@ -380,8 +380,8 @@ public class Instants {
 		}
 
 
+		/** Splits a time in the form hh:MM:ss */
 		public InstantBuilder at(String time) {
-			//TODO improve
 			String[] split = time.split(":");
 			int hour = Integer.valueOf(split[0]);
 			int min = Integer.valueOf(split[1]);

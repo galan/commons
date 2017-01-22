@@ -5,16 +5,12 @@ import static org.apache.commons.lang3.StringUtils.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
-import com.google.common.base.StandardSystemProperty;
-
 import de.galan.commons.logging.Say;
 import de.galan.commons.time.Sleeper;
 
 
 /**
  * Provides access to information about the currently running JVM and some process-control.
- *
- * @author galan
  */
 public class JvmUtil {
 
@@ -83,10 +79,8 @@ public class JvmUtil {
 
 		protected void shutdown(String time) {
 			if (builderThreaded) {
-				Thread thread = new Thread(() -> {
-					shutdownFinal(time);
-				}, "JvmTermination-thread");
-				thread.setDaemon(false);
+				Thread thread = new Thread(() -> shutdownFinal(time), "JvmTermination-thread");
+				thread.setDaemon(true);
 				thread.start();
 			}
 			else {
@@ -95,24 +89,20 @@ public class JvmUtil {
 		}
 
 
+		protected String getMessage() {
+			return isNotBlank(builderMessage) ? builderMessage : "none";
+		}
+
+
 		protected void shutdownFinal(String time) {
 			if (time != null) {
-				logMessage("The JavaVM will exit in {" + time + "}, return code will be {" + builderReturnCode + "}");
+				Say.info("The JavaVM will exit in {time}, return code will be {code}, message: {message}", time, builderReturnCode, getMessage());
 				Sleeper.sleep(time);
 			}
-			logMessage("The JavaVM will exit NOW, return code is {" + builderReturnCode + "}");
+			Say.info("The JavaVM will exit NOW, return code is {code}, message: {message}", builderReturnCode, getMessage());
 			System.exit(builderReturnCode);
 		}
 
-
-		protected void logMessage(String message) {
-			String ls = StandardSystemProperty.LINE_SEPARATOR.value();
-			String msg = message;
-			if (isNotBlank(builderMessage)) {
-				msg += ls + ls + builderMessage;
-			}
-			MessageBox.printBox(null, msg);
-		}
 	}
 
 

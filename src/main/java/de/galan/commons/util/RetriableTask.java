@@ -58,6 +58,11 @@ public class RetriableTask<T> implements Callable<T> {
 	}
 
 
+	public RetriableTask<T> infinite() {
+		return retries(INFINITE);
+	}
+
+
 	public RetriableTask<T> timeToWait(String timeToWaitBetween) {
 		this.timeToWait = ObjectUtils.defaultIfNull(timeToWaitBetween, DEFAULT_WAIT_TIME);
 		return this;
@@ -84,7 +89,7 @@ public class RetriableTask<T> implements Callable<T> {
 			}
 			catch (Exception e) {
 				numberOfTriesLeft--;
-				if (numberOfRetries != -1) {
+				if (numberOfRetries != INFINITE) {
 					if (numberOfTriesLeft == 0) {
 						throw new RetryException(numberOfRetries + " attempts to retry, failed at " + timeToWait + " interval for " + message, e,
 								numberOfRetries, timeToWait, message);
