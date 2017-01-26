@@ -1,11 +1,10 @@
 package de.galan.commons.util;
 
+import static java.nio.charset.StandardCharsets.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
-import com.google.common.base.Charsets;
 
 
 /**
@@ -35,11 +34,11 @@ public class BOM {
 	public static String clean(String input) {
 		String result = input;
 		if (isNotBlank(input)) {
-			byte[] bytes = input.getBytes(Charsets.UTF_8);
+			byte[] bytes = input.getBytes(UTF_8);
 			if (isUTF8(bytes)) {
 				byte[] barray = new byte[bytes.length - UTF8_BOM_LENGTH];
 				System.arraycopy(bytes, UTF8_BOM_LENGTH, barray, 0, barray.length);
-				result = new String(barray, Charsets.UTF_8);
+				result = new String(barray, UTF_8);
 			}
 		}
 		return result;

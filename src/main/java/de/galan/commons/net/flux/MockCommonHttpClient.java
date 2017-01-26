@@ -1,5 +1,6 @@
 package de.galan.commons.net.flux;
 
+import static java.nio.charset.StandardCharsets.*;
 import static java.util.stream.Collectors.*;
 
 import java.io.ByteArrayInputStream;
@@ -13,7 +14,6 @@ import java.util.Map;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
@@ -109,7 +109,7 @@ public class MockCommonHttpClient implements HttpClient {
 
 
 		public String getBody() {
-			return new String(body, Charsets.UTF_8);
+			return new String(body, UTF_8);
 		}
 
 	}
@@ -133,7 +133,7 @@ public class MockCommonHttpClient implements HttpClient {
 
 
 		public MockResponse(String body, int statusCode, String contentType) {
-			this(null, new ByteArrayInputStream(body.getBytes(Charsets.UTF_8)), statusCode, Charsets.UTF_8.toString(), contentType, null);
+			this(null, new ByteArrayInputStream(body.getBytes(UTF_8)), statusCode, UTF_8.toString(), contentType, null);
 		}
 
 

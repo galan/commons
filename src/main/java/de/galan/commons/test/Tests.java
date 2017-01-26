@@ -1,7 +1,7 @@
 package de.galan.commons.test;
 
-import static com.google.common.base.Charsets.*;
 import static de.galan.commons.time.Instants.*;
+import static java.nio.charset.StandardCharsets.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.io.File;

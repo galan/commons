@@ -1,6 +1,6 @@
 package de.galan.commons.logging;
 
-import static com.google.common.base.Charsets.*;
+import static java.nio.charset.StandardCharsets.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

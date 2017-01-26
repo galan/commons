@@ -2,7 +2,10 @@
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.1//EN" "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
 
 <module name="Checker">
+	<!-- <module name="SuppressionCommentFilter" /> -->
+
 	<module name="TreeWalker">
+		<module name="FileContentsHolder" />
 		<!-- Naming Conventions -->
 		<module name="ConstantName">
 			<property name="format" value="^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*)$" />
@@ -17,7 +20,7 @@
 
 		<!-- Imports -->
 		<module name="IllegalImport">
-			<property name="illegalPkgs" value="sun, com.sun, org.assertj.core.util.Strings, org.assertj.core.util.Lists" />
+			<property name="illegalPkgs" value="sun, com.sun, org.apache.logging.log4j.util, org.assertj.core.util.Strings, org.assertj.core.util.Lists, com.google.common.base.Charsets" />
 		</module>
 
 		<module name="UpperEll" />
@@ -55,7 +58,6 @@
 		<!-- <module name="HideUtilityClassConstructor"/> -->
 
 		<!-- Misc -->
-		<!-- <module name="UncommentedMain"/> -->
 		<module name="Regexp">
 			<property name="illegalPattern" value="true" />
 			<property name="format" value="(System\.(out|err))|(printStackTrace\(\))" />
@@ -64,14 +66,16 @@
 			<property name="illegalPattern" value="true" />
 			<property name="format" value="(new Long\(|new Float\(|new Integer\(|new Double\()" />
 		</module>
+		<!--
 		<module name="Regexp">
 			<property name="illegalPattern" value="true" />
 			<property name="format" value="logger\.(trace|debug|info|warn|error|fatal)" />
 		</module>
 		<module name="Regexp">
 			<property name="illegalPattern" value="true" />
-			<property name="format" value="Logger\.getLogger\((?!stackTraceElements\[THREAD_TYPE_DEEP\])" />
+			<property name="format" value="Logger.getLogger\((?!stackTraceElements\[THREAD_TYPE_DEEP\])" />
 		</module>
+		-->
 		<module name="Regexp">
 			<property name="illegalPattern" value="true" />
 			<property name="format" value="(import .+\.repackaged\..+;)" />
