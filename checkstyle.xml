@@ -20,7 +20,7 @@
 
 		<!-- Imports -->
 		<module name="IllegalImport">
-			<property name="illegalPkgs" value="sun, com.sun, org.apache.logging.log4j.util, org.assertj.core.util.Strings, org.assertj.core.util.Lists, com.google.common.base.Charsets" />
+			<property name="illegalPkgs" value="sun, com.sun, org.assertj.core.util.Strings, org.assertj.core.util.Lists, com.google.common.base.Charsets" />
 		</module>
 
 		<module name="UpperEll" />
