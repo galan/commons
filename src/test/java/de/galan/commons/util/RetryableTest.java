@@ -6,19 +6,19 @@ import java.util.concurrent.Callable;
 
 import org.junit.Test;
 
+import de.galan.commons.logging.Say;
 import de.galan.commons.test.AbstractTestParent;
 
 
 /**
- * CUT RetriableTask
+ * CUT Retryable
  */
-@Deprecated
-public class RetriableTaskTest extends AbstractTestParent {
+public class RetryableTest extends AbstractTestParent {
 
 	@Test
 	public void doesNotComplete() throws Exception {
 		try {
-			RetriableTask<String> rs = new RetriableTask<String>(10, "100ms", new Callable<String>() {
+			Retryable.retry(10L).timeToWait("100ms").call(new Callable<String>() {
 
 				@Override
 				public String call() throws Exception {
@@ -26,7 +26,6 @@ public class RetriableTaskTest extends AbstractTestParent {
 				}
 
 			});
-			rs.call();
 			fail("should not complete");
 		}
 		catch (RetryException ex) {
@@ -41,7 +40,7 @@ public class RetriableTaskTest extends AbstractTestParent {
 
 	@Test
 	public void complete() throws Exception {
-		RetriableTask<String> rs = new RetriableTask<String>(10, "100ms", new Callable<String>() {
+		String result = Retryable.retry(10).timeToWait("100ms").message("complete").call(new Callable<String>() {
 
 			int counter = 0;
 
@@ -53,15 +52,20 @@ public class RetriableTaskTest extends AbstractTestParent {
 				}
 				return "returned";
 			}
+		});
+		assertEquals("returned", result);
+	}
 
-		}).message("complete");
-		assertEquals("returned", rs.call());
+
+	@Test
+	public void compatibleExceptionalRunnable() throws Exception {
+		Retryable.retry(1).timeToWait("100ms").message("complete").run(() -> Say.info("called runnabled"));
 	}
 
 
 	@Test(expected = Error.class)
 	public void infinite() throws Exception {
-		RetriableTask<String> rs = new RetriableTask<String>(RetriableTask.INFINITE, "100ms", new Callable<String>() {
+		String call = Retryable.infinite().timeToWait(100L).call(new Callable<String>() {
 
 			int counter = 0;
 
@@ -78,7 +82,7 @@ public class RetriableTaskTest extends AbstractTestParent {
 			}
 
 		});
-		assertEquals("returned", rs.call());
+		assertEquals("returned", call);
 	}
 
 }

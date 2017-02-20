@@ -10,18 +10,16 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import de.galan.commons.time.Sleeper;
-import de.galan.commons.util.Measures;
-import de.galan.commons.util.Measures.Measure;
 
 
 /**
  * CUT Measures
  */
-public class MeasuresTest {
+public class MeasureTest {
 
 	@Test
 	public void singleRuns() throws Exception {
-		Measure measure = spy(Measures.measure("dummy"));
+		Measure measure = spy(Measure.measure("dummy"));
 		measure.run(() -> Sleeper.sleep(10L));
 		checkLog(measure, 0L, 100L);
 		reset(measure);
@@ -32,7 +30,7 @@ public class MeasuresTest {
 
 	@Test
 	public void singleCalls() throws Exception {
-		Measure measure = spy(Measures.measure("dummy"));
+		Measure measure = spy(Measure.measure("dummy"));
 		String returnValue1 = measure.call(callableString(10L, "abc"));
 		assertThat(returnValue1).isEqualTo("abc");
 		checkLog(measure, 0L, 100L);
@@ -54,7 +52,7 @@ public class MeasuresTest {
 
 	@Test
 	public void everyRuns() throws Exception {
-		Measure measure = spy(Measures.measure("dummy").every(4));
+		Measure measure = spy(Measure.measure("dummy").every(4));
 		measure.run(() -> Sleeper.sleep(10L));
 		measure.run(() -> Sleeper.sleep(10L));
 		measure.run(() -> Sleeper.sleep(10L));
@@ -76,7 +74,7 @@ public class MeasuresTest {
 
 	@Test
 	public void everyCalls() throws Exception {
-		Measure measure = spy(Measures.measure("dummy").every(4));
+		Measure measure = spy(Measure.measure("dummy").every(4));
 		measure.call(callableString(10L, "abc"));
 		measure.call(callableString(10L, "abc"));
 		measure.call(callableString(10L, "abc"));
@@ -98,7 +96,7 @@ public class MeasuresTest {
 
 	@Test
 	public void everyMix() throws Exception {
-		Measure measure = spy(Measures.measure("dummy").every(4));
+		Measure measure = spy(Measure.measure("dummy").every(4));
 		measure.call(callableString(10L, "abc"));
 		measure.run(() -> Sleeper.sleep(10L));
 		measure.call(callableString(10L, "abc"));

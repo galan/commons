@@ -56,7 +56,8 @@ Various common functionality, eg.
 * Generics - Helper for generics, eg casting to get rid of unchecked warnings.
 * JvmUtil - Provides access to information about the currently running JVM and some process-control (eg. fluent Termination of JVM, ShutdownHook methods).
 * JmxUtil - Helpermethod to register MBeans
+* Measure - Measures and logs duration of Callable or Runnables, if required only every n-invokations.
 * MessageBox - Draws a nice messagebox to the logged output.
 * Pair - Simplified key/value class
-* RetriableTask - Runs a 'Callable` until it runs without Exception at least for the specified times of retries.
+* Retryable - Runs a `Callable` or `ExceptionalRunnable` (`Runnable` with Exceptions) until it runs without Exception at least for the specified times of retries in a compact fluent manner.
 

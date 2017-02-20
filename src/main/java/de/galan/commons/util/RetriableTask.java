@@ -13,11 +13,10 @@ import de.galan.commons.time.Sleeper;
 
 
 /**
- * Runs a Callable until it runs without Exception the specified times of retries.
- *
- * @author galan
- * @param <T> Possible result of the repeating task
+ * Invokes a Callable until it runs without Exception the specified times of retries.<br/>
+ * Deprecated, use RetryableCallable or RetryableRunner instead
  */
+@Deprecated
 public class RetriableTask<T> implements Callable<T> {
 
 	private static final Logger LOG = Logr.get();
