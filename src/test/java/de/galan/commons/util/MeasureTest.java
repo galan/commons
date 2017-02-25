@@ -107,6 +107,25 @@ public class MeasureTest {
 	}
 
 
+	@Test
+	public void finish() throws Exception {
+		Measure measure = spy(Measure.measure("dummy"));
+		measure.call(() -> "");
+		measure.call(() -> "");
+		measure.call(() -> "");
+		measure.finish(); //spying takes ~500ms
+		verify(measure, times(1)).logFinished(anyLong(), anyDouble());
+	}
+
+
+	@Test
+	public void finishEmpty() throws Exception {
+		Measure measure = spy(Measure.measure("dummy"));
+		measure.finish();
+		verify(measure, times(0)).logFinished(anyLong(), anyDouble());
+	}
+
+
 	private void checkLog(Measure measure, Long start, Long end) {
 		verify(measure, times(0)).log(anyDouble());
 		ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);

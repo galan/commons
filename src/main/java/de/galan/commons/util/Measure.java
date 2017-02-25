@@ -14,7 +14,7 @@ import de.galan.commons.time.Durations;
 
 /**
  * Measures invokation of Runnables/Callables in milliseconds. Average of n-invocations can also be calculated (using
- * the '.every(n)' builder method). Thread-safe.
+ * the '.every(n)' builder method). A total can be logged using finish() on the Measure object. Thread-safe.
  */
 public class Measure {
 
@@ -23,6 +23,7 @@ public class Measure {
 
 	private int counter = 0;
 	private long[] times;
+	private Long startMeasure;
 
 
 	/** Builds a new Measure object to measure invokations of runnables/callables. */
@@ -49,34 +50,70 @@ public class Measure {
 	}
 
 
-	/** Measure the invokation time of the given Runnable. */
-	public void run(Runnable runnable) {
-		long start = System.currentTimeMillis();
+	/** This method can be called to print the total amount of time taken until that point in time. */
+	public void finish() {
+		if (startMeasure == null) {
+			Say.info("No invokations are measured");
+		}
+		else {
+			long total = System.currentTimeMillis() - startMeasure;
+			double average = 1d * total / counter;
+			logFinished(total, average);
+		}
+	}
+
+
+	public Measure total(boolean total) {
+		return new Measure(builderWhat, builderIteratons);
+	}
+
+
+	/** Measure the invokation time of the given Runnable (without Exception). */
+	public void runnable(Runnable runnable) {
+		initStartTotal();
+		long startInvokation = System.currentTimeMillis();
 		runnable.run();
-		invoked(System.currentTimeMillis() - start);
+		invoked(System.currentTimeMillis() - startInvokation);
+	}
+
+
+	/** Measure the invokation time of the given ExceptionalRunnable. */
+	public void run(ExceptionalRunnable runnable) throws Exception {
+		initStartTotal();
+		long startInvokation = System.currentTimeMillis();
+		runnable.run();
+		invoked(System.currentTimeMillis() - startInvokation);
 	}
 
 
 	/** Measure the invokation time of the given Callable. */
 	public <V> V call(Callable<V> callable) throws Exception {
-		long start = System.currentTimeMillis();
+		initStartTotal();
+		long startInvokation = System.currentTimeMillis();
 		V result = callable.call();
-		invoked(System.currentTimeMillis() - start);
+		invoked(System.currentTimeMillis() - startInvokation);
 		return result;
+	}
+
+
+	private void initStartTotal() {
+		if (startMeasure == null) {
+			startMeasure = System.currentTimeMillis();
+		}
 	}
 
 
 	private void invoked(long millis) {
 		if (builderIteratons == null) {
+			counter++;
 			log(millis);
 		}
 		else {
 			synchronized (this) {
-				times[counter++] = millis;
-				if (counter >= builderIteratons) {
-					double average = 1d * LongStream.of(times).sum() / counter;
+				times[counter++ % builderIteratons] = millis;
+				if (counter % builderIteratons == 0) {
+					double average = 1d * LongStream.of(times).sum() / builderIteratons;
 					log(average);
-					counter = 0;
 					times = new long[builderIteratons];
 				}
 			}
@@ -84,8 +121,14 @@ public class Measure {
 	}
 
 
+	void logFinished(long total, double average) {
+		Say.info("Measured {what} finished in {total}ms, took on average ~{time}ms in {iterations} iterations",
+			builderWhat, total, String.format("%.2f", average), counter);
+	}
+
+
 	void log(double average) {
-		Say.info("Measured {what} took on average ~{time}ms/{iterations}", builderWhat, String.format("%.2f", average), counter);
+		Say.info("Measured {what} took on average ~{time}ms after {iterations} iterations", builderWhat, String.format("%.2f", average), counter);
 	}
 
 
