@@ -43,8 +43,8 @@ An Instant created with Instants will be using ApplicationClock, so testing time
 | `atMidnight` |  | Sets the time to "00:00:00". |
 | `atNoon` |  | Sets the time to "12:00:00". |
 | `till` | Instant/Date | Returns the time in millis till the given second value. |
-| `with` | TemporalAdjuster | Applies the adjuster to the current value |
-| `zone` | ZoneId | Uses the given zone |
+| `with` | TemporalAdjuster | Applies the adjuster to the current value. |
+| `zone` | ZoneId | Uses the given zone. |
 | `toInstant` |  | Returns the Instant from the builder. |
 | `toDate` |  | Returns the Date from the builder. |
 | `toZdt` |  | Returns the ZonedDateTime with UTC as ZoneId from the builder. |
@@ -96,3 +96,4 @@ Methods are additive:
 The order can be important:
 
     from(now()).next(day()).in(2, hours()).toDate() != from(now()).in(2, hours()).next(day()).toDate()
+
