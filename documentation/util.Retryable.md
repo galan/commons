@@ -13,5 +13,8 @@ Invokes a Callable/ExceptionalRunnable until it runs without Exception, will be 
 
 ## Invoking ExceptionalRunnable
 
-    String result = Retryable.run(()->...);
+    Retryable.run(()->...);
 
+## Infinite retries with 5s between
+
+    Retryable.infinite().timeToWait("5s").run(()->...);
