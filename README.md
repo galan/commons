@@ -59,5 +59,5 @@ Various common functionality, eg.
 * [Measure](https://github.com/galan/commons/blob/master/documentation/util.Measure.md) - Measures and logs duration of Callable or Runnables, if required only every n-invokations.
 * MessageBox - Draws a nice messagebox to the logged output.
 * Pair - Simplified key/value class
-* Retryable - Runs a `Callable` or `ExceptionalRunnable` (`Runnable` with Exceptions) until it runs without Exception at least for the specified times of retries in a compact fluent manner.
+* [Retryable](https://github.com/galan/commons/blob/master/documentation/util.Retryable.md) - Runs a `Callable` or `ExceptionalRunnable` (`Runnable` with Exceptions) until it runs without Exception at least for the specified times of retries in a compact fluent manner.
 
