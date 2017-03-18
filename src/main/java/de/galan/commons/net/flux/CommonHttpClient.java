@@ -17,7 +17,6 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -28,13 +27,11 @@ import org.apache.logging.log4j.Logger;
 import de.galan.commons.logging.Logr;
 import de.galan.commons.time.Durations;
 import de.galan.commons.time.Sleeper;
-import de.galan.commons.util.RetriableTask;
+import de.galan.commons.util.Retryable;
 
 
 /**
  * Provides a simple HTTP client for most use-cases, reusable.
- *
- * @author daniel
  */
 public class CommonHttpClient implements HttpClient {
 
@@ -70,14 +67,7 @@ public class CommonHttpClient implements HttpClient {
 
 		try {
 			String timeBetween = (opts.getTimeBetweenRetries() == null) ? null : Durations.humanize(opts.getTimeBetweenRetries());
-			return new RetriableTask<>(opts.getRetriesCount(), timeBetween, new Callable<Response>() {
-
-				@Override
-				public Response call() throws Exception {
-					return request(method, extraHeader, body, url, opts);
-				}
-
-			}).call();
+			return Retryable.retry(opts.getRetriesCount()).timeToWait(timeBetween).call(() -> request(method, extraHeader, body, url, opts));
 		}
 		catch (Exception ex) {
 			if (ex.getCause() != null && ex.getCause() instanceof HttpClientException) {
