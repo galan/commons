@@ -1,11 +1,10 @@
 package de.galan.commons.util;
 
+import static de.galan.commons.util.Sugar.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
-
-import org.apache.commons.lang3.ObjectUtils;
 
 import de.galan.commons.logging.Say;
 import de.galan.commons.time.Durations;
@@ -42,7 +41,7 @@ public class Retryable {
 
 
 	public Retryable timeToWait(String timeToWaitBetween) {
-		timeToWait = ObjectUtils.defaultIfNull(timeToWaitBetween, DEFAULT_WAIT_TIME);
+		timeToWait = timeToWaitBetween;
 		return this;
 	}
 
@@ -101,7 +100,7 @@ public class Retryable {
 						Say.info("Retrying {} in {} for {}", Math.abs(numberOfTriesLeft + 1), timeToWait, message);
 					}
 				}
-				Sleeper.sleep(timeToWait);
+				Sleeper.sleep(optional(timeToWait).orElse(DEFAULT_WAIT_TIME));
 			}
 		}
 	}
