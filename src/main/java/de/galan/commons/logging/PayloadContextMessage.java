@@ -20,8 +20,6 @@ import org.apache.logging.log4j.message.Message;
  * <code>
  * info("Hello {location}", "world"); // ThreadContext will provide the json in a field called "payload"<br/>
  * </code> <br/>
- *
- * @author galan
  */
 public class PayloadContextMessage implements Message {
 
@@ -33,12 +31,14 @@ public class PayloadContextMessage implements Message {
 	private static final FastDateFormat FDF = FastDateFormat.getInstance(DATE_FORMAT_UTC, TIMEZONE_UTC);
 
 	private transient String formattedMessage;
+	private transient Throwable throwable;
+
 	private final String paramMessagePattern;
-	private String[] arguments;
-	private Object[] paramArguments;
+	private String[] argsString;
+	private Object[] argsObject;
+
 	private int[] indexes;
 	private String errormessage;
-	private transient Throwable throwable;
 
 
 	public PayloadContextMessage(final String messagePattern, final Object[] argumentsObject) {
@@ -47,53 +47,48 @@ public class PayloadContextMessage implements Message {
 
 
 	public PayloadContextMessage(final String messagePattern, final Object[] argumentsObject, Throwable throwable) {
-		paramArguments = argumentsObject == null ? EMPTY_ARGUMENTS : argumentsObject;
-		paramMessagePattern = messagePattern;
 		this.throwable = throwable;
+		paramMessagePattern = messagePattern;
+
 		parseMessage(messagePattern);
-		arguments = argumentsToStrings(paramArguments);
+		argsObject = determineArgumentsObject(argumentsObject);
+		argsString = argumentsToStrings(argsObject);
 	}
 
 
-	protected String[] argumentsToStrings(Object[] argumentsObject) {
-		int patternArguments = getPatternAmountArguments();
-		if (argumentsObject.length == 0 && patternArguments == 0) {
-			return EMPTY_ARGUMENTS;
+	private Object[] determineArgumentsObject(final Object[] argumentsObject) {
+		Object[] result = (argumentsObject == null) ? EMPTY_ARGUMENTS : argumentsObject;
+		int patternAmountArgs = getPatternAmountArguments();
+		if (result.length == patternAmountArgs) {
+			// perfect
 		}
-		Object[] objArgs = argumentsObject;
-		int realLength = objArgs.length;
-		// Check if throwable is part of the pattern arguments, and should be added to arguments-array instead
-		if (throwable != null && patternArguments == realLength + 1) {
-			Object[] temp = new Object[objArgs.length + 1];
-			System.arraycopy(objArgs, 0, temp, 0, objArgs.length);
-			temp[temp.length - 1] = throwable;
-			throwable = null; // earase throwable -> is part of the arguments
-			objArgs = temp;
-			realLength = objArgs.length;
-		}
-		// Mimic ParameterizedMessage behaviour, last argument is throwable if not already set and arguments have one left
-		else if (realLength > 0 && (realLength - 1 == patternArguments) && Throwable.class.isAssignableFrom(objArgs[realLength - 1].getClass())) {
-			if (throwable == null) {
-				throwable = (Throwable)objArgs[realLength - 1];
+		else if (result.length < patternAmountArgs) {
+			// Check if throwable is part of the pattern arguments, and should be added to arguments-array instead
+			if ((patternAmountArgs == result.length + 1) && throwable != null) {
+				Object[] temp = new Object[result.length + 1];
+				System.arraycopy(result, 0, temp, 0, result.length);
+				temp[temp.length - 1] = throwable;
+				throwable = null; // earase throwable -> is part of the arguments
+				result = temp;
 			}
-			else {
-				// throwable is already given by constructor, throw away superfluent exception
+		}
+
+		else if (result.length > patternAmountArgs) {
+			// Mimic ParameterizedMessage behaviour, last argument is throwable if not already set and arguments have one left
+			if (result.length > 0 && (result.length - 1 == patternAmountArgs) && Throwable.class.isAssignableFrom(result[result.length - 1].getClass())) {
+				if (throwable == null) {
+					throwable = (Throwable)result[result.length - 1];
+				}
+				else {
+					// throwable is already given by constructor, throw away superfluent exception
+				}
+				Object[] withoutThrowable = new Object[result.length - 1];
+				System.arraycopy(result, 0, withoutThrowable, 0, result.length - 1);
+				result = withoutThrowable;
 			}
-			realLength -= 1;
-			Object[] withoutThrowable = new Object[realLength];
-			System.arraycopy(objArgs, 0, withoutThrowable, 0, realLength);
-			paramArguments = withoutThrowable;
 		}
-		String[] strArgs = new String[realLength];
-		for (int i = 0; i < realLength; i++) {
-			strArgs[i] = convertToString(objArgs[i]);
-		}
-		return strArgs;
-	}
 
-
-	protected int getPatternAmountArguments() {
-		return (indexes == null || indexes.length == 0) ? 0 : indexes.length / 2;
+		return result;
 	}
 
 
@@ -132,6 +127,23 @@ public class PayloadContextMessage implements Message {
 	}
 
 
+	protected String[] argumentsToStrings(Object[] argumentsObject) {
+		if (argumentsObject.length == 0 && getPatternAmountArguments() == 0) {
+			return EMPTY_ARGUMENTS;
+		}
+		String[] result = new String[argumentsObject.length];
+		for (int i = 0; i < argumentsObject.length; i++) {
+			result[i] = convertToString(argumentsObject[i]);
+		}
+		return result;
+	}
+
+
+	protected int getPatternAmountArguments() {
+		return (indexes == null || indexes.length == 0) ? 0 : indexes.length / 2;
+	}
+
+
 	protected String convertToString(Object object) {
 		if (object == null) {
 			return null;
@@ -153,7 +165,7 @@ public class PayloadContextMessage implements Message {
 				formattedMessage = errormessage;
 			}
 			else {
-				formattedMessage = formatMessage(paramMessagePattern, arguments);
+				formattedMessage = formatMessage(paramMessagePattern, argsString);
 			}
 		}
 		return formattedMessage;
@@ -168,11 +180,11 @@ public class PayloadContextMessage implements Message {
 		if (amount == 0) {
 			return pattern;
 		}
-		else if (arguments.length < amount) {
-			errormessage = "Invalid amount of arguments (only " + paramArguments.length + " available, " + (amount - paramArguments.length) + " missing)";
+		else if (argsString.length < amount) {
+			errormessage = "Invalid amount of arguments (only " + argsObject.length + " available, " + (amount - argsObject.length) + " missing)";
 		}
-		else if (arguments.length > amount) {
-			errormessage = "Invalid amount of arguments (" + paramArguments.length + " given but only " + amount + " used in pattern)";
+		else if (argsString.length > amount) {
+			errormessage = "Invalid amount of arguments (" + argsObject.length + " given but only " + amount + " used in pattern)";
 		}
 		if (errormessage != null) {
 			return errormessage;
@@ -182,11 +194,11 @@ public class PayloadContextMessage implements Message {
 		for (int i = 0; i < amount; i++) {
 			int factor = i * 2;
 			builder.append(paramMessagePattern.substring(indexPosition, indexes[factor]));
-			if ((indexes[factor + 1] > indexes[factor]) && (arguments[i] != null)) {
+			if ((indexes[factor + 1] > indexes[factor]) && (argsString[i] != null)) {
 				String tcName = paramMessagePattern.substring(indexes[factor], indexes[factor + 1]);
-				MetaContext.put(tcName, paramArguments[i]); // ThreadContext.put(tcName, arguments[i]);
+				MetaContext.put(tcName, argsObject[i]); // ThreadContext.put(tcName, arguments[i]);
 			}
-			builder.append(arguments[i]);
+			builder.append(argsString[i]);
 			indexPosition = indexes[factor + 1];
 		}
 		builder.append(paramMessagePattern.substring(indexPosition, paramMessagePattern.length()));
@@ -202,7 +214,7 @@ public class PayloadContextMessage implements Message {
 
 	@Override
 	public Object[] getParameters() {
-		return paramArguments;
+		return argsObject;
 	}
 
 
