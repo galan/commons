@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Returns the Slf4j logger for the calling class (for Log4j2 use Logr). Can be used to determine the Logger, reduces
  * errors when copy&paste.<br/>
- *
- * @author galan
  */
 public class Slogr {
 

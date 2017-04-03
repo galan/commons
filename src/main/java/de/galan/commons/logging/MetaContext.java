@@ -24,8 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Manages fields per thread, which are serialized as json for further processing (eg. logstash). See 'Say' class for
  * usage.
- *
- * @author daniel
  */
 public class MetaContext {
 

@@ -9,8 +9,6 @@ import de.galan.commons.test.AbstractTestParent;
 
 /**
  * CUT PayloadMessage
- *
- * @author galan
  */
 public class PayloadMessageTest extends AbstractTestParent {
 

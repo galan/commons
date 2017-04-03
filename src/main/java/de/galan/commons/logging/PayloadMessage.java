@@ -18,8 +18,6 @@ import org.apache.logging.log4j.message.Message;
  * info("Hello {} {}", "beautiful", "world"); // => "Hello {0:beautiful} {1:world}"<br/>
  * info("The Answer is {answer}", 42L); // => "The Answer is {answer:42}"
  * </code> <br/>
- *
- * @author galan
  */
 public class PayloadMessage implements Message {
 

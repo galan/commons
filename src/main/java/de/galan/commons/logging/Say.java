@@ -26,8 +26,6 @@ import org.apache.logging.log4j.util.ReflectionUtil;
  * <code>
  * Say.field("key", "value").field("other", someObject).info("Hello {location}", "world");
  * </code> <br/>
- *
- * @author galan
  */
 public class Say {
 

@@ -6,8 +6,6 @@ import org.apache.logging.log4j.message.Message;
 
 /**
  * Construction of PayloadContextMessages
- *
- * @author galan
  */
 public class PayloadContextMessageFactory extends AbstractMessageFactory {
 

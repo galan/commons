@@ -8,8 +8,6 @@ import org.junit.Test;
 
 /**
  * CUT Logr
- *
- * @author daniel
  */
 public class LogrTest {
 

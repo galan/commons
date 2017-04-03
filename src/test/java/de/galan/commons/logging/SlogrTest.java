@@ -8,8 +8,6 @@ import org.slf4j.Logger;
 
 /**
  * CUT Slogr
- *
- * @author daniel
  */
 public class SlogrTest {
 

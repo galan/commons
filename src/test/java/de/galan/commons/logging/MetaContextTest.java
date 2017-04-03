@@ -12,8 +12,6 @@ import de.galan.commons.util.Pair;
 
 /**
  * CUT MetaContext
- *
- * @author daniel
  */
 public class MetaContextTest {
 

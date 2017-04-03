@@ -18,7 +18,7 @@ import de.galan.commons.time.ApplicationClock;
 public class AbstractTestParent {
 
 	@Rule
-	public TestName name = new TestName();
+	public TestName ruleTestName = new TestName();
 
 
 	@BeforeClass
@@ -37,7 +37,7 @@ public class AbstractTestParent {
 	public void setupSnake() {
 		// Get the working directory, which is in eclipse/maven the project folder
 		String baseDirectory = new File("").getAbsolutePath();
-
+	
 		System.setProperty("snake.base", baseDirectory);
 		//TODO externalize new SnakeBootstrap().initialize();
 	}
@@ -46,7 +46,7 @@ public class AbstractTestParent {
 	@Before
 	public void setupParent() {
 		//setupSnake();
-		String method = "" + getClass().getSimpleName() + "." + name.getMethodName() + "()";
+		String method = "" + getClass().getSimpleName() + "." + ruleTestName.getMethodName() + "()";
 		Logr.get().info("Executing test {}", method);
 	}
 
