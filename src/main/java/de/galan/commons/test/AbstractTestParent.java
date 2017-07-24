@@ -2,35 +2,22 @@ package de.galan.commons.test;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
 import de.galan.commons.logging.Logr;
-import de.galan.commons.time.ApplicationClock;
 
 
 /**
  * Test parent for unit tests.
- *
- * @author galan
  */
 public class AbstractTestParent {
 
 	@Rule
 	public TestName ruleTestName = new TestName();
 
-
-	@BeforeClass
-	public static void ensureNowDateSupplier() {
-		//Dates.setDateSupplier(new NowDateSupplier());
-	}
-
-
-	@BeforeClass
-	public static void resetSystemClock() {
-		ApplicationClock.reset();
-	}
+	@Rule
+	public ApplicationClockResetRule clock = new ApplicationClockResetRule();
 
 
 	/*

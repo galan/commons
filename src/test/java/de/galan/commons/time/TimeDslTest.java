@@ -7,9 +7,11 @@ import java.time.Instant;
 import java.util.Date;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import de.galan.commons.test.AbstractTestParent;
+import de.galan.commons.test.ApplicationClockResetRule;
 
 
 /**
@@ -22,6 +24,9 @@ public class TimeDslTest extends AbstractTestParent {
 	Date sep12 = dateLocal("2012-09-07 15:15:00");
 	Date may12 = dateLocal("2012-05-01 12:00:00");
 	Date may40 = dateLocal("2040-05-01 12:00:00");
+
+	@Rule
+	public ApplicationClockResetRule clock = new ApplicationClockResetRule();
 
 
 	@Before
