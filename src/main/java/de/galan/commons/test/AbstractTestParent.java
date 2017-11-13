@@ -3,18 +3,12 @@ package de.galan.commons.test;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.rules.TestName;
-
-import de.galan.commons.logging.Logr;
 
 
 /**
  * Test parent for unit tests.
  */
 public class AbstractTestParent {
-
-	@Rule
-	public TestName ruleTestName = new TestName();
 
 	@Rule
 	public ApplicationClockResetRule clock = new ApplicationClockResetRule();
@@ -33,8 +27,6 @@ public class AbstractTestParent {
 	@Before
 	public void setupParent() {
 		//setupSnake();
-		String method = "" + getClass().getSimpleName() + "." + ruleTestName.getMethodName() + "()";
-		Logr.get().info("Executing test {}", method);
 	}
 
 

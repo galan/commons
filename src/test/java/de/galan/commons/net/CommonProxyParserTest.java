@@ -35,9 +35,9 @@ public class CommonProxyParserTest extends AbstractTestParent {
 		assertValid("uuu:ppp@" + hostname + ":123", "uuu", "ppp", hostname, 123);
 		assertValid("@" + hostname, null, null, hostname, 80);
 		assertValid("uuu:@" + hostname, "uuu", null, hostname, 80);
-		assertValid("uuu@ppp@" + hostname, "uuu", null, "ppp@" + hostname, 80); // seems to be valid for java.net.URL/URI
+		assertInvalid("uuu@ppp@" + hostname);
 		assertValid(":ppp@" + hostname, null, "ppp", hostname, 80);
-		assertValid("uuu:ppp@" + hostname + "@12323", "uuu", "ppp", hostname + "@12323", 80); // seems to be valid for java.net.URL/URI
+		assertInvalid("uuu:ppp@" + hostname + "@12323");
 		assertInvalid("uuu@ppp:" + hostname + "@12323");
 		assertInvalid(hostname + ":8888,9999");
 	}

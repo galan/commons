@@ -38,6 +38,9 @@ public class CommonProxyParser {
 			URI uri = new URI("http", "//" + proxy, null);
 			URL url = uri.toURL();
 			String host = url.getHost();
+			if (isBlank(host)) {
+				throw new MalformedURLException("host could not be parsed");
+			}
 			int portUrl = url.getPort();
 			int port = (portUrl < 1) || (portUrl > 65535) ? defaultPort : portUrl;
 			String userInfo = url.getUserInfo();
@@ -97,7 +100,7 @@ public class CommonProxyParser {
 					LOG.warn("Parsing CommonProxy failed {input}", ex, p);
 				}
 			}
-
+	
 			return result;
 		}
 	 */
