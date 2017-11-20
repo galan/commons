@@ -5,8 +5,6 @@ import java.io.File;
 
 /**
  * Listener that notifies about changes to a file or directory.
- *
- * @author galan
  */
 public interface FileListener {
 

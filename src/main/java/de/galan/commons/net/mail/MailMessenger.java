@@ -31,8 +31,6 @@ import de.galan.commons.logging.Say;
 
 /**
  * Simply. Sending. Mails.
- *
- * @author galan
  */
 public class MailMessenger {
 

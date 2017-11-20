@@ -10,8 +10,6 @@ import de.galan.commons.time.Sleeper;
 
 /**
  * CUT JvmUtils
- *
- * @author galan
  */
 public class QuickTest extends AbstractTestParent {
 

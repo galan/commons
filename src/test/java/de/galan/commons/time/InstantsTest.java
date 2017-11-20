@@ -2,6 +2,7 @@ package de.galan.commons.time;
 
 import static de.galan.commons.test.Tests.*;
 import static de.galan.commons.time.Instants.*;
+import static de.galan.commons.time.Instants.from;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
@@ -21,8 +22,6 @@ import de.galan.commons.test.AbstractTestParent;
 
 /**
  * CUT Instants
- *
- * @author galan
  */
 public class InstantsTest extends AbstractTestParent {
 

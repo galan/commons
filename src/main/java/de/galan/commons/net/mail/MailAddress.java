@@ -14,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents an E-Mail address
- *
- * @author galan
  */
 public class MailAddress {
 

@@ -11,8 +11,6 @@ import de.galan.commons.test.Tests;
 
 /**
  * CUT MessageBox
- *
- * @author galan
  */
 public class MessageBoxTest {
 

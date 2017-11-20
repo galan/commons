@@ -1,6 +1,7 @@
 package de.galan.commons.test;
 
 import static de.galan.commons.time.Instants.*;
+import static de.galan.commons.time.Instants.from;
 import static java.nio.charset.StandardCharsets.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -23,8 +24,6 @@ import de.galan.commons.time.Durations;
 
 /**
  * Common helper methods that are helpful for the AbstractTestParent and Test-Classes via static imports.
- *
- * @author galan
  */
 public class Tests {
 

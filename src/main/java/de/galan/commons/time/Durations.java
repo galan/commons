@@ -17,8 +17,6 @@ import de.galan.commons.collection.SoftReferenceCache;
 
 /**
  * Utility class to handle human readable time durations.
- *
- * @author galan
  */
 public class Durations {
 

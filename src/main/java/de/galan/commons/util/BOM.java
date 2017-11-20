@@ -9,8 +9,6 @@ import java.io.OutputStream;
 
 /**
  * Adding and remove BOM (byteordermark) UTF-8 headers.
- *
- * @author galan
  */
 public class BOM {
 

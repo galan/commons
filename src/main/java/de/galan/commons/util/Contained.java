@@ -5,8 +5,6 @@ import java.util.Collection;
 
 /**
  * Simple utility class, that checks if an element is in an (vararg) array.
- *
- * @author galan
  */
 public class Contained {
 
@@ -87,8 +85,8 @@ public class Contained {
 	public static <T> T[] $(T... params) {
 		return params;
 	}
-
-
+	
+	
 	private static void test() {
 		int a = $("a", "b").length;
 	}

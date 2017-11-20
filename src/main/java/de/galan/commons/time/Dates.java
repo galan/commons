@@ -25,8 +25,6 @@ import de.galan.commons.logging.Logr;
  * See also https://github.com/galan/commons/wiki/DateDsl<br/>
  * <br/>
  * Deprecated in favor of de.galan.commons.time.Instants.<br/>
- *
- * @author galan
  */
 @Deprecated
 public class Dates {

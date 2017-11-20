@@ -16,8 +16,6 @@ import de.galan.commons.test.ApplicationClockResetRule;
 
 /**
  * CUT TimeDsl
- *
- * @author galan
  */
 public class TimeDslTest extends AbstractTestParent {
 

@@ -10,8 +10,6 @@ import de.galan.commons.test.AbstractTestParent;
 
 /**
  * CUT Pair
- *
- * @author galan
  */
 public class PairTest extends AbstractTestParent {
 

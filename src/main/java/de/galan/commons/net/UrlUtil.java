@@ -10,8 +10,6 @@ import java.nio.charset.Charset;
 
 /**
  * Url-related helper functionality.
- *
- * @author galan
  */
 public class UrlUtil {
 

@@ -15,8 +15,6 @@ import de.galan.commons.time.Durations;
 
 /**
  * Some benchmarks
- *
- * @author galan
  */
 @Ignore
 public class LogPerformanceIT {

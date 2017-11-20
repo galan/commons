@@ -9,7 +9,6 @@ import java.util.Map;
 /**
  * Stores it's value-entries as SoftReferences
  *
- * @author galan
  * @param <T> Type of value objects
  */
 public class SoftReferenceCache<T> {

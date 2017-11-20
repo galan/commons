@@ -8,8 +8,6 @@ import java.util.Map;
 
 /**
  * A list with the typical and most used MIME Types, see also http://www.iana.org/assignments/media-types
- *
- * @author galan
  */
 public enum MimeType {
 

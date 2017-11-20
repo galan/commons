@@ -2,8 +2,6 @@ package de.galan.commons.time;
 
 /**
  * Encapsulates the InterruptedException from Thread.sleep(ms).
- *
- * @author galan
  */
 public class Sleeper {
 

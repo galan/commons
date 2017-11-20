@@ -26,8 +26,6 @@ import de.galan.commons.logging.Say;
  * Construction of time-objects with a fluent interface. Provides a a simple but useful subset for creating, modfing and
  * formatting time-based objects. Application-wide time will be setup in ApplicationClock.<br/>
  * See also https://github.com/galan/commons/blob/master/documentation/Instants.md
- *
- * @author galan
  */
 public class Instants {
 

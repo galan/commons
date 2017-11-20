@@ -12,8 +12,6 @@ import de.galan.commons.logging.Say;
 
 /**
  * MBean helper, registers MBeans with given package-name.
- *
- * @author galan
  */
 public class JmxUtil {
 

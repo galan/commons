@@ -14,8 +14,6 @@ import de.galan.commons.test.Tests;
 
 /**
  * CUT BOM
- *
- * @author galan
  */
 public class BOMTest extends AbstractTestParent {
 

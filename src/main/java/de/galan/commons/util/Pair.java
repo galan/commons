@@ -2,8 +2,7 @@ package de.galan.commons.util;
 
 /**
  * Simple key/value pair
- *
- * @author galan
+ * 
  * @param <K> Type of key
  * @param <V> Type of value
  */

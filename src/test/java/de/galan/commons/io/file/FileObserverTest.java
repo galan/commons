@@ -17,8 +17,6 @@ import de.galan.commons.time.Sleeper;
 
 /**
  * CUT FileObserver
- *
- * @author galan
  */
 public class FileObserverTest extends AbstractTestParent {
 

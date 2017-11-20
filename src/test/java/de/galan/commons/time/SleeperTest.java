@@ -9,8 +9,6 @@ import de.galan.commons.test.AbstractTestParent;
 
 /**
  * CUT Sleeper
- *
- * @author galan
  */
 public class SleeperTest extends AbstractTestParent {
 

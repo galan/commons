@@ -7,8 +7,6 @@ import org.simpleframework.http.core.Container;
 
 /**
  * For usage with the simpleframework webserver in the SimpleWebserverTestParent.
- *
- * @author galan
  */
 public abstract class DummyContainer implements Container {
 
