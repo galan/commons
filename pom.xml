@@ -87,8 +87,8 @@
 
 		<!-- Mail -->
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>javax.mail-api</artifactId>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
 			<version>1.6.0</version>
 			<exclusions>
 				<exclusion>
@@ -153,6 +153,13 @@
 			<version>2.11.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.tngtech.java</groupId>
+			<artifactId>junit-dataprovider</artifactId>
+			<version>1.12.0</version>
+			<scope>test</scope>
+		</dependency>
+
 
 
 	</dependencies>

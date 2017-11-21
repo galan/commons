@@ -4,6 +4,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 import java.util.Objects;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -22,6 +24,12 @@ public class MailAddress {
 	private String address;
 	@JsonProperty("name")
 	private String name;
+
+
+	public static MailAddress of(String address) throws AddressException {
+		InternetAddress addr = new InternetAddress(address);
+		return new MailAddress(addr.getAddress(), addr.getPersonal());
+	}
 
 
 	public MailAddress(String address) {
