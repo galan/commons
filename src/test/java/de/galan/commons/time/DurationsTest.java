@@ -6,21 +6,15 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
-import org.junit.Rule;
 import org.junit.Test;
 
 import de.galan.commons.test.AbstractTestParent;
-import de.galan.commons.test.ApplicationClockResetRule;
 
 
 /**
  * CUT Durations
  */
 public class DurationsTest extends AbstractTestParent {
-
-	@Rule
-	public ApplicationClockResetRule clock = new ApplicationClockResetRule();
-
 
 	@Test
 	public void timeAgo() {

@@ -23,12 +23,6 @@ public class Times {
 		return new TimeBuilder(date);
 	}
 
-	/*
-	public static boolean withoutMs() {
-		return true;
-	}
-	 */
-
 	/** TimeDsl Builder */
 	public static class TimeBuilder {
 
@@ -77,14 +71,14 @@ public class Times {
 		}
 
 
+		/** removes milliseconds part */
 		protected long truncate(Instant date) {
-			// removes milliseconds part
 			return date.toEpochMilli() / 1000;
 		}
 
 
+		/** removes milliseconds part */
 		protected long truncate(long time) {
-			// removes milliseconds part
 			return time / 1000;
 		}
 
@@ -95,7 +89,7 @@ public class Times {
 
 
 		public boolean after(Instant date) {
-			return ref.toEpochMilli() >= date.toEpochMilli();
+			return ref.toEpochMilli() > date.toEpochMilli();
 		}
 
 
@@ -105,7 +99,7 @@ public class Times {
 
 
 		public boolean before(Instant date) {
-			return ref.toEpochMilli() <= date.toEpochMilli();
+			return ref.toEpochMilli() < date.toEpochMilli();
 		}
 
 

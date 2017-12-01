@@ -7,24 +7,19 @@ import java.time.Instant;
 import java.util.Date;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import de.galan.commons.test.AbstractTestParent;
-import de.galan.commons.test.ApplicationClockResetRule;
 
 
 /**
  * CUT TimeDsl
  */
-public class TimeDslTest extends AbstractTestParent {
+public class TimesTest extends AbstractTestParent {
 
 	Date sep12 = dateLocal("2012-09-07 15:15:00");
 	Date may12 = dateLocal("2012-05-01 12:00:00");
 	Date may40 = dateLocal("2040-05-01 12:00:00");
-
-	@Rule
-	public ApplicationClockResetRule clock = new ApplicationClockResetRule();
 
 
 	@Before
@@ -55,7 +50,7 @@ public class TimeDslTest extends AbstractTestParent {
 	public void after() {
 		assertTrue(Times.when(sep12).after(may12));
 		assertFalse(Times.when(may12).after(sep12));
-		assertTrue(Times.when(now()).after(now()));
+		assertFalse(Times.when(may12).after(may12)); // equal
 	}
 
 
@@ -63,7 +58,7 @@ public class TimeDslTest extends AbstractTestParent {
 	public void before() {
 		assertFalse(Times.when(sep12).before(may12));
 		assertTrue(Times.when(may12).before(sep12));
-		assertTrue(Times.when(now()).before(now()));
+		assertFalse(Times.when(may12).before(may12)); // equal
 	}
 
 
@@ -82,6 +77,7 @@ public class TimeDslTest extends AbstractTestParent {
 		assertTrue(Times.when(may12).isAtLeast("20m").before(sep12));
 		assertTrue(Times.when(dateLocal("2012-05-01 11:39:00")).isAtLeast("20m").before(may12));
 		assertFalse(Times.when(dateLocal("2012-05-01 11:40:00")).isAtLeast("20m").before(may12));
+		assertTrue(Times.when(dateLocal("2012-05-01 11:39:59.999")).isAtLeast("20m").before(may12));
 		assertFalse(Times.when(dateLocal("2012-05-01 12:40:00")).isAtLeast("20m").before(may12));
 		assertFalse(Times.when(may12).isAtLeast("20m").before(may12));
 	}
