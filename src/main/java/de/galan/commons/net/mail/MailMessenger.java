@@ -4,6 +4,7 @@ import static de.galan.commons.time.Instants.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
@@ -226,15 +227,18 @@ public class MailMessenger {
 		if (mail.hasHeaders()) {
 			for (String key: mail.getHeader().keySet()) {
 				String name = key;
-				String value = mail.getHeader().get(name);
-				try {
-					// Ensure only 7-Bit values
-					name = MimeUtility.encodeText(name, "US-ASCII", "Q");
-					value = MimeUtility.encodeText(value, "US-ASCII", "Q");
-					mimeMessage.addHeader(name, value);
-				}
-				catch (UnsupportedEncodingException e) {
-					Say.error("Could not add header, name: {name}, value: {value}", name, value);
+				Collection<String> values = mail.getHeader().get(name);
+
+				for (String value: values) {
+					try {
+						// Ensure only 7-Bit values
+						name = MimeUtility.encodeText(name, "US-ASCII", "Q");
+						value = MimeUtility.encodeText(value, "US-ASCII", "Q");
+						mimeMessage.addHeader(name, value);
+					}
+					catch (UnsupportedEncodingException e) {
+						Say.error("Could not add header, name: {name}, value: {value}", name, value);
+					}
 				}
 			}
 		}
