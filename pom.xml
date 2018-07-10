@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.galan</groupId>
 	<artifactId>commons</artifactId>
-	<version>0.15.4-SNAPSHOT</version>
+	<version>0.16.0</version>
 
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Utility library, that is also used accross the ${project.groupId} components</description>
@@ -20,7 +19,7 @@
 		<connection>scm:git:ssh://github.com/galan/commons.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/galan/commons.git</developerConnection>
 		<url>https://github.com/galan/commons</url>
-		<tag>HEAD</tag>
+		<tag>v0.16.0</tag>
 	</scm>
 
 	<dependencies>
