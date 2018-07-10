@@ -2,9 +2,15 @@ package de.galan.commons.net.mail;
 
 import javax.validation.ConstraintViolationException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import org.junit.Test;
 
 import de.galan.commons.util.Validations;
+
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
@@ -91,4 +97,21 @@ public class MailTest {
 		Validations.validate(mail);
 	}
 
+
+	@Test
+	public void deserializeWithHeaders() throws Exception {
+		Mail mail = new Mail();
+		mail.addHeader("foo", "bar");
+		mail.addHeader("foo", "baz");
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new GuavaModule());
+
+		String json = mapper.writeValueAsString(mail);
+
+		Mail actual = mapper.readValue(json, Mail.class);
+
+		assertThat(actual.hasHeaders()).isTrue();
+		assertThat(actual.getHeader().get("foo")).contains("bar", "baz");
+	}
 }
