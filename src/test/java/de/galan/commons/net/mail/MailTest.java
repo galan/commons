@@ -1,16 +1,15 @@
 package de.galan.commons.net.mail;
 
+import static org.assertj.core.api.Assertions.*;
+
 import javax.validation.ConstraintViolationException;
+
+import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import org.junit.Test;
 
 import de.galan.commons.util.Validations;
-
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
