@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.galan.commons.logging.Say;
-import de.galan.commons.test.AbstractTestParent;
+import de.galan.commons.test.vintage.AbstractTestParent;
 import de.galan.commons.time.Sleeper;
 
 

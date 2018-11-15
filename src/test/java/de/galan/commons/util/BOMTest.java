@@ -8,8 +8,8 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.galan.commons.test.AbstractTestParent;
 import de.galan.commons.test.Tests;
+import de.galan.commons.test.vintage.AbstractTestParent;
 
 
 /**

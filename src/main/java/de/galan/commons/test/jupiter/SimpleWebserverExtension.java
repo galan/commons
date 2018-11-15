@@ -1,4 +1,4 @@
-package de.galan.commons.test;
+package de.galan.commons.test.jupiter;
 
 import static org.junit.Assert.*;
 
@@ -7,8 +7,9 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 import org.apache.logging.log4j.Logger;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.simpleframework.http.core.Container;
 import org.simpleframework.http.core.ContainerSocketProcessor;
 import org.simpleframework.transport.SocketProcessor;
@@ -21,18 +22,42 @@ import de.galan.commons.time.Sleeper;
 /**
  * Starts/stops a simple webserver. Usage: use startServer(Container) and anonymously override DummyContainer.
  */
-public class SimpleWebserverTestParent extends AbstractTestParent {
+public class SimpleWebserverExtension implements BeforeEachCallback, AfterEachCallback {
 
 	private static final Logger LOG = Logr.get();
 
-	protected SocketProcessor server; // formerly known as Server
+	protected SocketProcessor server;
 	private boolean stopped;
 
 	private SocketConnection connection;
 
 
-	@Before
-	public void beforeWebserver() {
+	public static SimpleWebserverBuilder builder() {
+		return new SimpleWebserverBuilder();
+	}
+
+	/** TODO */
+	public static class SimpleWebserverBuilder {
+
+		private Integer builderPort;
+
+
+		public SimpleWebserverBuilder port(Integer port) {
+			builderPort = port;
+			return this;
+		}
+
+
+		public SimpleWebserverExtension build() {
+			new SimpleWebserverExtension();
+			return null;
+		}
+
+	}
+
+
+	@Override
+	public void beforeEach(ExtensionContext context) throws Exception {
 		if (server != null) {
 			stopServer();
 		}
@@ -40,8 +65,8 @@ public class SimpleWebserverTestParent extends AbstractTestParent {
 	}
 
 
-	@After
-	public void afterWebserver() {
+	@Override
+	public void afterEach(ExtensionContext context) throws Exception {
 		stopServer();
 	}
 
@@ -72,7 +97,7 @@ public class SimpleWebserverTestParent extends AbstractTestParent {
 			@Override
 			public void run() {
 				Sleeper.sleep(delay);
-				synchronized (SimpleWebserverTestParent.this) {
+				synchronized (SimpleWebserverExtension.this) {
 					if (!stopped) {
 						startServer(container);
 					}

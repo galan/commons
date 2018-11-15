@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
-import de.galan.commons.test.AbstractTestParent;
+import de.galan.commons.test.vintage.AbstractTestParent;
 
 
 /**

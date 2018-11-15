@@ -1,4 +1,4 @@
-package de.galan.commons.test;
+package de.galan.commons.test.vintage;
 
 import org.junit.After;
 import org.junit.Before;
@@ -6,8 +6,10 @@ import org.junit.Rule;
 
 
 /**
- * Test parent for unit tests.
+ * Test parent for unit tests<br/>
+ * Deprecated, use the ApplicationClockExtension for Jupiter tests instead.
  */
+@Deprecated
 public class AbstractTestParent {
 
 	@Rule
@@ -18,7 +20,7 @@ public class AbstractTestParent {
 	public void setupSnake() {
 		// Get the working directory, which is in eclipse/maven the project folder
 		String baseDirectory = new File("").getAbsolutePath();
-	
+
 		System.setProperty("snake.base", baseDirectory);
 		//TODO externalize new SnakeBootstrap().initialize();
 	}

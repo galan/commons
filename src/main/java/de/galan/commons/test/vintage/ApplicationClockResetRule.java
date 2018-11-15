@@ -1,4 +1,4 @@
-package de.galan.commons.test;
+package de.galan.commons.test.vintage;
 
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;

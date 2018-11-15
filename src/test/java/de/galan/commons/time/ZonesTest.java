@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.google.common.base.Stopwatch;
 
 import de.galan.commons.logging.Say;
-import de.galan.commons.test.AbstractTestParent;
+import de.galan.commons.test.vintage.AbstractTestParent;
 
 
 /**

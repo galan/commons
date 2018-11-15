@@ -14,7 +14,7 @@ import de.galan.commons.time.Sleeper;
 
 /**
  * Invokes a Callable until it runs without Exception the specified times of retries.<br/>
- * Deprecated, use RetryableCallable or RetryableRunner instead
+ * Deprecated, use Retryable instead.
  */
 @Deprecated
 public class RetriableTask<T> implements Callable<T> {

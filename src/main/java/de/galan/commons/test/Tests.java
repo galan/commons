@@ -23,7 +23,7 @@ import de.galan.commons.time.Durations;
 
 
 /**
- * Common helper methods that are helpful for the AbstractTestParent and Test-Classes via static imports.
+ * Common helper methods that are helpful for Test-Classes via static imports.
  */
 public class Tests {
 
