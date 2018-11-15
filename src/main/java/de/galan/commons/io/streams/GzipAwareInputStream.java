@@ -14,10 +14,17 @@ public class GzipAwareInputStream extends InputStream {
 	boolean compressed = false;
 	private PushbackInputStream pushback;
 	private InputStream selected;
+	private boolean decompress;
 
 
 	public GzipAwareInputStream(InputStream in) {
+		this(in, true);
+	}
+
+
+	public GzipAwareInputStream(InputStream in, boolean decompress) {
 		pushback = new PushbackInputStream(in, 2);
+		this.decompress = decompress;
 	}
 
 
@@ -47,8 +54,15 @@ public class GzipAwareInputStream extends InputStream {
 		if (read > 0) {
 			pushback.unread(header, 0, read);
 		}
-		selected = compressed ? new GZIPInputStream(pushback) : pushback;
-		//FileUtils.copyInputStreamToFile(selected, new File("/tmp/xxx.gz"));
+		selected = (compressed && decompress) ? new GZIPInputStream(pushback) : pushback;
+	}
+
+
+	public boolean isCompressed() throws IOException {
+		if (selected == null) {
+			checkHeader();
+		}
+		return compressed;
 	}
 
 
