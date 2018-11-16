@@ -22,7 +22,7 @@ import de.galan.commons.time.Sleeper;
  * Starts/stops a simple webserver. Usage: use startServer(Container) and anonymously override DummyContainer.
  */
 @Deprecated
-public class SimpleWebserverTestParent extends AbstractTestParent {
+public class SimpleWebserverTestParent {
 
 	private static final Logger LOG = Logr.get();
 

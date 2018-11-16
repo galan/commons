@@ -6,15 +6,13 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
-import org.junit.Test;
-
-import de.galan.commons.test.vintage.AbstractTestParent;
+import org.junit.jupiter.api.Test;
 
 
 /**
  * CUT Durations
  */
-public class DurationsTest extends AbstractTestParent {
+public class DurationsTest {
 
 	@Test
 	public void timeAgo() {

@@ -5,15 +5,13 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
-import de.galan.commons.test.vintage.AbstractTestParent;
+import org.junit.jupiter.api.Test;
 
 
 /**
  * CUT GenericUtil
  */
-public class GenericsTest extends AbstractTestParent {
+public class GenericsTest {
 
 	@Test
 	public void cast() throws Exception {

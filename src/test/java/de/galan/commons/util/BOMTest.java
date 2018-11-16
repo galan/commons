@@ -6,16 +6,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import de.galan.commons.test.Tests;
-import de.galan.commons.test.vintage.AbstractTestParent;
 
 
 /**
  * CUT BOM
  */
-public class BOMTest extends AbstractTestParent {
+public class BOMTest {
 
 	private String bom1;
 	private String bom2;

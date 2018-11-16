@@ -1,10 +1,11 @@
 package de.galan.commons.net.mail;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import javax.validation.ConstraintViolationException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
@@ -17,50 +18,60 @@ import de.galan.commons.util.Validations;
  */
 public class MailTest {
 
-	@Test(expected = ConstraintViolationException.class)
+	@Test
 	public void validationPlain() throws Exception {
-		Mail mail = new Mail();
-		Validations.validate(mail);
+		assertThrows(ConstraintViolationException.class, () -> {
+			Mail mail = new Mail();
+			Validations.validate(mail);
+		});
 	}
 
 
-	@Test(expected = ConstraintViolationException.class)
+	@Test
 	public void validationMissingRecipients() throws Exception {
-		Mail mail = new Mail();
-		mail.setSubject("subject");
-		mail.setBodyText("bla");
-		mail.from(new MailAddress("a@example.com"));
-		Validations.validate(mail);
+		assertThrows(ConstraintViolationException.class, () -> {
+			Mail mail = new Mail();
+			mail.setSubject("subject");
+			mail.setBodyText("bla");
+			mail.from(new MailAddress("a@example.com"));
+			Validations.validate(mail);
+		});
 	}
 
 
-	@Test(expected = ConstraintViolationException.class)
+	@Test
 	public void validationMissingSubject() throws Exception {
-		Mail mail = new Mail();
-		mail.setBodyText("bla");
-		mail.from(new MailAddress("a@example.com"));
-		mail.addRecipientTo(new MailAddress("b@example.com"));
-		Validations.validate(mail);
+		assertThrows(ConstraintViolationException.class, () -> {
+			Mail mail = new Mail();
+			mail.setBodyText("bla");
+			mail.from(new MailAddress("a@example.com"));
+			mail.addRecipientTo(new MailAddress("b@example.com"));
+			Validations.validate(mail);
+		});
 	}
 
 
-	@Test(expected = ConstraintViolationException.class)
+	@Test
 	public void validationMissingBody() throws Exception {
-		Mail mail = new Mail();
-		mail.setSubject("subject");
-		mail.from(new MailAddress("a@example.com"));
-		mail.addRecipientTo(new MailAddress("b@example.com"));
-		Validations.validate(mail);
+		assertThrows(ConstraintViolationException.class, () -> {
+			Mail mail = new Mail();
+			mail.setSubject("subject");
+			mail.from(new MailAddress("a@example.com"));
+			mail.addRecipientTo(new MailAddress("b@example.com"));
+			Validations.validate(mail);
+		});
 	}
 
 
-	@Test(expected = ConstraintViolationException.class)
+	@Test
 	public void validationMissingFrom() throws Exception {
-		Mail mail = new Mail();
-		mail.setSubject("subject");
-		mail.setBodyText("bla");
-		mail.addRecipientTo(new MailAddress("b@example.com"));
-		Validations.validate(mail);
+		assertThrows(ConstraintViolationException.class, () -> {
+			Mail mail = new Mail();
+			mail.setSubject("subject");
+			mail.setBodyText("bla");
+			mail.addRecipientTo(new MailAddress("b@example.com"));
+			Validations.validate(mail);
+		});
 	}
 
 

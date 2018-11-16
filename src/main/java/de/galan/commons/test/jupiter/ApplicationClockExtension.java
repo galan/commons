@@ -76,7 +76,7 @@ public class ApplicationClockExtension implements BeforeEachCallback, AfterEachC
 
 
 	public ApplicationClockExtension(Clock clock) {
-		this.clock = clock;
+		this.clock = clock == null ? Clock.systemUTC() : clock;
 	}
 
 

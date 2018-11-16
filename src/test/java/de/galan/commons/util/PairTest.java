@@ -3,15 +3,13 @@ package de.galan.commons.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
-import org.junit.Test;
-
-import de.galan.commons.test.vintage.AbstractTestParent;
+import org.junit.jupiter.api.Test;
 
 
 /**
  * CUT Pair
  */
-public class PairTest extends AbstractTestParent {
+public class PairTest {
 
 	@Test
 	public void defaultConstructor() throws Exception {

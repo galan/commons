@@ -6,6 +6,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 
+import de.galan.commons.func.exceptional.ExceptionalRunnable;
 import de.galan.commons.logging.Say;
 import de.galan.commons.time.Durations;
 import de.galan.commons.time.Sleeper;

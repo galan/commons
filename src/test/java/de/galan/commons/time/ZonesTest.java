@@ -9,18 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Stopwatch;
 
 import de.galan.commons.logging.Say;
-import de.galan.commons.test.vintage.AbstractTestParent;
 
 
 /**
  * Generation of zones and tests.
  */
-public class ZonesTest extends AbstractTestParent {
+public class ZonesTest {
 
 	@Test
 	public void accessZones() throws Exception {

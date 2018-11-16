@@ -6,7 +6,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.concurrent.Callable;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import de.galan.commons.time.Sleeper;

@@ -4,8 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Stopwatch;
 
@@ -16,7 +16,7 @@ import de.galan.commons.time.Durations;
 /**
  * Some benchmarks
  */
-@Ignore
+@Disabled
 public class LogPerformanceIT {
 
 	int loops = 100_000;
@@ -45,7 +45,7 @@ public class LogPerformanceIT {
 
 
 	// Test seems to have same performance :D (sometimes)
-	@Ignore
+	@Disabled
 	@Test
 	public void parameter() throws Exception {
 		String message = "Hello {}, Bye {}";
@@ -68,7 +68,7 @@ public class LogPerformanceIT {
 
 
 	// Log much faster then say, but is probably still affordable for non-realtime application
-	@Ignore
+	@Disabled
 	@Test
 	public void disabled() throws Exception {
 		String message = "Hello {}, Bye {}";

@@ -1,20 +1,19 @@
 package de.galan.commons.util;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import de.galan.commons.logging.Logr;
-import de.galan.commons.test.vintage.AbstractTestParent;
 import de.galan.commons.time.Sleeper;
 
 
 /**
  * CUT JvmUtils
  */
-public class QuickTest extends AbstractTestParent {
+public class QuickTest {
 
 	@Test
-	@Ignore
+	@Disabled
 	public void terminate() throws Exception {
 		//JvmUtils.terminate().message("kaboom").threaded(false).in("5s");
 		JvmUtil.terminate().message("BAM").threaded(true).now();

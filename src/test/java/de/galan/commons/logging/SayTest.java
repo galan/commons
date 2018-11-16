@@ -1,14 +1,12 @@
 package de.galan.commons.logging;
 
-import org.junit.Test;
-
-import de.galan.commons.test.vintage.AbstractTestParent;
+import org.junit.jupiter.api.Test;
 
 
 /**
  * CUT Say
  */
-public class SayTest extends AbstractTestParent {
+public class SayTest {
 
 	@Test
 	public void saySimple() throws Exception {

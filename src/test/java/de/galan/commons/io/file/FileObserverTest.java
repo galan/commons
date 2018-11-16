@@ -8,17 +8,16 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import de.galan.commons.logging.Say;
-import de.galan.commons.test.vintage.AbstractTestParent;
 import de.galan.commons.time.Sleeper;
 
 
 /**
  * CUT FileObserver
  */
-public class FileObserverTest extends AbstractTestParent {
+public class FileObserverTest {
 
 	File dirTemp;
 	private FilesystemObserver observer;

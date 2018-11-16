@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.io.IOException;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,13 +15,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
-import de.galan.commons.test.vintage.AbstractTestParent;
-
 
 /**
  * CUT PayloadMessage
  */
-public class PayloadContextMessageTest extends AbstractTestParent {
+public class PayloadContextMessageTest {
 
 	NullPointerException ex = new NullPointerException("BAM");
 	ObjectMapper mapper = new ObjectMapper();

@@ -2,6 +2,7 @@ package de.galan.commons.time;
 
 import static de.galan.commons.test.Tests.*;
 import static de.galan.commons.time.Dates.*;
+import static de.galan.commons.time.Dates.from;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
@@ -12,16 +13,21 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import de.galan.commons.test.vintage.AbstractTestParent;
+import de.galan.commons.test.jupiter.ApplicationClockExtension;
 
 
 /**
  * CUT Dates
  */
 @Deprecated
-public class DatesTest extends AbstractTestParent {
+public class DatesTest {
+
+	@RegisterExtension
+	ApplicationClockExtension clock = ApplicationClockExtension.builder().build();
+
 
 	@Test
 	public void testNow() {

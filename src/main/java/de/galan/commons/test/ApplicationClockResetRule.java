@@ -8,7 +8,7 @@ import de.galan.commons.time.ApplicationClock;
 
 /**
  * Resets the Application before and after a test-method for you.<br/>
- * Deprecated: Use the ApplicationClockExtension instead.
+ * Deprecated: Use the JUnit5 ApplicationClockExtension instead.
  */
 @Deprecated
 public class ApplicationClockResetRule extends TestWatcher {

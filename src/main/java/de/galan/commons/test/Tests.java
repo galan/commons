@@ -35,7 +35,7 @@ public class Tests {
 
 
 	public static File getTestDirectory(boolean cleanup) {
-		File dir = new File(getWorkingDirectory(), "target/tests");
+		File dir = new File(getWorkingDirectory(), "target/tests-commons");
 		if (cleanup) {
 			FileUtils.deleteQuietly(dir);
 		}

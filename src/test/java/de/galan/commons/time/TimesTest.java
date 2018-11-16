@@ -7,15 +7,13 @@ import java.time.Instant;
 import java.util.Date;
 
 import org.junit.Before;
-import org.junit.Test;
-
-import de.galan.commons.test.vintage.AbstractTestParent;
+import org.junit.jupiter.api.Test;
 
 
 /**
  * CUT TimeDsl
  */
-public class TimesTest extends AbstractTestParent {
+public class TimesTest {
 
 	Date sep12 = dateLocal("2012-09-07 15:15:00");
 	Date may12 = dateLocal("2012-05-01 12:00:00");

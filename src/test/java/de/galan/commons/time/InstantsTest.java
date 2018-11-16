@@ -14,16 +14,18 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import de.galan.commons.test.vintage.AbstractTestParent;
+import de.galan.commons.test.jupiter.ApplicationClockExtension;
 
 
 /**
  * CUT Instants
  */
-public class InstantsTest extends AbstractTestParent {
+@ExtendWith(ApplicationClockExtension.class)
+public class InstantsTest {
 
 	@Test
 	public void proofOfConceptForEqualsOnTimezone() throws Exception {
@@ -41,7 +43,7 @@ public class InstantsTest extends AbstractTestParent {
 
 
 	@Test
-	@Ignore
+	@Disabled
 	public void testTomorrow() {
 		Date tx = DateUtils.addDays(new Date(), 1);
 		assertBetween(tx.getTime() - 1000, tx.getTime() + 1000, tomorrow().toEpochMilli());

@@ -2,15 +2,13 @@ package de.galan.commons.logging;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.Test;
-
-import de.galan.commons.test.vintage.AbstractTestParent;
+import org.junit.jupiter.api.Test;
 
 
 /**
  * CUT PayloadMessage
  */
-public class PayloadMessageTest extends AbstractTestParent {
+public class PayloadMessageTest {
 
 	NullPointerException ex = new NullPointerException("BAM");
 

@@ -2,9 +2,7 @@ package de.galan.commons.net;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
-
-import de.galan.commons.test.vintage.AbstractTestParent;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -12,7 +10,7 @@ import de.galan.commons.test.vintage.AbstractTestParent;
  *
  * @author daniel
  */
-public class CommonProxyTest extends AbstractTestParent {
+public class CommonProxyTest {
 
 	@Test
 	public void name() throws Exception {

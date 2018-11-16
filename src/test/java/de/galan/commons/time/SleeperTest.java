@@ -2,15 +2,13 @@ package de.galan.commons.time;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
-
-import de.galan.commons.test.vintage.AbstractTestParent;
+import org.junit.jupiter.api.Test;
 
 
 /**
  * CUT Sleeper
  */
-public class SleeperTest extends AbstractTestParent {
+public class SleeperTest {
 
 	@Test
 	public void sleepLong() {

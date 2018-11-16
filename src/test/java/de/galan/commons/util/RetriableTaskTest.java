@@ -1,19 +1,19 @@
 package de.galan.commons.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.concurrent.Callable;
 
-import org.junit.Test;
-
-import de.galan.commons.test.vintage.AbstractTestParent;
+import org.junit.jupiter.api.Test;
 
 
 /**
  * CUT RetriableTask
  */
 @Deprecated
-public class RetriableTaskTest extends AbstractTestParent {
+public class RetriableTaskTest {
 
 	@Test
 	public void doesNotComplete() throws Exception {
@@ -59,26 +59,28 @@ public class RetriableTaskTest extends AbstractTestParent {
 	}
 
 
-	@Test(expected = Error.class)
+	@Test
 	public void infinite() throws Exception {
-		RetriableTask<String> rs = new RetriableTask<String>(RetriableTask.INFINITE, "100ms", new Callable<String>() {
+		assertThrows(Error.class, () -> {
+			RetriableTask<String> rs = new RetriableTask<String>(RetriableTask.INFINITE, "100ms", new Callable<String>() {
 
-			int counter = 0;
+				int counter = 0;
 
 
-			@Override
-			public String call() throws Exception {
-				if (counter++ < 11) {
-					throw new Exception("fails 11 times");
+				@Override
+				public String call() throws Exception {
+					if (counter++ < 11) {
+						throw new Exception("fails 11 times");
+					}
+					else if (counter >= 11) {// we have to abort the unit tests at some point ;)
+						throw new Error("Should have been thrown");
+					}
+					return "failed";
 				}
-				else if (counter >= 11) {// we have to abort the unit tests at some point ;)
-					throw new Error("Should have been thrown");
-				}
-				return "failed";
-			}
 
+			});
+			assertEquals("returned", rs.call());
 		});
-		assertEquals("returned", rs.call());
 	}
 
 }
