@@ -3,7 +3,7 @@
 
 	<groupId>de.galan</groupId>
 	<artifactId>commons</artifactId>
-	<version>0.16.4-SNAPSHOT</version>
+	<version>0.16.4</version>
 
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Utility library, that is also used accross the ${project.groupId} components</description>
@@ -19,7 +19,7 @@
 		<connection>scm:git:ssh://github.com/galan/commons.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/galan/commons.git</developerConnection>
 		<url>https://github.com/galan/commons</url>
-		<tag>HEAD</tag>
+		<tag>v0.16.4</tag>
 	</scm>
 
 	<dependencies>
