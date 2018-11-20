@@ -1,11 +1,13 @@
 package de.galan.commons.util;
 
+import static java.nio.charset.StandardCharsets.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.junit.Before;
+import org.apache.commons.codec.binary.Hex;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.galan.commons.test.Tests;
@@ -20,10 +22,17 @@ public class BOMTest {
 	private String bom2;
 
 
-	@Before
+	@BeforeEach
 	public void before() throws IOException {
 		bom1 = Tests.readFile(getClass(), getClass().getSimpleName() + "-bom01.txt");
 		bom2 = Tests.readFile(getClass(), getClass().getSimpleName() + "-bom02.txt");
+	}
+
+
+	@Test
+	public void bom() throws Exception {
+		String hex = Hex.encodeHexString(BOM.getBOM().getBytes(UTF_8));
+		assertThat(hex).isEqualToIgnoringCase("EFBBBF");
 	}
 
 

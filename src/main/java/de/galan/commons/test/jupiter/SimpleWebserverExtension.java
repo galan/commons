@@ -34,7 +34,8 @@ public class SimpleWebserverExtension implements BeforeEachCallback, AfterEachCa
 
 
 	public static SimpleWebserverBuilder builder() {
-		return new SimpleWebserverBuilder();
+		//return new SimpleWebserverBuilder();
+		return null;
 	}
 
 	/** TODO */
@@ -42,6 +43,12 @@ public class SimpleWebserverExtension implements BeforeEachCallback, AfterEachCa
 
 		@SuppressWarnings("unused")
 		private Integer builderPort;
+		private SimpleWebserverExtension ext;
+
+
+		public SimpleWebserverBuilder(SimpleWebserverExtension ext) {
+			this.ext = ext;
+		}
 
 
 		public SimpleWebserverBuilder port(Integer port) {
@@ -50,10 +57,8 @@ public class SimpleWebserverExtension implements BeforeEachCallback, AfterEachCa
 		}
 
 
-		public SimpleWebserverExtension build() {
-			@SuppressWarnings("unused")
-			SimpleWebserverExtension server = new SimpleWebserverExtension();
-			return null;
+		public void build() {
+			//	ext.server = new SimpleWebserver();
 		}
 
 	}
@@ -61,7 +66,7 @@ public class SimpleWebserverExtension implements BeforeEachCallback, AfterEachCa
 
 	@Override
 	public void beforeEach(ExtensionContext context) throws Exception {
-		if (server != null) {
+		if (!stopped) {
 			stopServer();
 		}
 		// TODO set default httpclient timeout to eg. 10m for easier debugging
@@ -85,7 +90,6 @@ public class SimpleWebserverExtension implements BeforeEachCallback, AfterEachCa
 		catch (Exception ex) {
 			fail("Server could not be started: " + ex.getMessage());
 		}
-
 	}
 
 

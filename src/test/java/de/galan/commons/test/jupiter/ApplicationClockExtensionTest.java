@@ -6,25 +6,31 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import de.galan.commons.time.Instants;
+import de.galan.commons.test.Tests;
+import de.galan.commons.time.ApplicationClock;
 
 
 /**
  * CUT ApplicationClockExtension
  */
+@ExtendWith(ApplicationClockExtension.class)
 public class ApplicationClockExtensionTest {
 
 	private static final Instant INSTANT = instantUtc("2018-07-05T15:00:00Z");
 
-	@RegisterExtension
-	ApplicationClockExtension ace = ApplicationClockExtension.builder().instant(INSTANT).build();
+
+	@Test
+	public void checkChange() {
+		ApplicationClock.setIso(INSTANT);
+		assertThat(now()).isEqualTo(INSTANT);
+	}
 
 
 	@Test
 	public void checkSet() {
-		assertThat(Instants.now()).isEqualTo(INSTANT);
+		Tests.assertDateNear("2s", Instant.now());
 	}
 
 }

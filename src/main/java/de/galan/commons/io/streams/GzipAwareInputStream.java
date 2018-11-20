@@ -7,7 +7,7 @@ import java.util.zip.GZIPInputStream;
 
 
 /**
- * Wraps an InputStream and checks if the stream has been compressed
+ * Wraps an InputStream and checks if the stream has been compressed, and optionally decompresses it.
  */
 public class GzipAwareInputStream extends InputStream {
 

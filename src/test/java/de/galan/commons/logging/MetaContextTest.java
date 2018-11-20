@@ -3,8 +3,8 @@ package de.galan.commons.logging;
 import static de.galan.commons.time.Instants.*;
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.galan.commons.util.Pair;
@@ -15,13 +15,13 @@ import de.galan.commons.util.Pair;
  */
 public class MetaContextTest {
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		MetaContext.clear();
 	}
 
 
-	@After
+	@AfterEach
 	public void teardown() {
 		MetaContext.clear();
 	}

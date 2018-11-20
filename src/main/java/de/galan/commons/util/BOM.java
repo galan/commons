@@ -17,7 +17,7 @@ public class BOM {
 
 
 	public static String getBOM() {
-		return new String(BOM_ARRAY);
+		return new String(BOM_ARRAY, UTF_8);
 	}
 
 

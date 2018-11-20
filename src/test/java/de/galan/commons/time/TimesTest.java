@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 import java.time.Instant;
 import java.util.Date;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
@@ -20,7 +20,7 @@ public class TimesTest {
 	Date may40 = dateLocal("2040-05-01 12:00:00");
 
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		ApplicationClock.setLocal("2012-09-07 18:00:00");
 		//Dates.setDateSupplier(new FixedDateSupplier("2012-09-07 18:00:00"));
