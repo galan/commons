@@ -67,7 +67,7 @@ public class Retryable {
 
 
 	public <V> V call(Callable<V> callable) throws Exception {
-		while(true) {
+		while(Thread.currentThread().isAlive()) {
 			try {
 				return callable.call();
 			}
@@ -104,6 +104,7 @@ public class Retryable {
 				Sleeper.sleep(optional(timeToWait).orElse(DEFAULT_WAIT_TIME));
 			}
 		}
+		throw new InterruptedException("Thread with retry is not longer alive"); // Edge-case where Thread was killed and the Exception was catched by the caller
 	}
 
 
