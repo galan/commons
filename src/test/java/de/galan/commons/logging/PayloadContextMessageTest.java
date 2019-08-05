@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
@@ -33,16 +34,35 @@ public class PayloadContextMessageTest {
 		assertThat(msg.getThrowable()).isEqualTo(throwableExpected);
 		assertThat(msg.getFormattedMessage()).isEqualTo(messageExpected);
 
-		ObjectNode nodeMetaExpected = (ObjectNode)mapper.valueToTree(metaExpected);
-		JsonNode nodeMetaActual = mapper.readTree(MetaContext.toJson());
+		ObjectNode nodeMetaExpected = cleanupException((ObjectNode)mapper.valueToTree(metaExpected));
+		ObjectNode nodeMetaActual = cleanupException((ObjectNode)mapper.readTree(MetaContext.toJson()));
+
+		Say.info("nodeMetaExpected {}", nodeMetaExpected);
+		Say.info("nodeMetaActual {}", nodeMetaActual);
+
+		assertThat(nodeMetaActual).isEqualTo(nodeMetaExpected);
+	}
+
+
+	private ObjectNode cleanupException(ObjectNode root) {
 		// align expected exceptions
-		for (String name: Lists.newArrayList(nodeMetaExpected.fieldNames())) {
-			JsonNode node = nodeMetaExpected.get(name);
-			if (node.isObject() && (node.get("cause").getNodeType() == JsonNodeType.NULL)) {
+		for (String name: Lists.newArrayList(root.fieldNames())) {
+			JsonNode node = root.get(name);
+			if (node.isObject() && node.get("stackTrace") != null) {
+				if (node.get("cause") != null && (node.get("cause").getNodeType() == JsonNodeType.NULL)) {
+					((ObjectNode)node).remove("cause");
+				}
+				ArrayNode array = (ArrayNode)((ObjectNode)node).get("stackTrace");
+				for (JsonNode nodeStack: array) {
+					ObjectNode objectStack = (ObjectNode)nodeStack;
+					objectStack.remove("classLoaderName");
+					objectStack.remove("moduleName");
+					objectStack.remove("moduleVersion");
+				}
 				((ObjectNode)node).remove("cause");
 			}
 		}
-		assertThat(nodeMetaActual).isEqualTo(nodeMetaExpected);
+		return root;
 	}
 
 

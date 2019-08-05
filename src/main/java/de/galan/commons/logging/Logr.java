@@ -7,7 +7,7 @@ import org.apache.logging.log4j.util.ReflectionUtil;
 
 /**
  * Returns the Log4j2 logger for the calling class (for Slf4j use Slogr). Can be used to determine the Logger, reduces
- * errors when copy&paste.<br/>
+ * errors when copy&amp;paste.<br/>
  * Note: Compareable to Log4j2 LogManager.getLogger();
  */
 public class Logr {

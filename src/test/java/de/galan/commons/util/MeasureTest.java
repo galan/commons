@@ -59,7 +59,7 @@ public class MeasureTest {
 		verify(measure, times(0)).log(anyLong());
 		verify(measure, times(0)).log(anyDouble());
 		measure.run(() -> Sleeper.sleep(1L));
-		checkLog(measure, 6d, 9d);
+		checkLog(measure, 7d, 11d);
 
 		reset(measure);
 		measure.run(() -> Sleeper.sleep(100L));

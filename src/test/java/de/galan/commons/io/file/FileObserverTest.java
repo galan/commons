@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.galan.commons.logging.Say;
@@ -23,7 +23,7 @@ public class FileObserverTest {
 	private FilesystemObserver observer;
 
 
-	@Before
+	@BeforeEach
 	public void before() throws IOException {
 		dirTemp = new File(System.getProperty("java.io.tmpdir"), "de.galan.commons");
 		FileUtils.deleteDirectory(dirTemp);
@@ -32,7 +32,7 @@ public class FileObserverTest {
 	}
 
 
-	@After
+	@AfterEach
 	public void after() throws IOException {
 		FileUtils.deleteDirectory(dirTemp);
 	}

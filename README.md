@@ -61,3 +61,8 @@ Various common functionality, eg.
 * Pair - Simplified key/value class
 * [Retryable](https://github.com/galan/commons/blob/master/documentation/util.Retryable.md) - Runs a `Callable` or `ExceptionalRunnable` (`Runnable` with Exceptions) until it runs without Exception at least for the specified times of retries in a compact fluent manner.
 
+# Compatibility
+
+* Latest Java 8 version: 0.16.4
+* Starting Java 11 with 0.17.0
+

@@ -161,8 +161,12 @@ public class Durations {
 
 
 	/**
-	 * Converts a time from java.util.time.Duration to human readable format "Xd Xh Xm Xs Xms" (for interoperability).
+	 * Converts a time from java.util.time.Duration to human readable format "Xd Xh Xm Xs Xms" (for
+	 * interoperability).<br/>
+	 * TODO broken:
+	 * https://stackoverflow.com/questions/24491243/why-cant-i-get-a-duration-in-minutes-or-hours-in-java-time
 	 */
+	@Deprecated
 	public static String fromDuration(Duration duration) {
 		if (duration == null) {
 			return null;

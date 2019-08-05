@@ -41,9 +41,8 @@ public class SimpleWebserverExtension implements BeforeEachCallback, AfterEachCa
 	/** TODO */
 	public static class SimpleWebserverBuilder {
 
-		@SuppressWarnings("unused")
-		private Integer builderPort;
-		private SimpleWebserverExtension ext;
+		Integer builderPort;
+		SimpleWebserverExtension ext;
 
 
 		public SimpleWebserverBuilder(SimpleWebserverExtension ext) {

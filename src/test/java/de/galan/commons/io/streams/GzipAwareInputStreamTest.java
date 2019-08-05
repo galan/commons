@@ -44,6 +44,7 @@ public class GzipAwareInputStreamTest {
 }
 
 
+/** Mock */
 class TestItem {
 
 	public TestItem(byte[] input, byte[] expected, boolean compressed, boolean decompress) {

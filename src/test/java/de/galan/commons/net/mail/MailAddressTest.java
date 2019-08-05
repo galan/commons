@@ -51,6 +51,7 @@ public class MailAddressTest {
 }
 
 
+/** Mock */
 class DateItem {
 
 	public DateItem(String address, String email, String name) {

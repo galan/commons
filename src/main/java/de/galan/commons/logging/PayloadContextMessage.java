@@ -10,9 +10,9 @@ import org.apache.logging.log4j.message.Message;
 /**
  * Log4j2 Message for Logger that support parameterized messages, using {} as placeholder, eg.:<br/>
  * <code>
- * info("Hello {}", "world"); // => "Hello {world}"<br/>
- * info("Hello {} {}", "beautiful", "world"); // => "Hello {beautiful} {world}"<br/>
- * error("Something failed: {}", ex, "do'h"); // => "Hello {beautiful} {world}"<br/>
+ * info("Hello {}", "world"); // =&gt; "Hello {world}"<br/>
+ * info("Hello {} {}", "beautiful", "world"); // =&gt; "Hello {beautiful} {world}"<br/>
+ * error("Something failed: {}", ex, "do'h"); // =&gt; "Hello {beautiful} {world}"<br/>
  * </code> <br/>
  * <br/>
  * If the parameters should be available as json-encoded metadata for eg. logstash, you can provide names to the
