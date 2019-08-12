@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>de.galan</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.12.0-rc.1</version>
+		<version>0.12.1</version>
 	</parent>
 
 	<scm>
@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.9.9.2</version>
+			<version>2.9.9.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -163,5 +163,30 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<!-- Required for source 8 configuration, otherwise javadoc will exit. Has to be moved to parent or removed with a later update -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${plugin.maven-javadoc.version}</version>
+				<configuration>
+					<doclint>none</doclint>
+					<additionalparam>-Xdoclint:none</additionalparam>
+					<source>8</source>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
 
 </project>
