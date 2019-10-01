@@ -39,6 +39,7 @@ public class InstantsTest {
 	public void testNow() {
 		assertDateNear("1s", now());
 		assertDateNear("1s", from(now()).toDate());
+		assertThat(now().toString()).matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z");
 	}
 
 
@@ -74,9 +75,9 @@ public class InstantsTest {
 
 
 	@Test
-	public void toStringFormat() throws Exception {
-		assertThat("2012-05-31T17:51:01.000Z").isEqualTo(from(instantUtc("2012-05-31T17:51:01Z")).toStringUtc());
-		assertThat("2014-08-10T20:45:15.000Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15Z")).toStringUtc());
+	public void toStringUtcFormat() throws Exception {
+		assertThat("2012-05-31T17:51:01.123Z").isEqualTo(from(instantUtc("2012-05-31T17:51:01.123Z")).toStringUtc());
+		assertThat("2014-08-10T20:45:15.123Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456Z")).toStringUtc());
 		assertThat("2014-08-10T18:45:15.000Z").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toStringUtc());
 		assertThat("2014-12-10T18:45:15.000Z").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toStringUtc());
 		assertThat("2014-12-10T19:45:15.000Z").isEqualTo(from(instantUtc("2014-12-10T19:45:15Z")).toStringUtc());
@@ -84,8 +85,46 @@ public class InstantsTest {
 
 
 	@Test
+	public void toStringUtcMiliFormat() throws Exception {
+		assertThat("2012-05-31T17:51:01.123Z").isEqualTo(from(instantUtc("2012-05-31T17:51:01.123Z")).toStringUtcMillis());
+		assertThat("2014-08-10T20:45:15.123Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456Z")).toStringUtcMillis());
+		assertThat("2014-08-10T18:45:15.000Z").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toStringUtcMillis());
+		assertThat("2014-12-10T18:45:15.000Z").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toStringUtcMillis());
+		assertThat("2014-12-10T19:45:15.000Z").isEqualTo(from(instantUtc("2014-12-10T19:45:15Z")).toStringUtcMillis());
+	}
+
+
+	@Test
+	public void toStringUtcNanoFormat() throws Exception {
+		assertThat("2012-05-31T17:51:01.123000Z").isEqualTo(from(instantUtc("2012-05-31T17:51:01.123Z")).toStringUtcNano());
+		assertThat("2014-08-10T20:45:15.123456Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456Z")).toStringUtcNano());
+		assertThat("2014-08-10T18:45:15.000000Z").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toStringUtcNano());
+		assertThat("2014-12-10T18:45:15.000000Z").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toStringUtcNano());
+		assertThat("2014-12-10T19:45:15.000000Z").isEqualTo(from(instantUtc("2014-12-10T19:45:15Z")).toStringUtcNano());
+	}
+
+
+	@Test
 	public void toStringLocalCustomFormat() {
 		assertThat(from(instantLocal("2012-05-31 17:51:01")).toStringLocal("MM/dd/yyyy HH:mm:ss")).isEqualTo("05/31/2012 17:51:01");
+	}
+
+
+	@Test
+	public void toStringLocalFormat() {
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).toStringLocal()).isEqualTo("2012-05-31 17:51:01.000");
+	}
+
+
+	@Test
+	public void toStringLocalMilliFormat() {
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).toStringLocalMillis()).isEqualTo("2012-05-31 17:51:01.000");
+	}
+
+
+	@Test
+	public void toStringLocalNanoFormat() {
+		assertThat(from(instantLocal("2012-05-31 17:51:01")).toStringLocalNanos()).isEqualTo("2012-05-31 17:51:01.000000");
 	}
 
 

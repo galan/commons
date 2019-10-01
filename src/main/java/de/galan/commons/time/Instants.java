@@ -30,11 +30,15 @@ import de.galan.commons.logging.Say;
 public class Instants {
 
 	/*
-	TemporalAdjuster
+	TODO Check TemporalAdjuster
 	 */
 
-	public static final String DATE_FORMAT_LOCAL = "yyyy-MM-dd HH:mm:ss[.SSS]";
-	public static final String DATE_FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss[.SSS]'Z'";
+	public static final String DATE_FORMAT_LOCAL_INPUT = "yyyy-MM-dd HH:mm:ss[.SSSSSS][.SSS]";
+	public static final String DATE_FORMAT_LOCAL_NANO_OUTPUT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
+	public static final String DATE_FORMAT_LOCAL_MILLI_OUTPUT = "yyyy-MM-dd HH:mm:ss.SSS";
+	public static final String DATE_FORMAT_UTC_INPUT = "yyyy-MM-dd'T'HH:mm:ss[.SSSSSS][.SSS]'Z'";
+	public static final String DATE_FORMAT_UTC_NANO_OUTPUT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'";
+	public static final String DATE_FORMAT_UTC_MILLI_OUTPUT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
 	public static final ZoneId ZONE_LOCAL = ZoneId.systemDefault().normalized();
 	public static final ZoneId ZONE_UTC = ZoneId.of("UTC").normalized();
@@ -93,17 +97,20 @@ public class Instants {
 	}
 
 
-	/** Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss[.SSS]", system default (local) timezone is used. */
+	/**
+	 * Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss[.SSSSSS][.SSS]", system default (local) timezone is
+	 * used.
+	 */
 	public static Instant instantLocal(String text) {
 		return instant(text, ZONE_LOCAL);
 	}
 
 
-	/** Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss[.SSS]", given timezone is used. */
+	/** Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss[.SSSSSS][.SSS]", given timezone is used. */
 	public static Instant instant(String text, ZoneId zone) {
 		Instant result = null;
 		try {
-			LocalDateTime ldt = LocalDateTime.parse(text, getFormater(DATE_FORMAT_LOCAL, null));
+			LocalDateTime ldt = LocalDateTime.parse(text, getFormater(DATE_FORMAT_LOCAL_INPUT, null));
 			ZonedDateTime zdt = ldt.atZone(zone);
 			result = zdt.toInstant();
 		}
@@ -114,11 +121,11 @@ public class Instants {
 	}
 
 
-	/** Creates an Instant, input format is "yyyy-MM-dd'T'HH:mm:ss[.SSS]'Z'", timezone is UTC. */
+	/** Creates an Instant, input format is "yyyy-MM-dd'T'HH:mm:ss[.SSSSSS][.SSS]'Z'", timezone is UTC. */
 	public static Instant instantUtc(String text) {
 		Instant result = null;
 		try {
-			ZonedDateTime zdt = ZonedDateTime.parse(text, getFormater(DATE_FORMAT_UTC, "UTC"));
+			ZonedDateTime zdt = ZonedDateTime.parse(text, getFormater(DATE_FORMAT_UTC_INPUT, "UTC"));
 			//LocalDateTime ldt = LocalDateTime.parse(text, getFormater(DATE_FORMAT_UTC, "UTC"));
 			result = zdt.toInstant();
 		}
@@ -417,17 +424,37 @@ public class Instants {
 
 		/** Returns the time in local timezone and format */
 		public String toStringLocal() {
-			return toStringLocal(DATE_FORMAT_LOCAL);
+			return toStringLocalMillis();
 		}
 
 
-		public String toStringUtc() {
-			return getFormater(DATE_FORMAT_UTC, "UTC").format(current);
+		public String toStringLocalMillis() {
+			return toStringLocal(DATE_FORMAT_LOCAL_MILLI_OUTPUT);
+		}
+
+
+		public String toStringLocalNanos() {
+			return toStringLocal(DATE_FORMAT_LOCAL_NANO_OUTPUT);
 		}
 
 
 		public String toStringLocal(String format) {
 			return toString(ZONE_LOCAL, format);
+		}
+
+
+		public String toStringUtcMillis() {
+			return getFormater(DATE_FORMAT_UTC_MILLI_OUTPUT, "UTC").format(current);
+		}
+
+
+		public String toStringUtcNano() {
+			return getFormater(DATE_FORMAT_UTC_NANO_OUTPUT, "UTC").format(current);
+		}
+
+
+		public String toStringUtc() {
+			return toStringUtcMillis();
 		}
 
 
