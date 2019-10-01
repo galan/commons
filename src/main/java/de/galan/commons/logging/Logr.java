@@ -1,8 +1,11 @@
 package de.galan.commons.logging;
 
+import static java.lang.StackWalker.Option.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.util.ReflectionUtil;
+
+import com.google.common.collect.Sets;
 
 
 /**
@@ -12,8 +15,7 @@ import org.apache.logging.log4j.util.ReflectionUtil;
  */
 public class Logr {
 
-	// Using ReflectionUtil directly with "2" like the log4j2 LogManager.getLogger()
-	private static final int THREAD_TYPE_DEEP = 2;
+	private static final StackWalker WALKER = StackWalker.getInstance(Sets.newHashSet(RETAIN_CLASS_REFERENCE));
 
 
 	/**
@@ -21,7 +23,7 @@ public class Logr {
 	 * To avoid the Logger declaration completely, use the class <code>Say</code>.
 	 */
 	public static Logger get() {
-		return LogManager.getLogger(ReflectionUtil.getCallerClass(THREAD_TYPE_DEEP), PayloadMessageFactory.INSTANCE);
+		return LogManager.getLogger(WALKER.getCallerClass(), PayloadMessageFactory.INSTANCE);
 	}
 
 }
