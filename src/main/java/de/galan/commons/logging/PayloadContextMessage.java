@@ -3,6 +3,7 @@ package de.galan.commons.logging;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.message.Message;
 
@@ -49,10 +50,10 @@ public class PayloadContextMessage implements Message {
 	public PayloadContextMessage(final String messagePattern, final Object[] argumentsObject, Throwable throwable) {
 		this.throwable = throwable;
 		paramMessagePattern = messagePattern;
-
 		parseMessage(messagePattern);
 		argsObject = determineArgumentsObject(argumentsObject);
 		argsString = argumentsToStrings(argsObject);
+		addErrorFields();
 	}
 
 
@@ -202,7 +203,22 @@ public class PayloadContextMessage implements Message {
 			indexPosition = indexes[factor + 1];
 		}
 		builder.append(paramMessagePattern.substring(indexPosition, paramMessagePattern.length()));
+
 		return builder.toString();
+	}
+
+
+	private void addErrorFields() {
+		if (throwable != null) {
+			MetaContext.putIfAbsent("error_class", throwable.getClass());
+			MetaContext.putIfAbsent("error_message", throwable.getMessage());
+
+			Throwable rootCause = ExceptionUtils.getRootCause(throwable);
+			if (rootCause != null && rootCause.getClass() != throwable.getClass()) {
+				MetaContext.putIfAbsent("root_error_class", rootCause.getClass());
+				MetaContext.putIfAbsent("root_error_message", rootCause.getMessage());
+			}
+		}
 	}
 
 

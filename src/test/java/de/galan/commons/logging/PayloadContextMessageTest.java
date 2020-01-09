@@ -114,7 +114,7 @@ public class PayloadContextMessageTest {
 	public void parameterNamesThrowable() throws Exception {
 		NullPointerException exception = new NullPointerException("BAM");
 		assertMsg("Hello {first} world {second}", args("a", 1, exception), null, args("a", 1), exception, "Hello {a} world {1}",
-			ImmutableMap.of("first", "a", "second", 1));
+			ImmutableMap.of("first", "a", "second", 1, "error_class", "java.lang.NullPointerException", "error_message", "BAM"));
 	}
 
 
@@ -122,14 +122,25 @@ public class PayloadContextMessageTest {
 	public void parameterExplicitThrowable() throws Exception {
 		NullPointerException exception = new NullPointerException("BAM");
 		assertMsg("Hello {first} world {second}", args("a", 1), exception, args("a", 1), exception, "Hello {a} world {1}",
-			ImmutableMap.of("first", "a", "second", 1));
+			ImmutableMap.of("first", "a", "second", 1, "error_class", "java.lang.NullPointerException", "error_message", "BAM"));
+	}
+
+
+	@Test
+	public void parameterThrowableWithCause() throws Exception {
+		NullPointerException cause = new NullPointerException("BAM");
+		RuntimeException exception = new RuntimeException("operation failed", cause);
+		assertMsg("Hello world", args(), exception, args(), exception, "Hello world",
+			ImmutableMap.of("error_message", "operation failed", "error_class", "java.lang.RuntimeException", "root_error_class",
+				"java.lang.NullPointerException", "root_error_message", "BAM"));
 	}
 
 
 	@Test
 	public void parameterExplicitThrowableToMuch() throws Exception {
 		NullPointerException ex2 = new NullPointerException("BUM");
-		assertMsg("Hello {first} world {second}", args("a", 1, ex2), ex, args("a", 1), ex, "Hello {a} world {1}", ImmutableMap.of("first", "a", "second", 1));
+		assertMsg("Hello {first} world {second}", args("a", 1, ex2), ex, args("a", 1), ex, "Hello {a} world {1}",
+			ImmutableMap.of("first", "a", "second", 1, "error_class", "java.lang.NullPointerException", "error_message", "BAM"));
 	}
 
 

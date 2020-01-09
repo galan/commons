@@ -48,9 +48,22 @@ public class MetaContext {
 	}
 
 
+	public static void putIfAbsent(String key, Object value) {
+		if (!hasKey(key)) {
+			put(key, value);
+		}
+	}
+
+
 	public static boolean hasMeta() {
 		Map<String, Object> map = context.get();
 		return map != null && !map.isEmpty();
+	}
+
+
+	public static boolean hasKey(String key) {
+		Map<String, Object> map = context.get();
+		return map != null && map.containsKey(key);
 	}
 
 
