@@ -1,0 +1,11 @@
+1.1.0
+- Added exception metadata to MDC in logging payload
+
+1.0.1
+- Support for nanos in Instants class
+- Jackson security update
+
+1.0.0
+- First major version
+- Requires Java 11
+
