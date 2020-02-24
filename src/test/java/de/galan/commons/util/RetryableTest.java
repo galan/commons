@@ -1,7 +1,5 @@
 package de.galan.commons.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.concurrent.Callable;
@@ -45,7 +43,6 @@ public class RetryableTest {
 
 			int counter = 0;
 
-
 			@Override
 			public String call() throws Exception {
 				if (counter++ < 9) {
@@ -70,7 +67,6 @@ public class RetryableTest {
 			String call = Retryable.infinite().timeToWait(100L).call(new Callable<String>() {
 
 				int counter = 0;
-
 
 				@Override
 				public String call() throws Exception {

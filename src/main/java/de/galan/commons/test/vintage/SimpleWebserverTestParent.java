@@ -1,14 +1,13 @@
 package de.galan.commons.test.vintage;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 import org.apache.logging.log4j.Logger;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.simpleframework.http.core.Container;
 import org.simpleframework.http.core.ContainerSocketProcessor;
 import org.simpleframework.transport.SocketProcessor;
@@ -31,8 +30,7 @@ public class SimpleWebserverTestParent {
 
 	private SocketConnection connection;
 
-
-	@Before
+	@BeforeEach
 	public void beforeWebserver() {
 		if (server != null) {
 			stopServer();
@@ -41,7 +39,7 @@ public class SimpleWebserverTestParent {
 	}
 
 
-	@After
+	@AfterEach
 	public void afterWebserver() {
 		stopServer();
 	}
@@ -56,7 +54,7 @@ public class SimpleWebserverTestParent {
 			LOG.info("Server started");
 		}
 		catch (Exception ex) {
-			fail("Server could not be started: " + ex.getMessage());
+			Assertions.fail("Server could not be started", ex);
 		}
 
 	}
@@ -96,7 +94,7 @@ public class SimpleWebserverTestParent {
 			stopped = true;
 		}
 		catch (IOException ex) {
-			fail("Server could not be stopped: " + ex.getMessage());
+			Assertions.fail("Server could not be stopped", ex);
 		}
 	}
 
