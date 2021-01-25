@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,11 +21,10 @@ public class FileObserverTest {
 	File dirTemp;
 	private FilesystemObserver observer;
 
-
 	@BeforeEach
 	public void before() throws IOException {
 		dirTemp = new File(System.getProperty("java.io.tmpdir"), "de.galan.commons");
-		FileUtils.deleteDirectory(dirTemp);
+		FileSupport.deleteFile(dirTemp);
 		dirTemp.mkdirs();
 		observer = new FilesystemObserver();
 	}
@@ -34,7 +32,7 @@ public class FileObserverTest {
 
 	@AfterEach
 	public void after() throws IOException {
-		FileUtils.deleteDirectory(dirTemp);
+		FileSupport.deleteFile(dirTemp);
 	}
 
 
@@ -58,7 +56,7 @@ public class FileObserverTest {
 		observer.registerFileListener(listener, fileMonitor);
 		// create
 		touch(fileMonitor);
-		assertListener(listener, fileMonitor, fileMonitor, null);
+		assertListener(listener, fileMonitor, null, null);
 		// modify
 		touch(fileMonitor);
 		assertListener(listener, null, fileMonitor, null);
@@ -70,7 +68,7 @@ public class FileObserverTest {
 		assertListener(listener, null, null, fileMonitor);
 		// recreation is catched
 		touch(fileMonitor);
-		assertListener(listener, fileMonitor, fileMonitor, null);
+		assertListener(listener, fileMonitor, null, null);
 	}
 
 
@@ -83,10 +81,10 @@ public class FileObserverTest {
 		observer.registerFileListener(listener, fileSecond);
 		// create first
 		touch(fileFirst);
-		assertListener(listener, fileFirst, fileFirst, null);
+		assertListener(listener, fileFirst, null, null);
 		// create second
 		touch(fileSecond);
-		assertListener(listener, fileSecond, fileSecond, null);
+		assertListener(listener, fileSecond, null, null);
 		// modify first
 		touch(fileFirst);
 		assertListener(listener, null, fileFirst, null);
@@ -125,11 +123,11 @@ public class FileObserverTest {
 		observer.registerDirectoryListener(listener, dirMonitor, recursive);
 		// create and modify files in directory
 		touch(fileFirst);
-		assertListener(listener, fileFirst, fileFirst, null);
+		assertListener(listener, fileFirst, null, null);
 		touch(fileFirst);
 		assertListener(listener, null, fileFirst, null);
 		touch(fileSecond);
-		assertListener(listener, fileSecond, fileSecond, null);
+		assertListener(listener, fileSecond, null, null);
 		delete(fileSecond);
 		assertListener(listener, null, null, fileSecond);
 		// create subdirectory
@@ -137,7 +135,7 @@ public class FileObserverTest {
 		assertListener(listener, dirSub, null, null);
 		// file in subdirectory
 		touch(fileSub);
-		assertListener(listener, recursive ? fileSub : null, recursive ? fileSub : null, null);
+		assertListener(listener, recursive ? fileSub : null, null, null);
 		// delete subdirectory
 		delete(dirSub);
 		assertListener(listener, null, null, dirSub);
@@ -153,14 +151,14 @@ public class FileObserverTest {
 
 
 	protected void touch(File file) throws IOException {
-		FileUtils.touch(file);
+		FileSupport.touch(file);
 		Say.info("touched");
 		Sleeper.sleep(50L);
 	}
 
 
 	protected void delete(File file) {
-		assertThat(FileUtils.deleteQuietly(file)).isTrue();
+		assertThat(FileSupport.deleteFileQuiet(file)).isTrue();
 		Sleeper.sleep(20L);
 	}
 
@@ -186,7 +184,6 @@ class StubListener implements FileListener {
 	File lastCreated;
 	File lastChanged;
 	File lastDeleted;
-
 
 	@Override
 	public void notifyFileChanged(File file) {

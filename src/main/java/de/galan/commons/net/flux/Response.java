@@ -4,7 +4,6 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -12,18 +11,18 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.io.ByteSink;
+import com.google.common.io.Files;
 
+import de.galan.commons.io.streams.IOSupport;
 import de.galan.commons.logging.Logr;
 
 
 /**
  * Represents the reponse to a http service.
- *
- * @author daniel
  */
 public class Response implements AutoCloseable {
 
@@ -37,7 +36,6 @@ public class Response implements AutoCloseable {
 	private final String contentType;
 	private final HttpURLConnection connection;
 	private final Map<String, String> headerFields;
-
 
 	public Response(HttpURLConnection connection, InputStream dataStream, int statusCode, String contentEncoding, String contentType, Map<String, String> headerFields) {
 		this.connection = connection;
@@ -58,7 +56,7 @@ public class Response implements AutoCloseable {
 	public byte[] getStreamAsBytearray() throws IOException {
 		byte[] result = null;
 		try {
-			result = IOUtils.toByteArray(getStream());
+			result = getStream().readAllBytes();
 		}
 		catch (NullPointerException npex) {
 			throw new IOException("Timeout has been forced by CommonHttpClient", npex);
@@ -76,23 +74,24 @@ public class Response implements AutoCloseable {
 	/**
 	 * Converts the inputstream to a string with the given encoding. Subsequent the inputstream will be empty/closed.
 	 */
-	public String getStreamAsString(Charset charset) throws IOException {
-		return getStreamAsString(charset.toString());
+	public String getStreamAsString(String encoding) throws IOException {
+		return getStreamAsString(Charset.forName(encoding));
 	}
 
 
 	/**
 	 * Converts the inputstream to a string with the given encoding. Subsequent the inputstream will be empty/closed.
 	 */
-	public String getStreamAsString(String encoding) throws IOException {
+	public String getStreamAsString(Charset charset) throws IOException {
 		String result = null;
 		try {
-			result = IOUtils.toString(getStream(), encoding);
+			result = IOSupport.inputstreamToString(getStream(), charset);
 		}
 		catch (NullPointerException npex) {
 			throw new IOException("Timeout has been forced by CommonHttpClient", npex);
 		}
 		return result;
+
 	}
 
 
@@ -106,7 +105,10 @@ public class Response implements AutoCloseable {
 		if (gunzip) {
 			is = new GZIPInputStream(is);
 		}
-		IOUtils.copy(is, new FileOutputStream(file, false));
+		try (InputStream stream = is) {
+			ByteSink sink = Files.asByteSink(file);
+			sink.writeFrom(is);
+		}
 	}
 
 

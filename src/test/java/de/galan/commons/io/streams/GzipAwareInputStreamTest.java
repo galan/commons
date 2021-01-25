@@ -6,7 +6,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -17,9 +16,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class GzipAwareInputStreamTest {
 
 	public static Stream<TestItem> input() throws IOException {
-		byte[] helloGz = IOUtils.toByteArray(GzipAwareInputStreamTest.class.getResourceAsStream("hello.gz"));
-		byte[] hGz = IOUtils.toByteArray(GzipAwareInputStreamTest.class.getResourceAsStream("h.gz"));
-		byte[] aum = IOUtils.toByteArray(GzipAwareInputStreamTest.class.getResourceAsStream("aum.png"));
+		byte[] helloGz = GzipAwareInputStreamTest.class.getResourceAsStream("hello.gz").readAllBytes();
+		byte[] hGz = GzipAwareInputStreamTest.class.getResourceAsStream("h.gz").readAllBytes();
+		byte[] aum = GzipAwareInputStreamTest.class.getResourceAsStream("aum.png").readAllBytes();
 		return Stream.of(
 			new TestItem("hello".getBytes(), "hello".getBytes(), false, true),
 			new TestItem("h".getBytes(), "h".getBytes(), false, true),
@@ -37,7 +36,7 @@ public class GzipAwareInputStreamTest {
 	public void checkCompressed(TestItem item) throws Exception {
 		GzipAwareInputStream gais = new GzipAwareInputStream(new ByteArrayInputStream(item.input), item.decompress);
 		assertThat(gais.isCompressed()).isEqualTo(item.compressed);
-		assertThat(IOUtils.toByteArray(gais)).isEqualTo(item.expected);
+		assertThat(gais.readAllBytes()).isEqualTo(item.expected);
 		gais.close();
 	}
 

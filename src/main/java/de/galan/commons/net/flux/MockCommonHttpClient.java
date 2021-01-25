@@ -4,6 +4,7 @@ import static java.nio.charset.StandardCharsets.*;
 import static java.util.stream.Collectors.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -12,22 +13,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
-
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
 
 /**
  * Test helper for collecting requests and responding to http clients.
- *
- * @author daniel
  */
 public class MockCommonHttpClient implements HttpClient {
 
 	private Iterator<MockResponse> responses;
 	private List<Request> requests = new ArrayList<Request>();
-
 
 	public MockCommonHttpClient() {
 		// nada
@@ -99,7 +95,6 @@ public class MockCommonHttpClient implements HttpClient {
 		public byte[] body;
 		public String resource;
 
-
 		public Request(Method method, Map<String, String> extraHeader, byte[] body, String resource) {
 			this.method = method;
 			this.extraHeader = extraHeader;
@@ -120,7 +115,6 @@ public class MockCommonHttpClient implements HttpClient {
 		// We store the stream independently, in order to be able to override the getStream() method and create a replayable stream
 		// that will be used when the responses(true,...) method is used to create infinite result stream, to be able to reset the stream.
 		private InputStream mockStream;
-
 
 		public MockResponse(String body, int statusCode) {
 			this(body, statusCode, "text/html;charset=UTF-8");
@@ -165,11 +159,10 @@ public class MockCommonHttpClient implements HttpClient {
 		private InputStream current;
 		private ByteArrayOutputStream output;
 
-
 		public ReplayableInputStream(InputStream input) {
 			try {
 				output = new ByteArrayOutputStream();
-				output.write(input);
+				output.writeBytes(input.readAllBytes());
 				reset();
 			}
 			catch (IOException ex) {

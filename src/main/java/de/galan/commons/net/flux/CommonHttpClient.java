@@ -21,7 +21,6 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 
 import de.galan.commons.logging.Logr;
@@ -36,7 +35,6 @@ import de.galan.commons.util.Retryable;
 public class CommonHttpClient implements HttpClient {
 
 	private static final Logger LOG = Logr.get();
-
 
 	public CommonHttpClient() {
 		// nada
@@ -101,7 +99,7 @@ public class CommonHttpClient implements HttpClient {
 		try {
 			connection.setRequestMethod((scopeMethod == null) ? Method.GET.name() : scopeMethod.name());
 			if (body != null) {
-				IOUtils.write(body, connection.getOutputStream());
+				connection.getOutputStream().write(body);
 			}
 			// Retrieve response
 			statusCode = connection.getResponseCode();
@@ -209,7 +207,6 @@ public class CommonHttpClient implements HttpClient {
 
 		private final HttpURLConnection connection;
 		private final Integer timeout;
-
 
 		public TimeoutThread(HttpURLConnection connection, Integer timeout) {
 			this.connection = connection;

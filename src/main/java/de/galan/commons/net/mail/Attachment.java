@@ -3,8 +3,6 @@ package de.galan.commons.net.mail;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,7 +18,6 @@ public class Attachment {
 	private String filename;
 	private byte[] data;
 	private String mimeType;
-
 
 	public Attachment(String filename, byte[] data) {
 		this(filename, data, MimeType.APPLICATION_OCTETSTREAM);
@@ -70,7 +67,7 @@ public class Attachment {
 
 	@JsonIgnore
 	public void setData(InputStream stream) throws IOException {
-		data = IOUtils.toByteArray(stream);
+		data = stream.readAllBytes();
 	}
 
 

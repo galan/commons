@@ -14,11 +14,10 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-
 import com.google.common.io.Resources;
 
+import de.galan.commons.io.file.FileSupport;
+import de.galan.commons.io.streams.IOSupport;
 import de.galan.commons.time.Durations;
 
 
@@ -37,7 +36,7 @@ public class Tests {
 	public static File getTestDirectory(boolean cleanup) {
 		File dir = new File(getWorkingDirectory(), "target/tests-commons");
 		if (cleanup) {
-			FileUtils.deleteQuietly(dir);
+			FileSupport.deleteFileQuiet(dir);
 		}
 		dir.mkdirs();
 		return dir;
@@ -81,7 +80,7 @@ public class Tests {
 
 
 	public static String readFile(InputStream is, Charset encoding) throws IOException {
-		return IOUtils.toString(is, encoding);
+		return IOSupport.inputstreamToString(is, encoding);
 	}
 
 
