@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.core.util.ByteArrayBuilder;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +35,6 @@ public class MetaContext {
 
 	private static ThreadLocal<Map<String, Object>> context = ThreadLocal.withInitial(() -> null);
 	private static JsonFactory factory;
-
 
 	public static void put(String key, Object value) {
 		if (value != null) {
@@ -148,7 +148,10 @@ public class MetaContext {
 			ObjectMapper mapper = new ObjectMapper();
 			//mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 			mapper.setSerializationInclusion(Include.NON_NULL);
-			factory = new MappingJsonFactory(mapper).enable(JsonGenerator.Feature.ESCAPE_NON_ASCII).disable(JsonGenerator.Feature.FLUSH_PASSED_TO_STREAM);
+			//factory = new MappingJsonFactory(mapper).enable(JsonGenerator.Feature.ESCAPE_NON_ASCII).disable(JsonGenerator.Feature.FLUSH_PASSED_TO_STREAM);
+			factory = new MappingJsonFactory(mapper)
+				.enable(JsonWriteFeature.ESCAPE_NON_ASCII.mappedFeature())
+				.disable(JsonGenerator.Feature.FLUSH_PASSED_TO_STREAM);
 		}
 		return factory;
 	}

@@ -1,8 +1,14 @@
 package de.galan.commons.util;
 
 /**
- * Simple key/value pair
- * 
+ * Simple key/value pair.<br/>
+ * <br/>
+ * Alternative suggested implementations (although jackson deserialization has issues):<br/>
+ * <ul>
+ * <li>java.util.AbstractMap.SimpleEntry</li>
+ * <li>subclasses of org.apache.commons.lang3.tuple.Pair</li>
+ * </ul>
+ *
  * @param <K> Type of key
  * @param <V> Type of value
  */
@@ -11,14 +17,12 @@ public class Pair<K, V> {
 	K key;
 	V value;
 
-
 	public Pair() {
 		//
 	}
 
 
 	public Pair(K key, V value) {
-		super();
 		this.key = key;
 		this.value = value;
 	}

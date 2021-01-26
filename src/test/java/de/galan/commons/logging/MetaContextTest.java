@@ -3,11 +3,10 @@ package de.galan.commons.logging;
 import static de.galan.commons.time.Instants.*;
 import static org.assertj.core.api.Assertions.*;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import de.galan.commons.util.Pair;
 
 
 /**
@@ -64,20 +63,20 @@ public class MetaContextTest {
 
 	@Test
 	public void kvNested() throws Exception {
-		MetaContext.put("a", new Pair<String, String>("x", "y"));
-		assertThat(MetaContext.toJson()).isEqualTo("{\"a\":{\"key\":\"x\",\"value\":\"y\"}}");
+		MetaContext.put("a", new ImmutablePair<String, String>("x", "y"));
+		assertThat(MetaContext.toJson()).isEqualTo("{\"a\":{\"x\":\"y\"}}");
 	}
 
 
 	@Test
 	public void kvMultiple() throws Exception {
 		MetaContext.put("f1", 111L);
-		MetaContext.put("f2", new Pair<String, String>("x", "y"));
+		MetaContext.put("f2", new ImmutablePair<String, String>("x", "y"));
 		MetaContext.put("loc", "world");
 		String json = MetaContext.toJson();
-		assertThat(json).contains("\"loc\":\"world\"", "\"f1\":111", "\"f2\":{\"key\":\"x\",\"value\":\"y\"}}");
+		assertThat(json).contains("\"loc\":\"world\"", "\"f1\":111", "\"f2\":{\"x\":\"y\"}}");
 		assertThat(json).startsWith("{").endsWith("}");
-		assertThat(json).hasSize(53);
+		assertThat(json).hasSize(39);
 	}
 
 
