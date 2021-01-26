@@ -26,7 +26,7 @@ import de.galan.commons.logging.Logr;
  * <br/>
  * Deprecated in favor of de.galan.commons.time.Instants.<br/>
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class Dates {
 
 	private static final Logger LOG = Logr.get();
@@ -35,7 +35,6 @@ public class Dates {
 	public static final String DATE_FORMAT_ISO = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 	private static final ThreadLocal<Map<String, SimpleDateFormat>> LOCAL_SDF = ThreadLocal.withInitial(HashMap::new);
-
 
 	private static SimpleDateFormat getDateFormater(String pattern, String timezone) {
 		String key = pattern + "//" + timezone;
@@ -226,7 +225,6 @@ public class Dates {
 
 		private Calendar cal;
 
-
 		public DateBuilder(Date date) {
 			cal = new GregorianCalendar(Locale.GERMAN);
 			cal.setTime(date);
@@ -362,6 +360,7 @@ public class Dates {
 
 	/** Units as own enum for better code-completition support (instead of having ints everywhere) */
 	public static enum DatetimeUnit {
+
 		millis(Calendar.MILLISECOND),
 		seconds(Calendar.SECOND),
 		minutes(Calendar.MINUTE),
@@ -372,7 +371,6 @@ public class Dates {
 		year(Calendar.YEAR);
 
 		private final int field;
-
 
 		private DatetimeUnit(int field) {
 			this.field = field;
@@ -386,6 +384,7 @@ public class Dates {
 
 	/** Units as own enum for better code-completition support (instead of having ints everywhere) */
 	public static enum WeekdayUnit {
+
 		monday(Calendar.MONDAY),
 		tuesday(Calendar.TUESDAY),
 		wednesday(Calendar.WEDNESDAY),
@@ -395,7 +394,6 @@ public class Dates {
 		sunday(Calendar.SUNDAY);
 
 		private final int field;
-
 
 		private WeekdayUnit(int field) {
 			this.field = field;
