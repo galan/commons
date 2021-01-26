@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * CUT CommonProxy
- *
- * @author daniel
  */
 public class CommonProxyTest {
 

@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * CUT Ports
- *
- * @author daniel
  */
 public class PortsTest {
 

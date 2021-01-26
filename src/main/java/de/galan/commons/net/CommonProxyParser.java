@@ -17,13 +17,10 @@ import de.galan.commons.logging.Logr;
 
 /**
  * Parses a given proxy in form [username[:password]@](ip|hostname)[:port]
- *
- * @author daniel
  */
 public class CommonProxyParser {
 
 	private static final Logger LOG = Logr.get();
-
 
 	//private static final Pattern PROXY_PATTERN = Pattern.compile("^([\\w+-]+(:[^@:]+)?@)?[0-9.]+(:[0-9]+([0-9]+)*)?$");
 
@@ -100,7 +97,7 @@ public class CommonProxyParser {
 					LOG.warn("Parsing CommonProxy failed {input}", ex, p);
 				}
 			}
-	
+
 			return result;
 		}
 	 */

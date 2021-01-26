@@ -23,13 +23,10 @@ import de.galan.commons.time.Durations;
 /**
  * Creating fluent http requests (simplified fluent interface for HttpClient). Can be used directly when using eg. DI
  * such as Guice, or by using the static Factory class called Flux.
- *
- * @author daniel
  */
 public class FluentHttpClient {
 
 	private HttpClient client;
-
 
 	public FluentHttpClient() {
 		// nada
@@ -87,7 +84,6 @@ public class FluentHttpClient {
 		Map<String, String> builderHeader;
 		Map<String, List<String>> builderParameter;
 		HttpClient builderClient;
-
 
 		protected HttpBuilder(HttpClient client, String resource) {
 			builderClient = client;

@@ -7,8 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Simple wrapper for a proxy in form [username[:password]]@host[:port]
- * 
- * @author daniel
  */
 public class CommonProxy {
 
@@ -19,7 +17,6 @@ public class CommonProxy {
 	private String password;
 	private String ip;
 	private Integer port;
-
 
 	/** Convenience-method even thu it creates a cyclic dependency to CommonProxyParser */
 	public static CommonProxy parse(String proxy) {

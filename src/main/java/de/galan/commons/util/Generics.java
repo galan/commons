@@ -6,7 +6,8 @@ package de.galan.commons.util;
 public class Generics {
 
 	/**
-	 * Casts an object by type inference. see also http://weblogs.java.net/blog/emcmanus/archive/2007/03/getting_rid_of.html
+	 * Casts an object by type inference. see also
+	 * http://weblogs.java.net/blog/emcmanus/archive/2007/03/getting_rid_of.html
 	 *
 	 * @param x Object that will be casted
 	 */

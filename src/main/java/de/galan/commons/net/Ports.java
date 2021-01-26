@@ -8,8 +8,6 @@ import org.apache.commons.lang3.RandomUtils;
 
 /**
  * Port-related utility methods.
- *
- * @author daniel
  */
 public class Ports {
 

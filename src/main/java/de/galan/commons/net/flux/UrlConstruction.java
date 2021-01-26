@@ -12,8 +12,6 @@ import de.galan.commons.net.UrlUtil;
 
 /**
  * URL constructing helper methods.
- *
- * @author daniel
  */
 public class UrlConstruction {
 

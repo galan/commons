@@ -6,8 +6,6 @@ import java.util.Map;
 
 /**
  * Contract for a HTTP request
- *
- * @author daniel
  */
 public interface HttpClient {
 

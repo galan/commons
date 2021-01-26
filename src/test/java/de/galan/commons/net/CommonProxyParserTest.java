@@ -7,13 +7,10 @@ import org.junit.jupiter.api.Test;
 
 /**
  * CUT CommonProxyParser
- *
- * @author daniel
  */
 public class CommonProxyParserTest {
 
 	CommonProxyParser pp = new CommonProxyParser();
-
 
 	@Test
 	public void parse() {

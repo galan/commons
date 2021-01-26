@@ -13,8 +13,6 @@ import de.galan.commons.time.Durations;
 
 /**
  * Static accessor to FluentHttpClient with option to set default configuration.
- *
- * @author daniel
  */
 public class Flux {
 
@@ -23,7 +21,6 @@ public class Flux {
 	private static Long defaultTimeoutRead;
 	private static Map<String, String> defaultHeader;
 	private static Supplier<HttpClient> clientFactory = createDefaultHttpClientSupplier();
-
 
 	/**
 	 * If no timeout is passed via the builder, a default timeout can be set for read and connection timeouts with this

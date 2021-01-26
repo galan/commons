@@ -6,8 +6,6 @@ import de.galan.commons.time.Durations;
 
 /**
  * Additional behaviour options for the HttpClient
- *
- * @author daniel
  */
 public class HttpOptions {
 
@@ -22,7 +20,6 @@ public class HttpOptions {
 	private Long timeBetweenRetries;
 	private Boolean followRedirects = true;
 	private Boolean timeoutThread = false;
-
 
 	public Long getTimeoutConnection() {
 		return timeoutConnection == null ? DEFAULT_TIMEOUT : timeoutConnection;
