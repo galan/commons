@@ -25,7 +25,6 @@ public class PayloadContextMessageTest {
 	NullPointerException ex = new NullPointerException("BAM");
 	ObjectMapper mapper = new ObjectMapper();
 
-
 	protected void assertMsg(String pattern, Object[] args, Throwable throwable, Object[] argsExpected, Throwable throwableExpected, String messageExpected, Map<String, Object> metaExpected) throws JsonProcessingException, IOException {
 		MetaContext.clear();
 		PayloadContextMessage msg = new PayloadContextMessage(pattern, args, throwable);
@@ -105,8 +104,10 @@ public class PayloadContextMessageTest {
 
 	@Test
 	public void missingArgument() throws Exception {
-		assertMsg("Hello {} world {}, {x}!", args("a"), null, args("a"), null, "Invalid amount of arguments (only 1 available, 2 missing)", ImmutableMap.of());
-		assertMsg("Hello {} world {}, {x}!", args("a"), null, args("a"), null, "Invalid amount of arguments (only 1 available, 2 missing)", ImmutableMap.of());
+		assertMsg("Hello {} world {}, {x}!", args("a"), null, args("a"), null,
+			"Invalid amount of arguments (only 1 available, 2 missing). Pattern: 'Hello {} world {}, {x}!'", ImmutableMap.of());
+		assertMsg("Hello {} world {}, {x}!", args("a"), null, args("a"), null,
+			"Invalid amount of arguments (only 1 available, 2 missing). Pattern: 'Hello {} world {}, {x}!'", ImmutableMap.of());
 	}
 
 
@@ -146,14 +147,16 @@ public class PayloadContextMessageTest {
 
 	@Test
 	public void parameterNamesToMuch() throws Exception {
-		assertMsg("{first} x {second}", args("a", 1, 4), null, args("a", 1, 4), null, "Invalid amount of arguments (3 given but only 2 used in pattern)",
+		assertMsg("{first} x {second}", args("a", 1, 4), null, args("a", 1, 4), null,
+			"Invalid amount of arguments (3 given but only 2 used). Pattern: '{first} x {second}'",
 			ImmutableMap.of());
 	}
 
 
 	@Test
 	public void parameterNamesToMuchWithThrowable() throws Exception {
-		assertMsg("{a} x {b}", args("a", 1, 4, ex), null, args("a", 1, 4, ex), null, "Invalid amount of arguments (4 given but only 2 used in pattern)",
+		assertMsg("{a} x {b}", args("a", 1, 4, ex), null, args("a", 1, 4, ex), null,
+			"Invalid amount of arguments (4 given but only 2 used). Pattern: '{a} x {b}'",
 			ImmutableMap.of());
 	}
 

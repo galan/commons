@@ -41,7 +41,6 @@ public class PayloadContextMessage implements Message {
 	private int[] indexes;
 	private String errormessage;
 
-
 	public PayloadContextMessage(final String messagePattern, final Object[] argumentsObject) {
 		this(messagePattern, argumentsObject, null);
 	}
@@ -182,10 +181,11 @@ public class PayloadContextMessage implements Message {
 			return pattern;
 		}
 		else if (argsString.length < amount) {
-			errormessage = "Invalid amount of arguments (only " + argsObject.length + " available, " + (amount - argsObject.length) + " missing)";
+			errormessage = "Invalid amount of arguments (only " + argsObject.length + " available, " + (amount - argsObject.length) + " missing). Pattern: '"
+					+ pattern + "'";
 		}
 		else if (argsString.length > amount) {
-			errormessage = "Invalid amount of arguments (" + argsObject.length + " given but only " + amount + " used in pattern)";
+			errormessage = "Invalid amount of arguments (" + argsObject.length + " given but only " + amount + " used). Pattern: '" + pattern + "'";
 		}
 		if (errormessage != null) {
 			return errormessage;
