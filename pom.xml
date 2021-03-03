@@ -158,29 +158,4 @@
 		</dependency>
 	</dependencies>
 
-	<!-- Required for source 8 configuration, otherwise javadoc will exit. Has to be moved to parent or removed with a later update -->
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${plugin.maven-javadoc.version}</version>
-				<configuration>
-					<doclint>none</doclint>
-					<additionalparam>-Xdoclint:none</additionalparam>
-					<source>8</source>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-		</plugins>
-	</build>
-
 </project>

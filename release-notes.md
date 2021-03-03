@@ -1,11 +1,12 @@
-# 1.3.0
+# 1.2.1
+* Update parent dependency
+
+# 1.2.0
 * Improved logs when incorrect amount of arguments is passed.
 + Removed commons-io:commons-io
 * Marked de.galan.commons.time.Dates for removal. Use de.galan.commons.time.Instants instead.
 * Added FileSupport and IOSupport class
 * Updated libraries and parent
-
-# 1.2.0
 * Removed deprecated de.galan.commons.util.RetriableTask
 * Removed deprecated de.galan.commons.test.ApplicationClockResetRule
 
