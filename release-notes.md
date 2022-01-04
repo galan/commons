@@ -1,3 +1,6 @@
+# 1.3.0
+* Update dependency (including log4shell)
+
 # 1.2.1
 * Update parent dependency
 
