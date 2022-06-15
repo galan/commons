@@ -20,7 +20,7 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.apache.commons.codec.binary.Base64;
+import com.google.common.io.BaseEncoding;
 import org.apache.logging.log4j.Logger;
 
 import de.galan.commons.logging.Logr;
@@ -188,7 +188,7 @@ public class CommonHttpClient implements HttpClient {
 	protected void putAuthorization(URLConnection connection, String header, String username, String password) {
 		if (isNotBlank(username) && isNotBlank(password)) {
 			String pair = username + ":" + password;
-			String encodedAuthorization = trim(Base64.encodeBase64String(pair.getBytes(UTF_8)));
+			String encodedAuthorization = trim(BaseEncoding.base64().encode(pair.getBytes(UTF_8)));
 			connection.setRequestProperty(header, "Basic " + encodedAuthorization);
 		}
 	}

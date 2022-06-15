@@ -15,8 +15,7 @@ import de.galan.commons.time.Sleeper;
 public class JvmUtil {
 
 	public static String getPid() {
-		RuntimeMXBean rmxb = ManagementFactory.getRuntimeMXBean();
-		return rmxb.getName().split("@")[0];
+		return Long.toString(ProcessHandle.current().pid());
 	}
 
 
@@ -42,7 +41,6 @@ public class JvmUtil {
 		private int builderReturnCode;
 		private boolean builderThreaded = false;
 		private String builderMessage;
-
 
 		/** Sets the exit value, default is 0 (zero). */
 		public TerminateBuilder returnCode(int returnCode) {
@@ -104,7 +102,6 @@ public class JvmUtil {
 		}
 
 	}
-
 
 	/** Null-safe shortcut to Runtime method, catching RuntimeExceptions. */
 	public synchronized static void addShutdownHook(Runnable task) {

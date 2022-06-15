@@ -1,6 +1,6 @@
 /target
 *.swp
 hs_err_pid*.log
-
+.idea
 /.apt_generated/
 /.apt_generated_tests/

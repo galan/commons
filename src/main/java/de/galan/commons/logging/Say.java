@@ -29,6 +29,8 @@ import com.google.common.collect.Sets;
  * <code>
  * Say.field("key", "value").field("other", someObject).info("Hello {location}", "world");
  * </code> <br/>
+ * <br/>
+ * You can omit the curly braces in the message by setting the environment-variable SAY_FIELDS_ENCLOSED to "false".
  */
 public class Say {
 
@@ -38,6 +40,10 @@ public class Say {
 
 	private static final StackWalker WALKER = StackWalker.getInstance(Sets.newHashSet(RETAIN_CLASS_REFERENCE));
 
+	// If SAY_FIELD_ENCLOSED is set to "false", you can remove the curly braces in the message. Defaults to "true". (experimental)
+	static {
+		PayloadContextMessage.envSayFieldsEnclosed = !"false".equals(System.getenv("SAY_FIELDS_ENCLOSED"));
+	}
 
 	/* Determines the class and the appropiate logger of the calling class. */
 	/*
@@ -53,8 +59,8 @@ public class Say {
 		return new PayloadContextMessage(message == null ? null : message.toString(), arguments, throwable);
 	}
 
-
 	// -------------------------------- logging --------------------------------
+
 
 	protected static void log(Level level, Class<?> callerClass, Object message, Throwable throwable, Object... args) {
 		Message payload = payload(message, args, throwable);
@@ -79,7 +85,6 @@ public class Say {
 	 * be static, no need to create objects for each log-statement.
 	 */
 	private static ContextBuilder builder = new ContextBuilder();
-
 
 	public static ContextBuilder f(String key, Object value) {
 		return builder.field(key, value);
@@ -187,8 +192,8 @@ public class Say {
 			log(Level.WARN, WALKER.getCallerClass(), message, throwable, args);
 		}
 
-
 		// -------------------------------- ERROR Builder --------------------------------
+
 
 		public void error(Object message) {
 			log(Level.ERROR, WALKER.getCallerClass(), message, null, (Object[])null);
@@ -209,8 +214,8 @@ public class Say {
 			log(Level.ERROR, WALKER.getCallerClass(), message, throwable, args);
 		}
 
-
 		// -------------------------------- FATAL Builder --------------------------------
+
 
 		public void fatal(Object message) {
 			log(Level.FATAL, WALKER.getCallerClass(), message, null, (Object[])null);
@@ -233,7 +238,6 @@ public class Say {
 
 	}
 
-
 	// -------------------------------- TRACE --------------------------------
 
 	public static void trace(Object message) {
@@ -255,8 +259,8 @@ public class Say {
 		log(Level.TRACE, WALKER.getCallerClass(), message, throwable, args);
 	}
 
-
 	// -------------------------------- DEBUG --------------------------------
+
 
 	public static void debug(Object message) {
 		log(Level.DEBUG, WALKER.getCallerClass(), message, null, (Object[])null);
@@ -277,8 +281,8 @@ public class Say {
 		log(Level.DEBUG, WALKER.getCallerClass(), message, throwable, args);
 	}
 
-
 	// -------------------------------- INFO --------------------------------
+
 
 	public static void info(Object message) {
 		log(Level.INFO, WALKER.getCallerClass(), message, null, (Object[])null);
@@ -299,8 +303,8 @@ public class Say {
 		log(Level.INFO, WALKER.getCallerClass(), message, throwable, args);
 	}
 
-
 	// -------------------------------- WARN --------------------------------
+
 
 	public static void warn(Object message) {
 		log(Level.WARN, WALKER.getCallerClass(), message, null, (Object[])null);
@@ -321,8 +325,8 @@ public class Say {
 		log(Level.WARN, WALKER.getCallerClass(), message, throwable, args);
 	}
 
-
 	// -------------------------------- ERROR --------------------------------
+
 
 	public static void error(Object message) {
 		log(Level.ERROR, WALKER.getCallerClass(), message, null, (Object[])null);
@@ -343,8 +347,8 @@ public class Say {
 		log(Level.ERROR, WALKER.getCallerClass(), message, throwable, args);
 	}
 
-
 	// -------------------------------- FATAL --------------------------------
+
 
 	public static void fatal(Object message) {
 		log(Level.FATAL, WALKER.getCallerClass(), message, null, (Object[])null);
@@ -365,8 +369,8 @@ public class Say {
 		log(Level.FATAL, WALKER.getCallerClass(), message, throwable, args);
 	}
 
-
 	// -------------------------------- MISC --------------------------------
+
 
 	public static void please() {
 		log(Level.INFO, WALKER.getCallerClass(),

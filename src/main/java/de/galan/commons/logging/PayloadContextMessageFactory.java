@@ -11,7 +11,6 @@ public class PayloadContextMessageFactory extends AbstractMessageFactory {
 
 	public static final PayloadContextMessageFactory INSTANCE = new PayloadContextMessageFactory();
 
-
 	@Override
 	public Message newMessage(String message, Object... params) {
 		return new PayloadContextMessage(message, params);

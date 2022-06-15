@@ -21,6 +21,8 @@ import org.apache.logging.log4j.message.Message;
  * <code>
  * info("Hello {location}", "world"); // ThreadContext will provide the json in a field called "payload"<br/>
  * </code> <br/>
+ * <br/>
+ * You can omit the curly braces in the message by setting the environment-variable SAY_ENCLOSED to "false".
  */
 public class PayloadContextMessage implements Message {
 
@@ -31,6 +33,9 @@ public class PayloadContextMessage implements Message {
 	private static final TimeZone TIMEZONE_UTC = TimeZone.getTimeZone("UTC");
 	private static final FastDateFormat FDF = FastDateFormat.getInstance(DATE_FORMAT_UTC, TIMEZONE_UTC);
 
+	// This is controlled by Say directly
+	static boolean envSayFieldsEnclosed = true;
+
 	private transient String formattedMessage;
 	private transient Throwable throwable;
 
@@ -39,7 +44,7 @@ public class PayloadContextMessage implements Message {
 	private Object[] argsObject;
 
 	private int[] indexes;
-	private String errormessage;
+	private String errorMessage;
 
 	public PayloadContextMessage(final String messagePattern, final Object[] argumentsObject) {
 		this(messagePattern, argumentsObject, null);
@@ -122,7 +127,7 @@ public class PayloadContextMessage implements Message {
 			}
 		}
 		if (startPosition != -1) {
-			errormessage = "Invalid pattern, curly brace left unclosed.";
+			errorMessage = "Invalid pattern, curly brace left unclosed.";
 		}
 	}
 
@@ -161,8 +166,8 @@ public class PayloadContextMessage implements Message {
 	@Override
 	public String getFormattedMessage() {
 		if (formattedMessage == null) {
-			if (errormessage != null) {
-				formattedMessage = errormessage;
+			if (errorMessage != null) {
+				formattedMessage = errorMessage;
 			}
 			else {
 				formattedMessage = formatMessage(paramMessagePattern, argsString);
@@ -181,26 +186,28 @@ public class PayloadContextMessage implements Message {
 			return pattern;
 		}
 		else if (argsString.length < amount) {
-			errormessage = "Invalid amount of arguments (only " + argsObject.length + " available, " + (amount - argsObject.length) + " missing). Pattern: '"
+			errorMessage = "Invalid amount of arguments (only " + argsObject.length + " available, " + (amount - argsObject.length) + " missing). Pattern: '"
 					+ pattern + "'";
 		}
 		else if (argsString.length > amount) {
-			errormessage = "Invalid amount of arguments (" + argsObject.length + " given but only " + amount + " used). Pattern: '" + pattern + "'";
+			errorMessage = "Invalid amount of arguments (" + argsObject.length + " given but only " + amount + " used). Pattern: '" + pattern + "'";
 		}
-		if (errormessage != null) {
-			return errormessage;
+		if (errorMessage != null) {
+			return errorMessage;
 		}
+
+		int delimLengthRemoval = envSayFieldsEnclosed ? 0 : 1;
 		StringBuilder builder = new StringBuilder();
 		int indexPosition = 0;
 		for (int i = 0; i < amount; i++) {
 			int factor = i * 2;
-			builder.append(paramMessagePattern.substring(indexPosition, indexes[factor]));
+			builder.append(paramMessagePattern.substring(indexPosition, indexes[factor] - delimLengthRemoval));
 			if ((indexes[factor + 1] > indexes[factor]) && (argsString[i] != null)) {
 				String tcName = paramMessagePattern.substring(indexes[factor], indexes[factor + 1]);
 				MetaContext.put(tcName, argsObject[i]); // ThreadContext.put(tcName, arguments[i]);
 			}
 			builder.append(argsString[i]);
-			indexPosition = indexes[factor + 1];
+			indexPosition = indexes[factor + 1] + delimLengthRemoval;
 		}
 		builder.append(paramMessagePattern.substring(indexPosition, paramMessagePattern.length()));
 

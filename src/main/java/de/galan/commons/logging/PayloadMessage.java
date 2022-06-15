@@ -4,7 +4,7 @@ import org.apache.logging.log4j.message.Message;
 
 
 /**
- * Log4j2 Message for Logger that support parameterized messages, using {} as placeholder, eg.:<br/>
+ * (Log4j2) Message for Logger that support parameterized messages, using {} as placeholder, eg.:<br/>
  * <code>
  * info("Hello {}", "world"); // =&gt; "Hello {world}"<br/>
  * info("Hello {} {}", "beautiful", "world"); // =&gt; "Hello {beautiful} {world}"<br/>
@@ -18,6 +18,8 @@ import org.apache.logging.log4j.message.Message;
  * info("Hello {} {}", "beautiful", "world"); // =&gt; "Hello {0:beautiful} {1:world}"<br/>
  * info("The Answer is {answer}", 42L); // =&gt; "The Answer is {answer:42}"
  * </code> <br/>
+ * <br/>
+ * You can omit the curly braces in the message by setting the environment-variable SAY_ENCLOSED to "false".
  */
 public class PayloadMessage implements Message {
 
@@ -26,22 +28,25 @@ public class PayloadMessage implements Message {
 	private static final char DELIM_STOP = '}';
 	private static final char KV_SEPARATOR = ':';
 
+	// This is controlled by Say directly
+	static boolean envSayFieldEnclosed = true;
+
 	private transient String formattedMessage;
 	private final String paramMessagePattern;
 	private String[] arguments;
 	private Object[] paramArguments;
 	private int[] indexes;
 	private boolean includeIdentifier;
-	private String errormessage;
+	private String errorMessage;
 	private transient Throwable throwable;
-
 
 	public PayloadMessage(final String messagePattern, final Object[] argumentsObject) {
 		this(messagePattern, argumentsObject, false, null);
 	}
 
 
-	public PayloadMessage(final String messagePattern, final Object[] argumentsObject, boolean includeIdentifier, Throwable throwable) {
+	public PayloadMessage(final String messagePattern, final Object[] argumentsObject, boolean includeIdentifier,
+			Throwable throwable) {
 		paramArguments = argumentsObject == null ? EMPTY_ARGUMENTS : argumentsObject;
 		paramMessagePattern = messagePattern;
 		this.includeIdentifier = includeIdentifier;
@@ -123,7 +128,7 @@ public class PayloadMessage implements Message {
 			}
 		}
 		if (startPosition != -1) {
-			errormessage = "Invalid pattern, curly brace left unclosed.";
+			errorMessage = "Invalid pattern, curly brace left unclosed.";
 		}
 	}
 
@@ -142,8 +147,8 @@ public class PayloadMessage implements Message {
 	@Override
 	public String getFormattedMessage() {
 		if (formattedMessage == null) {
-			if (errormessage != null) {
-				formattedMessage = errormessage;
+			if (errorMessage != null) {
+				formattedMessage = errorMessage;
 			}
 			else {
 				formattedMessage = formatMessage(paramMessagePattern, arguments);
@@ -159,17 +164,19 @@ public class PayloadMessage implements Message {
 		}
 		int amount = getPatternAmountArguments();
 		if (arguments.length < amount) {
-			errormessage = "Invalid amount of arguments (only " + paramArguments.length + " available, " + (amount - paramArguments.length) + " missing)";
+			errorMessage = "Invalid amount of arguments (only " + paramArguments.length + " available, " + (amount - paramArguments.length) + " missing)";
 		}
 		if (arguments.length > amount) {
-			errormessage = "Invalid amount of arguments (" + paramArguments.length + " given but only " + amount + " used in pattern)";
+			errorMessage = "Invalid amount of arguments (" + paramArguments.length + " given but only " + amount + " used in pattern)";
 		}
 		if (amount == 0) {
 			return pattern;
 		}
-		if (errormessage != null) {
-			return errormessage;
+		if (errorMessage != null) {
+			return errorMessage;
 		}
+
+		int delimLengthRemoval = envSayFieldEnclosed ? 0 : 1;
 		StringBuilder builder = new StringBuilder();
 		int indexPosition = 0;
 		int argumentWithoutIdentifier = 0;
@@ -183,10 +190,10 @@ public class PayloadMessage implements Message {
 				builder.append(KV_SEPARATOR);
 			}
 			else {
-				builder.append(paramMessagePattern.substring(indexPosition, indexes[factor]));
+				builder.append(paramMessagePattern.substring(indexPosition, indexes[factor] - delimLengthRemoval));
 			}
 			builder.append(arguments[i]);
-			indexPosition = indexes[factor + 1];
+			indexPosition = indexes[factor + 1] + delimLengthRemoval;
 		}
 		builder.append(paramMessagePattern.substring(indexPosition, paramMessagePattern.length()));
 		return builder.toString();

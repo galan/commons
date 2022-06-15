@@ -17,6 +17,18 @@ public class SayTest {
 
 
 	@Test
+	public void sayEmpty() throws Exception {
+		Say.info("");
+	}
+
+
+	@Test
+	public void saySingleFieldDirect() throws Exception {
+		Say.info("{}", "x1");
+	}
+
+
+	@Test
 	public void sayFields() throws Exception {
 		Say.info("abc {}", "x1");
 		Say.info("abc {} {}", "x2", "x3");

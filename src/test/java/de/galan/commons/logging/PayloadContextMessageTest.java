@@ -25,7 +25,8 @@ public class PayloadContextMessageTest {
 	NullPointerException ex = new NullPointerException("BAM");
 	ObjectMapper mapper = new ObjectMapper();
 
-	protected void assertMsg(String pattern, Object[] args, Throwable throwable, Object[] argsExpected, Throwable throwableExpected, String messageExpected, Map<String, Object> metaExpected) throws JsonProcessingException, IOException {
+	protected void assertMsg(String pattern, Object[] args, Throwable throwable, Object[] argsExpected, Throwable throwableExpected, String messageExpected,
+			Map<String, Object> metaExpected) throws JsonProcessingException, IOException {
 		MetaContext.clear();
 		PayloadContextMessage msg = new PayloadContextMessage(pattern, args, throwable);
 		assertThat(msg.getFormat()).isEqualTo(pattern);
@@ -45,14 +46,14 @@ public class PayloadContextMessageTest {
 
 	private ObjectNode cleanupException(ObjectNode root) {
 		// align expected exceptions
-		for (String name: Lists.newArrayList(root.fieldNames())) {
+		for (String name : Lists.newArrayList(root.fieldNames())) {
 			JsonNode node = root.get(name);
 			if (node.isObject() && node.get("stackTrace") != null) {
 				if (node.get("cause") != null && (node.get("cause").getNodeType() == JsonNodeType.NULL)) {
 					((ObjectNode)node).remove("cause");
 				}
 				ArrayNode array = (ArrayNode)((ObjectNode)node).get("stackTrace");
-				for (JsonNode nodeStack: array) {
+				for (JsonNode nodeStack : array) {
 					ObjectNode objectStack = (ObjectNode)nodeStack;
 					objectStack.remove("classLoaderName");
 					objectStack.remove("moduleName");
@@ -178,6 +179,14 @@ public class PayloadContextMessageTest {
 	@Test
 	public void explicitThrowableAsParameterSS() throws Exception {
 		assertMsg("{A} Lee", null, ex, args(ex), null, "{java.lang.NullPointerException: BAM} Lee", ImmutableMap.of("A", ex));
+	}
+
+
+	@Test
+	public void parameterNamesNotEnclosed() throws Exception {
+		PayloadContextMessage.envSayFieldsEnclosed = false;
+		assertMsg("Hello {first} world {second}", args("a", 1), null, args("a", 1), null, "Hello a world 1", ImmutableMap.of("first", "a", "second", 1));
+		PayloadContextMessage.envSayFieldsEnclosed = true;
 	}
 
 

@@ -4,6 +4,7 @@ import static de.galan.commons.time.Instants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
+import java.time.Duration;
 import java.util.Date;
 
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,7 @@ public class DurationsTest {
 	public void humanize() {
 		assertEquals("0ms", Durations.humanize(0L));
 		assertEquals("1s200ms", Durations.humanize(1200L));
+		assertEquals("1m10s", Durations.humanize(Duration.ofSeconds(70L)));
 	}
 
 
@@ -77,6 +79,14 @@ public class DurationsTest {
 
 		assertThat(Durations.toDuration("4h30m200ms").toMillis()).isEqualTo(16200200L);
 		assertThat(Durations.toDuration("4h30m200ms").toString()).isEqualTo("PT4H30M0.2S");
+	}
+
+
+	@Test
+	public void fromDuration() throws Exception {
+		Duration d = Duration.ofSeconds(1234567);
+		assertThat(Durations.fromDuration(null)).isNull();
+		assertThat(Durations.fromDuration(d)).isEqualTo("14d 6h 56m 7s");
 	}
 
 }

@@ -2,11 +2,11 @@ package de.galan.commons.util;
 
 import static java.nio.charset.StandardCharsets.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.util.Hexadecimals.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,8 @@ public class BOMTest {
 
 	@Test
 	public void bom() throws Exception {
-		String hex = Hex.encodeHexString(BOM.getBOM().getBytes(UTF_8));
+		byte[] bom = BOM.getBOM().getBytes(UTF_8);
+		String hex = byteToHexString(bom[0]) + byteToHexString(bom[1]) + byteToHexString(bom[2]);
 		assertThat(hex).isEqualToIgnoringCase("EFBBBF");
 	}
 

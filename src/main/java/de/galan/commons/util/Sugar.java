@@ -16,20 +16,38 @@ public class Sugar {
 
 
 	/** Returns the given value, or the fallback if the value is null. */
-	public <T> T fallback(T val, T fallback) {
+	public static <T> T fallback(T val, T fallback) {
 		return val != null ? val : fallback;
 	}
 
 
-	/** Negates the given Predicate */
+	/** Returns the first non-null value. */
+	public static <T> T first(T... values) {
+		if (values == null) {
+			return null;
+		}
+		for (T x : values) {
+			if (x != null) {
+				return x;
+			}
+		}
+		return null;
+	}
+
+
+	/**
+	 * Negates the given Predicate
+	 *
+	 * @deprecated Use Predicate.not(..) instead (since Java 11)
+	 */
 	public static <T> Predicate<T> not(Predicate<T> t) {
 		return t.negate();
 	}
 
 
 	/**
-	 * Casts an object by type inference. see also http://weblogs.java.net/blog/emcmanus/archive/2007/03/getting_rid_of.html
-	 * See {@link Generics}
+	 * Casts an object by type inference. see also
+	 * http://weblogs.java.net/blog/emcmanus/archive/2007/03/getting_rid_of.html See {@link Generics}
 	 *
 	 * @param x Object that will be casted
 	 */

@@ -33,7 +33,6 @@ public class Durations {
 	/** Cache for calculated humantimes */
 	private static SoftReferenceCache<Long> humantimeCache;
 
-
 	/** Prints how long the given date is in the future in the format "Xd Xh Xm Xs Xms" */
 	public static String timeLeft(Date date) {
 		return timeLeft(date.toInstant());
@@ -68,12 +67,26 @@ public class Durations {
 	}
 
 
-	/** Converts a time in miliseconds to human readable duration in the format "Xd Xh Xm Xs Xms" */
+	/** Converts a time in miliseconds to human readable duration in the format "XdXhXmXsXms" */
 	public static String humanize(long time) {
 		return humanize(time, EMPTY);
 	}
 
 
+	public static String humanize(Duration duration) {
+		return humanize(duration, EMPTY);
+	}
+
+
+	public static String humanize(Duration duration, String separator) {
+		return humanize(duration.toMillis(), separator);
+	}
+
+
+	/**
+	 * Converts a time in miliseconds to human readable duration in the format "Xd Xh Xm Xs Xms" (example when the
+	 * separator is a SPACE).
+	 */
 	public static String humanize(long time, String separator) {
 		StringBuilder result = new StringBuilder();
 		if (time == 0L) {
@@ -161,17 +174,13 @@ public class Durations {
 
 
 	/**
-	 * Converts a time from java.util.time.Duration to human readable format "Xd Xh Xm Xs Xms" (for
-	 * interoperability).<br/>
-	 * TODO broken:
-	 * https://stackoverflow.com/questions/24491243/why-cant-i-get-a-duration-in-minutes-or-hours-in-java-time
+	 * Converts a time from java.util.time.Duration to human readable format "Xd Xh Xm Xs Xms" (for interoperability).
 	 */
-	@Deprecated
 	public static String fromDuration(Duration duration) {
 		if (duration == null) {
 			return null;
 		}
-		return humanize(duration.get(ChronoUnit.MILLIS));
+		return humanize(duration.toMillis(), SPACE);
 	}
 
 }
