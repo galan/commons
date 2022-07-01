@@ -39,7 +39,7 @@ public class InstantsTest {
 	public void testNow() {
 		assertDateNear("1s", now());
 		assertDateNear("1s", from(now()).toDate());
-		assertThat(now().toString()).matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z");
+		assertThat(now().toString()).matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{9}Z");
 	}
 
 
