@@ -1,3 +1,7 @@
+# 2.0.0
+
+* Updated to Java 17
+
 # 1.4.0
 
 * Update dependencies
