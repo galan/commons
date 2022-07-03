@@ -78,6 +78,7 @@ public class InstantsTest {
 	public void toStringUtcFormat() throws Exception {
 		assertThat("2012-05-31T17:51:01.123Z").isEqualTo(from(instantUtc("2012-05-31T17:51:01.123Z")).toStringUtc());
 		assertThat("2014-08-10T20:45:15.123Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456Z")).toStringUtc());
+		assertThat("2014-08-10T20:45:15.123Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456789Z")).toStringUtc());
 		assertThat("2014-08-10T18:45:15.000Z").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toStringUtc());
 		assertThat("2014-12-10T18:45:15.000Z").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toStringUtc());
 		assertThat("2014-12-10T19:45:15.000Z").isEqualTo(from(instantUtc("2014-12-10T19:45:15Z")).toStringUtc());
@@ -88,6 +89,7 @@ public class InstantsTest {
 	public void toStringUtcMiliFormat() throws Exception {
 		assertThat("2012-05-31T17:51:01.123Z").isEqualTo(from(instantUtc("2012-05-31T17:51:01.123Z")).toStringUtcMillis());
 		assertThat("2014-08-10T20:45:15.123Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456Z")).toStringUtcMillis());
+		assertThat("2014-08-10T20:45:15.123Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456789Z")).toStringUtcMillis());
 		assertThat("2014-08-10T18:45:15.000Z").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toStringUtcMillis());
 		assertThat("2014-12-10T18:45:15.000Z").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toStringUtcMillis());
 		assertThat("2014-12-10T19:45:15.000Z").isEqualTo(from(instantUtc("2014-12-10T19:45:15Z")).toStringUtcMillis());
@@ -98,9 +100,32 @@ public class InstantsTest {
 	public void toStringUtcNanoFormat() throws Exception {
 		assertThat("2012-05-31T17:51:01.123000Z").isEqualTo(from(instantUtc("2012-05-31T17:51:01.123Z")).toStringUtcNano());
 		assertThat("2014-08-10T20:45:15.123456Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456Z")).toStringUtcNano());
+		assertThat("2014-08-10T20:45:15.123456Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456789Z")).toStringUtcNano());
 		assertThat("2014-08-10T18:45:15.000000Z").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toStringUtcNano());
 		assertThat("2014-12-10T18:45:15.000000Z").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toStringUtcNano());
 		assertThat("2014-12-10T19:45:15.000000Z").isEqualTo(from(instantUtc("2014-12-10T19:45:15Z")).toStringUtcNano());
+	}
+
+
+	@Test
+	public void toStringUtcNano6Format() throws Exception {
+		assertThat("2012-05-31T17:51:01.123000Z").isEqualTo(from(instantUtc("2012-05-31T17:51:01.123Z")).toStringUtcNano6());
+		assertThat("2014-08-10T20:45:15.123456Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456Z")).toStringUtcNano6());
+		assertThat("2014-08-10T20:45:15.123456Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456789Z")).toStringUtcNano6());
+		assertThat("2014-08-10T18:45:15.000000Z").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toStringUtcNano6());
+		assertThat("2014-12-10T18:45:15.000000Z").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toStringUtcNano6());
+		assertThat("2014-12-10T19:45:15.000000Z").isEqualTo(from(instantUtc("2014-12-10T19:45:15Z")).toStringUtcNano6());
+	}
+
+
+	@Test
+	public void toStringUtcNano9Format() throws Exception {
+		assertThat("2012-05-31T17:51:01.123000000Z").isEqualTo(from(instantUtc("2012-05-31T17:51:01.123Z")).toStringUtcNano9());
+		assertThat("2014-08-10T20:45:15.123456000Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456Z")).toStringUtcNano9());
+		assertThat("2014-08-10T20:45:15.123456789Z").isEqualTo(from(instantUtc("2014-08-10T20:45:15.123456789Z")).toStringUtcNano9());
+		assertThat("2014-08-10T18:45:15.000000000Z").isEqualTo(from(instantUtc("2014-08-10T18:45:15Z")).toStringUtcNano9());
+		assertThat("2014-12-10T18:45:15.000000000Z").isEqualTo(from(instantUtc("2014-12-10T18:45:15Z")).toStringUtcNano9());
+		assertThat("2014-12-10T19:45:15.000000000Z").isEqualTo(from(instantUtc("2014-12-10T19:45:15Z")).toStringUtcNano9());
 	}
 
 
@@ -248,7 +273,7 @@ public class InstantsTest {
 
 	@Test
 	public void fromDuskTillDawnDate() throws Exception {
-		long expected = Durations.dehumanize("12h").longValue();
+		long expected = Durations.dehumanize("12h");
 		Date dusk = dateLocal("2012-11-01 18:00:00");
 		Date dawn = dateLocal("2012-11-02 06:00:00");
 		assertEquals(expected, from(dusk).till(dawn));
@@ -257,7 +282,7 @@ public class InstantsTest {
 
 	@Test
 	public void fromDuskTillDawnInstant() throws Exception {
-		long expected = Durations.dehumanize("12h").longValue();
+		long expected = Durations.dehumanize("12h");
 		Instant dusk = instantLocal("2012-11-01 18:00:00");
 		Instant dawn = instantLocal("2012-11-02 06:00:00");
 		assertEquals(expected, from(dusk).till(dawn));

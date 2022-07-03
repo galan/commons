@@ -33,18 +33,18 @@ public class Instants {
 	TODO Check TemporalAdjuster
 	 */
 
-	public static final String DATE_FORMAT_LOCAL_INPUT = "yyyy-MM-dd HH:mm:ss[.SSSSSS][.SSS]";
+	public static final String DATE_FORMAT_LOCAL_INPUT = "yyyy-MM-dd HH:mm:ss[.SSSSSSSSS][.SSSSSS][.SSS]";
 	public static final String DATE_FORMAT_LOCAL_NANO_OUTPUT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
 	public static final String DATE_FORMAT_LOCAL_MILLI_OUTPUT = "yyyy-MM-dd HH:mm:ss.SSS";
-	public static final String DATE_FORMAT_UTC_INPUT = "yyyy-MM-dd'T'HH:mm:ss[.SSSSSS][.SSS]'Z'";
-	public static final String DATE_FORMAT_UTC_NANO_OUTPUT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'";
+	public static final String DATE_FORMAT_UTC_INPUT = "yyyy-MM-dd'T'HH:mm:ss[.SSSSSSSSS][.SSSSSS][.SSS]'Z'";
+	public static final String DATE_FORMAT_UTC_NANO6_OUTPUT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'";
+	public static final String DATE_FORMAT_UTC_NANO9_OUTPUT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'";
 	public static final String DATE_FORMAT_UTC_MILLI_OUTPUT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
 	public static final ZoneId ZONE_LOCAL = ZoneId.systemDefault().normalized();
 	public static final ZoneId ZONE_UTC = ZoneId.of("UTC").normalized();
 
 	private static final Map<String, DateTimeFormatter> FORMATTERS = new ConcurrentHashMap<>();
-
 
 	private static DateTimeFormatter getFormater(String pattern, String timezone) {
 		String key = pattern + "//" + timezone;
@@ -98,15 +98,15 @@ public class Instants {
 
 
 	/**
-	 * Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss[.SSSSSS][.SSS]", system default (local) timezone is
-	 * used.
+	 * Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss[.SSSSSSSSS][.SSSSSS][.SSS]", system default (local)
+	 * timezone is used.
 	 */
 	public static Instant instantLocal(String text) {
 		return instant(text, ZONE_LOCAL);
 	}
 
 
-	/** Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss[.SSSSSS][.SSS]", given timezone is used. */
+	/** Creates an Instant, input format is "yyyy-MM-dd HH:mm:ss[.SSSSSSSSS][.SSSSSS][.SSS]", given timezone is used. */
 	public static Instant instant(String text, ZoneId zone) {
 		Instant result = null;
 		try {
@@ -121,7 +121,7 @@ public class Instants {
 	}
 
 
-	/** Creates an Instant, input format is "yyyy-MM-dd'T'HH:mm:ss[.SSSSSS][.SSS]'Z'", timezone is UTC. */
+	/** Creates an Instant, input format is "yyyy-MM-dd'T'HH:mm:ss[.SSSSSSSSS][.SSSSSS][.SSS]'Z'", timezone is UTC. */
 	public static Instant instantUtc(String text) {
 		Instant result = null;
 		try {
@@ -271,7 +271,6 @@ public class Instants {
 
 		private Instant current;
 		private ZoneId zone = ZONE_UTC;
-
 
 		public InstantBuilder(Instant instant) {
 			current = instant;
@@ -448,8 +447,24 @@ public class Instants {
 		}
 
 
+		/**
+		 * Use <code>toStringUtcNano6()</code> instead.
+		 * 
+		 * @return
+		 */
+		@Deprecated(since = "2.0.1", forRemoval = true)
 		public String toStringUtcNano() {
-			return getFormater(DATE_FORMAT_UTC_NANO_OUTPUT, "UTC").format(current);
+			return getFormater(DATE_FORMAT_UTC_NANO6_OUTPUT, "UTC").format(current);
+		}
+
+
+		public String toStringUtcNano6() {
+			return getFormater(DATE_FORMAT_UTC_NANO6_OUTPUT, "UTC").format(current);
+		}
+
+
+		public String toStringUtcNano9() {
+			return getFormater(DATE_FORMAT_UTC_NANO9_OUTPUT, "UTC").format(current);
 		}
 
 
@@ -498,6 +513,7 @@ public class Instants {
 
 	/** Units as own enum for better code-completition support (instead of having ints everywhere) */
 	public static enum DatetimeUnit {
+
 		//TODO nanos(Calendar.MILLISECOND, ChronoUnit.MILLIS),
 		millis(Calendar.MILLISECOND, ChronoUnit.MILLIS),
 		seconds(Calendar.SECOND, ChronoUnit.SECONDS),
@@ -510,7 +526,6 @@ public class Instants {
 
 		private final int field;
 		private TemporalUnit unit;
-
 
 		private DatetimeUnit(int field, TemporalUnit unit) {
 			this.field = field;
@@ -530,6 +545,7 @@ public class Instants {
 
 	/** Units as own enum for better code-completition support (instead of having ints everywhere) */
 	public static enum WeekdayUnit {
+
 		monday(Calendar.MONDAY, DayOfWeek.MONDAY),
 		tuesday(Calendar.TUESDAY, DayOfWeek.TUESDAY),
 		wednesday(Calendar.WEDNESDAY, DayOfWeek.WEDNESDAY),
@@ -540,7 +556,6 @@ public class Instants {
 
 		private final int field;
 		private DayOfWeek unit;
-
 
 		private WeekdayUnit(int field, DayOfWeek unit) {
 			this.field = field;

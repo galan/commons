@@ -1,3 +1,7 @@
+# 2.0.1
+
+* Improved Instants for nano precision of 9 digits.
+
 # 2.0.0
 
 * Updated to Java 17
