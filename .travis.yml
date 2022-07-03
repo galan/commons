@@ -3,4 +3,4 @@ language: java
 install: mvn install -Dgpg.skip=true -DskipTests=true
 
 jdk:
-  - openjdk11
+  - openjdk17
