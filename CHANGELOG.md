@@ -5,9 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
 ## [Unreleased]
 
 * Nothing
+
+
+## [2.0.2] - 2022-12-01
+
+### Added
+
+* Added `de.galan.io.resources.Resources` to read files more conveniently
+
+### Changes
+
+* Added `Pair.of(..)` method
+
 
 ## [2.0.1] - 2022-07-03
 
@@ -19,11 +32,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Improved Instants support for nano precision of 9 digits.
 
+
 ## [2.0.0] - 2022-07-01
 
 ### Changes
 
 * Updated to Java 17
+
 
 ## [1.4.0] - 2022-06-16
 
@@ -45,17 +60,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed commons-codec dependency
 
+
 ## [1.3.0] - 2022-01-04
 
 ### Security
 
 * Update dependency (including log4shell)
 
+
 ## [1.2.1] - 2021-03-03
 
 ### Changes
 
 * Update parent dependency
+
 
 ## [1.2.0] - 2021-02-01
 
@@ -78,11 +96,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed deprecated `de.galan.commons.util.RetriableTask`
 * Removed deprecated `de.galan.commons.test.ApplicationClockResetRule`
 
+
 ## [1.1.0] - 2020-01-01
 
 ### Added
 
 * Added exception metadata to MDC in logging payload
+
 
 ## [1.0.1] - 2019-10-02
 
@@ -94,6 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Jackson security update
 
+
 ## [1.0.0] - 2019-08-12
 
 ### Changes
@@ -101,7 +122,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * First major version
 * Requires Java 11
 
-[Unreleased]: https://github.com/galan/commons/compare/v2.0.1...HEAD
+
+[Unreleased]: https://github.com/galan/commons/compare/v2.0.2...HEAD
+
+[2.0.2]: https://github.com/galan/commons/compare/v2.0.1...v2.0.2
 
 [2.0.1]: https://github.com/galan/commons/compare/v2.0.0...v2.0.1
 
