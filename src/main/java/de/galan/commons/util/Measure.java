@@ -14,20 +14,20 @@ import de.galan.commons.time.Durations;
 
 
 /**
- * Measures invokation of Runnables/Callables in milliseconds. Average of n-invocations can also be calculated (using
+ * Measures invocation of Runnables/Callables in milliseconds. Average of n-invocations can also be calculated (using
  * the '.every(n)' builder method). A total can be logged using finish() on the Measure object. Thread-safe.
  */
 public class Measure {
 
-	private Integer builderIteratons;
+	private Integer builderIterations;
 	private String builderWhat;
 
 	private int counter = 0;
 	private long[] times;
 	private Long startMeasure;
+	private long sum = 0L;
 
-
-	/** Builds a new Measure object to measure invokations of runnables/callables. */
+	/** Builds a new Measure object to measure invocations of runnables/callables. */
 	public static Measure measure(String what) {
 		return new Measure(what, null);
 	}
@@ -35,64 +35,62 @@ public class Measure {
 
 	Measure(String what, Integer iterations) {
 		builderWhat = what;
-		builderIteratons = iterations;
+		builderIterations = iterations;
 
 		Preconditions.checkState(iterations == null || iterations >= 0, "iterations must be non-negative or null");
-		builderIteratons = (iterations == null || iterations <= 1L) ? null : iterations;
+		builderIterations = (iterations == null || iterations <= 1L) ? null : iterations;
 		if (iterations != null) {
 			times = new long[optional(iterations).orElse(0)];
 		}
 	}
 
 
-	/** If provided, the average on a single invokation will be calculated/logged after every n-iterations. */
+	/** If provided, the average on a single invocation will be calculated/logged after every n-iterations. */
 	public Measure every(Integer iterations) {
 		return new Measure(builderWhat, iterations);
 	}
 
 
 	/** This method can be called to print the total amount of time taken until that point in time. */
-	public void finish() {
+	public Double finish() {
 		if (startMeasure == null) {
-			Say.info("No invokations are measured");
+			Say.info("No invocations are measured");
+			return null;
 		}
 		else {
-			long total = System.currentTimeMillis() - startMeasure;
-			double average = 1d * total / counter;
-			logFinished(total, average);
+			double average = 1d * sum / counter;
+			logFinished(sum, average);
+			return average;
 		}
 	}
 
 
-	public Measure total(boolean total) {
-		return new Measure(builderWhat, builderIteratons);
-	}
-
-
-	/** Measure the invokation time of the given Runnable (without Exception). */
-	public void runnable(Runnable runnable) {
+	/** Measure the invocation time of the given Runnable (without Exception). */
+	public Measure runnable(Runnable runnable) {
 		initStartTotal();
-		long startInvokation = System.currentTimeMillis();
+		long startInvocation = System.currentTimeMillis();
 		runnable.run();
-		invoked(System.currentTimeMillis() - startInvokation);
+		invoked(System.currentTimeMillis() - startInvocation);
+		return this;
 	}
 
 
-	/** Measure the invokation time of the given ExceptionalRunnable. */
-	public void run(ExceptionalRunnable runnable) throws Exception {
+	/** Measure the invocation time of the given ExceptionalRunnable. */
+	public Measure run(ExceptionalRunnable runnable) throws Exception {
 		initStartTotal();
-		long startInvokation = System.currentTimeMillis();
+		long startInvocation = System.currentTimeMillis();
 		runnable.run();
-		invoked(System.currentTimeMillis() - startInvokation);
+		invoked(System.currentTimeMillis() - startInvocation);
+		return this;
 	}
 
 
-	/** Measure the invokation time of the given Callable. */
+	/** Measure the invocation time of the given Callable. */
 	public <V> V call(Callable<V> callable) throws Exception {
 		initStartTotal();
-		long startInvokation = System.currentTimeMillis();
+		long startInvocation = System.currentTimeMillis();
 		V result = callable.call();
-		invoked(System.currentTimeMillis() - startInvokation);
+		invoked(System.currentTimeMillis() - startInvocation);
 		return result;
 	}
 
@@ -105,17 +103,18 @@ public class Measure {
 
 
 	private void invoked(long millis) {
-		if (builderIteratons == null) {
+		sum += millis;
+		if (builderIterations == null) {
 			counter++;
 			log(millis);
 		}
 		else {
 			synchronized (this) {
-				times[counter++ % builderIteratons] = millis;
-				if (counter % builderIteratons == 0) {
-					double average = 1d * LongStream.of(times).sum() / builderIteratons;
+				times[counter++ % builderIterations] = millis;
+				if (counter % builderIterations == 0) {
+					double average = 1d * LongStream.of(times).sum() / builderIterations;
 					log(average);
-					times = new long[builderIteratons];
+					times = new long[builderIterations];
 				}
 			}
 		}

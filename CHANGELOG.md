@@ -8,7 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-* Nothing
+### Changes
+
+* Improved average calculation for `Measure`.
+* Updated parent
+* Updated libraries and plugins
 
 
 ## [2.0.2] - 2022-12-01

@@ -19,7 +19,7 @@ public class MeasureTest {
 
 	@Test
 	public void singleRuns() throws Exception {
-		Measure measure = spy(Measure.measure("dummy"));
+		Measure measure = spy(Measure.measure("singleRuns"));
 		measure.run(() -> Sleeper.sleep(10L));
 		checkLog(measure, 0L, 100L);
 		reset(measure);
@@ -30,7 +30,7 @@ public class MeasureTest {
 
 	@Test
 	public void singleCalls() throws Exception {
-		Measure measure = spy(Measure.measure("dummy"));
+		Measure measure = spy(Measure.measure("singleCalls"));
 		String returnValue1 = measure.call(callableString(10L, "abc"));
 		assertThat(returnValue1).isEqualTo("abc");
 		checkLog(measure, 0L, 100L);
@@ -52,7 +52,7 @@ public class MeasureTest {
 
 	@Test
 	public void everyRuns() throws Exception {
-		Measure measure = spy(Measure.measure("dummy").every(4));
+		Measure measure = spy(Measure.measure("everyRuns").every(4));
 		measure.run(() -> Sleeper.sleep(10L));
 		measure.run(() -> Sleeper.sleep(10L));
 		measure.run(() -> Sleeper.sleep(10L));
@@ -74,7 +74,7 @@ public class MeasureTest {
 
 	@Test
 	public void everyCalls() throws Exception {
-		Measure measure = spy(Measure.measure("dummy").every(4));
+		Measure measure = spy(Measure.measure("everyCalls").every(4));
 		measure.call(callableString(10L, "abc"));
 		measure.call(callableString(10L, "abc"));
 		measure.call(callableString(10L, "abc"));
@@ -96,7 +96,7 @@ public class MeasureTest {
 
 	@Test
 	public void everyMix() throws Exception {
-		Measure measure = spy(Measure.measure("dummy").every(4));
+		Measure measure = spy(Measure.measure("everyMix").every(4));
 		measure.call(callableString(10L, "abc"));
 		measure.run(() -> Sleeper.sleep(10L));
 		measure.call(callableString(10L, "abc"));
@@ -109,7 +109,7 @@ public class MeasureTest {
 
 	@Test
 	public void finish() throws Exception {
-		Measure measure = spy(Measure.measure("dummy"));
+		Measure measure = spy(Measure.measure("finish"));
 		measure.call(() -> "");
 		measure.call(() -> "");
 		measure.call(() -> "");
@@ -119,10 +119,21 @@ public class MeasureTest {
 
 
 	@Test
-	public void finishEmpty() throws Exception {
-		Measure measure = spy(Measure.measure("dummy"));
+	public void finishEmpty() {
+		Measure measure = spy(Measure.measure("finishEmpty"));
 		measure.finish();
 		verify(measure, times(0)).logFinished(anyLong(), anyDouble());
+	}
+
+
+	@Test
+	public void inBetween() {
+		Measure measure = Measure.measure("inBetween");
+		measure.runnable(() -> Sleeper.sleep("500ms"));
+		measure.runnable(() -> Sleeper.sleep("100ms"));
+		Sleeper.sleep(500);
+		measure.runnable(() -> Sleeper.sleep("400ms"));
+		assertThat(measure.finish()).isBetween(330d, 360d);
 	}
 
 
