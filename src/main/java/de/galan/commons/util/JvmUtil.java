@@ -41,6 +41,7 @@ public class JvmUtil {
 		private int builderReturnCode;
 		private boolean builderThreaded = false;
 		private String builderMessage;
+		private Throwable throwableProvided;
 
 		/** Sets the exit value, default is 0 (zero). */
 		public TerminateBuilder returnCode(int returnCode) {
@@ -52,6 +53,13 @@ public class JvmUtil {
 		/** Starts the termination in a separate thread or blocking, default is true. */
 		public TerminateBuilder threaded(boolean threaded) {
 			builderThreaded = threaded;
+			return this;
+		}
+
+
+		/** Will print the message and stacktrace for the Throwable if provided. */
+		public TerminateBuilder throwable(Throwable throwable) {
+			throwableProvided = throwable;
 			return this;
 		}
 
@@ -97,7 +105,12 @@ public class JvmUtil {
 				Say.info("The JavaVM will exit in {time}, return code will be {code}, message: {message}", time, builderReturnCode, getMessage());
 				Sleeper.sleep(time);
 			}
-			Say.info("The JavaVM will exit NOW, return code is {code}, message: {message}", builderReturnCode, getMessage());
+			if (throwableProvided != null) {
+				Say.info("The JavaVM will exit NOW, return code is {code}, message: {message}", throwableProvided, builderReturnCode, getMessage());
+			}
+			else {
+				Say.info("The JavaVM will exit NOW, return code is {code}, message: {message}", builderReturnCode, getMessage());
+			}
 			System.exit(builderReturnCode);
 		}
 

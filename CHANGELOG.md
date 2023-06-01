@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 * Improved average calculation for `Measure`.
+* Extended `JvmUtil.terminate()` with optional fluent method call for a throwable.
 * Updated parent
 * Updated libraries and plugins
 
