@@ -6,11 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [2.1.0] - 2023-06-18
 
 ### Changes
 
-* Improved average calculation for `Measure`.
+* Improved average calculation and logging for `Measure`.
 * Extended `JvmUtil.terminate()` with optional fluent method call for a throwable.
 * Updated parent
 * Updated libraries and plugins
@@ -129,7 +129,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Requires Java 11
 
 
-[Unreleased]: https://github.com/galan/commons/compare/v2.0.2...HEAD
+[Unreleased]: https://github.com/galan/commons/compare/v2.1.0...HEAD
+
+[2.1.0]: https://github.com/galan/commons/compare/v2.0.2...v2.1.0
 
 [2.0.2]: https://github.com/galan/commons/compare/v2.0.1...v2.0.2
 

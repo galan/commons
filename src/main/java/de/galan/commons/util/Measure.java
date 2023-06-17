@@ -21,6 +21,7 @@ public class Measure {
 
 	private Integer builderIterations;
 	private String builderWhat;
+	private boolean builderLogStartMessage;
 
 	private int counter = 0;
 	private long[] times;
@@ -29,13 +30,14 @@ public class Measure {
 
 	/** Builds a new Measure object to measure invocations of runnables/callables. */
 	public static Measure measure(String what) {
-		return new Measure(what, null);
+		return new Measure(what, null, false);
 	}
 
 
-	Measure(String what, Integer iterations) {
+	Measure(String what, Integer iterations, boolean logStartMessage) {
 		builderWhat = what;
 		builderIterations = iterations;
+		builderLogStartMessage = logStartMessage;
 
 		Preconditions.checkState(iterations == null || iterations >= 0, "iterations must be non-negative or null");
 		builderIterations = (iterations == null || iterations <= 1L) ? null : iterations;
@@ -47,13 +49,18 @@ public class Measure {
 
 	/** If provided, the average on a single invocation will be calculated/logged after every n-iterations. */
 	public Measure every(Integer iterations) {
-		return new Measure(builderWhat, iterations);
+		return new Measure(builderWhat, iterations, builderLogStartMessage);
+	}
+
+
+	public Measure logStartMessage(boolean logStartMessage) {
+		return new Measure(builderWhat, builderIterations, logStartMessage);
 	}
 
 
 	/** This method can be called to print the total amount of time taken until that point in time. */
 	public Double finish() {
-		if (startMeasure == null) {
+		if (counter == 0) {
 			Say.info("No invocations are measured");
 			return null;
 		}
@@ -67,7 +74,7 @@ public class Measure {
 
 	/** Measure the invocation time of the given Runnable (without Exception). */
 	public Measure runnable(Runnable runnable) {
-		initStartTotal();
+		init();
 		long startInvocation = System.currentTimeMillis();
 		runnable.run();
 		invoked(System.currentTimeMillis() - startInvocation);
@@ -77,7 +84,7 @@ public class Measure {
 
 	/** Measure the invocation time of the given ExceptionalRunnable. */
 	public Measure run(ExceptionalRunnable runnable) throws Exception {
-		initStartTotal();
+		init();
 		long startInvocation = System.currentTimeMillis();
 		runnable.run();
 		invoked(System.currentTimeMillis() - startInvocation);
@@ -87,7 +94,7 @@ public class Measure {
 
 	/** Measure the invocation time of the given Callable. */
 	public <V> V call(Callable<V> callable) throws Exception {
-		initStartTotal();
+		init();
 		long startInvocation = System.currentTimeMillis();
 		V result = callable.call();
 		invoked(System.currentTimeMillis() - startInvocation);
@@ -95,7 +102,10 @@ public class Measure {
 	}
 
 
-	private void initStartTotal() {
+	private void init() {
+		if (builderLogStartMessage && counter == 0) {
+			logStart();
+		}
 		if (startMeasure == null) {
 			startMeasure = System.currentTimeMillis();
 		}
@@ -118,6 +128,11 @@ public class Measure {
 				}
 			}
 		}
+	}
+
+
+	void logStart() {
+		Say.info("Starting measurement of {what}", builderWhat);
 	}
 
 

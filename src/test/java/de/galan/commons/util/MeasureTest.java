@@ -127,6 +127,14 @@ public class MeasureTest {
 
 
 	@Test
+	public void logStart() {
+		Measure measure = spy(Measure.measure("start").logStartMessage(true));
+		measure.runnable(() -> Sleeper.sleep("10ms"));
+		verify(measure, times(1)).logStart();
+	}
+
+
+	@Test
 	public void inBetween() {
 		Measure measure = Measure.measure("inBetween");
 		measure.runnable(() -> Sleeper.sleep("500ms"));
