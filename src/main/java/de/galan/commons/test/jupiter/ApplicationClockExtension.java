@@ -18,7 +18,6 @@ public class ApplicationClockExtension implements BeforeEachCallback, AfterEachC
 
 	private Clock clock;
 
-
 	public static ApplicationClockExtensionBuilder builder() {
 		return new ApplicationClockExtensionBuilder();
 	}
@@ -29,6 +28,13 @@ public class ApplicationClockExtension implements BeforeEachCallback, AfterEachC
 		/** Creates a fixed Clock. */
 		public ApplicationClockExtensionBuilder clock(Clock clock) {
 			ApplicationClock.setClock(clock);
+			return this;
+		}
+
+
+		/** Resets the clock after each test to the system UTC Clock. */
+		public ApplicationClockExtensionBuilder systemUTC() {
+			ApplicationClock.setClock(Clock.systemUTC());
 			return this;
 		}
 
@@ -68,7 +74,6 @@ public class ApplicationClockExtension implements BeforeEachCallback, AfterEachC
 		}
 
 	}
-
 
 	public ApplicationClockExtension() {
 		this(null);

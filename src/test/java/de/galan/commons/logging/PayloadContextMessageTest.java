@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -26,7 +25,7 @@ public class PayloadContextMessageTest {
 	ObjectMapper mapper = new ObjectMapper();
 
 	protected void assertMsg(String pattern, Object[] args, Throwable throwable, Object[] argsExpected, Throwable throwableExpected, String messageExpected,
-			Map<String, Object> metaExpected) throws JsonProcessingException, IOException {
+			Map<String, Object> metaExpected) throws IOException {
 		MetaContext.clear();
 		PayloadContextMessage msg = new PayloadContextMessage(pattern, args, throwable);
 		assertThat(msg.getFormat()).isEqualTo(pattern);
