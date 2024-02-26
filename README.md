@@ -1,4 +1,3 @@
-[![Build Status](https://img.shields.io/travis/galan/commons.svg?style=flat)](https://travis-ci.org/galan/commons)
 [![Maven Central](https://img.shields.io/maven-central/v/de.galan/commons.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/de.galan/commons)
 [![License](https://img.shields.io/github/license/galan/commons.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
@@ -9,7 +8,7 @@ Supportive basic but missing functionality, that simplifies Java delopment.
 
 # Integration with Maven
 
-Just add the following dependency (see [releases](https://github.com/galan/commons/releases) for latest version):
+Just add the following dependency (see [tags](https://github.com/galan/commons/tags) for latest version):
 
     <dependency>
     	<groupId>de.galan</groupId>
