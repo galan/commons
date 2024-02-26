@@ -63,6 +63,12 @@ public class Say {
 
 
 	protected static void log(Level level, Class<?> callerClass, Object message, Throwable throwable, Object... args) {
+		//determineLogger().log(level, payload, payload.getThrowable());
+		Logger logger = LogManager.getLogger(callerClass, PayloadContextMessageFactory.INSTANCE);
+		if (!logger.isEnabled(level)) {
+			return;
+		}
+
 		Message payload = payload(message, args, throwable);
 		payload.getFormattedMessage(); // preformat message (cached), so formating has processed and added fields to MetaContext
 		if (MetaContext.hasMeta()) {
@@ -70,8 +76,6 @@ public class Say {
 			ThreadContext.put(JSON_FIELD, MetaContext.toJson());
 			MetaContext.clear();
 		}
-		//determineLogger().log(level, payload, payload.getThrowable());
-		Logger logger = LogManager.getLogger(callerClass, PayloadContextMessageFactory.INSTANCE);
 		logger.log(level, payload, payload.getThrowable());
 
 		if (ThreadContext.getContext() != null && ThreadContext.containsKey(JSON_FIELD)) {
@@ -387,7 +391,7 @@ public class Say {
 	/* A custom security manager that exposes the getClassContext() information */
 	/*
 	static class CallerSecurityManager extends SecurityManager {
-	
+
 		public String getCallerClassName(int callStackDepth) {
 			return getClassContext()[callStackDepth].getName();
 		}
